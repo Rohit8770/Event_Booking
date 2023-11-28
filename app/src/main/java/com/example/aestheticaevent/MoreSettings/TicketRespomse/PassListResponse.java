@@ -6,8 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PassListResponse implements Serializable, Parcelable
-{
+public class PassListResponse {
 
     @SerializedName("ticketdetailsList")
     @Expose
@@ -16,33 +15,12 @@ public class PassListResponse implements Serializable, Parcelable
     @Expose
     private String message;
     @SerializedName("status")
-    @Expose
     private String status;
-    public final static Creator<PassListResponse> CREATOR = new Creator<PassListResponse>() {
 
-
-        public PassListResponse createFromParcel(android.os.Parcel in) {
-            return new PassListResponse(in);
-        }
-
-        public PassListResponse[] newArray(int size) {
-            return (new PassListResponse[size]);
-        }
-
-    }
-            ;
-    private final static long serialVersionUID = 3295262138739932826L;
-
-    @SuppressWarnings({
-            "unchecked"
-    })
-    protected PassListResponse(android.os.Parcel in) {
-        in.readList(this.ticketdetailsList, (Ticketdetails.class.getClassLoader()));
-        this.message = ((String) in.readValue((String.class.getClassLoader())));
-        this.status = ((String) in.readValue((String.class.getClassLoader())));
-    }
-
-    public PassListResponse() {
+    public PassListResponse(List<Ticketdetails> ticketdetailsList, String message, String status) {
+        this.ticketdetailsList = ticketdetailsList;
+        this.message = message;
+        this.status = status;
     }
 
     public List<Ticketdetails> getTicketdetailsList() {
@@ -68,15 +46,4 @@ public class PassListResponse implements Serializable, Parcelable
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public void writeToParcel(android.os.Parcel dest, int flags) {
-        dest.writeList(ticketdetailsList);
-        dest.writeValue(message);
-        dest.writeValue(status);
-    }
-
-    public int describeContents() {
-        return 0;
-    }
-
 }

@@ -5,16 +5,28 @@ import com.google.gson.annotations.SerializedName;
 
 public class RegisterResponse {
 
-        @SerializedName("message")
-        @Expose
-        private String message;
-        @SerializedName("status")
-        @Expose
-        private String status;
+    @SerializedName("user_id")
+    @Expose
+    private Integer userId;
+    @SerializedName("message")
+    @Expose
+    private String message;
+    @SerializedName("status")
+    @Expose
+    private String status;
 
-    public RegisterResponse(String message, String status) {
+    public RegisterResponse(Integer userId, String message, String status) {
+        this.userId = userId;
         this.message = message;
         this.status = status;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getMessage() {

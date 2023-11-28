@@ -7,6 +7,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.aestheticaevent.HomeScreen.Activity_HomeScreen;
 import com.example.aestheticaevent.MoreSettings.TicketAdapterss.TicketAdapter;
 import com.example.aestheticaevent.MoreSettings.TicketRespomse.PassListResponse;
 import com.example.aestheticaevent.R;
@@ -34,7 +36,7 @@ public class ActivityTicket extends AppCompatActivity {
     EditText etTicketSearch;
     SharedPreference sharedPreference;
     SwipeRefreshLayout swipeRefreshTicketLayout;
-    String subCatId,user_id,eventId,ticketId;
+    String subCatId,user_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,8 @@ public class ActivityTicket extends AppCompatActivity {
         ivTicketBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*Intent i=new Intent(ActivityTicket.this, Activity_HomeScreen.class);
+                startActivity(i);*/
                 finish();
             }
         });
@@ -53,6 +57,9 @@ public class ActivityTicket extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 GetEventTicketCall();
+                new Handler().postDelayed(() -> {
+                    swipeRefreshTicketLayout.setRefreshing(false);
+                }, 1500);
             }
         });
         etTicketSearch.addTextChangedListener(new TextWatcher() {
@@ -73,24 +80,23 @@ public class ActivityTicket extends AppCompatActivity {
 
         Intent i = getIntent();
         if (i != null) {
-            ticketId = i.getStringExtra("ticketId");
-            subCatId = i.getStringExtra("subCatId");
-            eventId = i.getStringExtra("eventId");
             user_id = sharedPreference.getStringvalue(VariableBag.USER_ID);
         }
 
         rcvTicket=findViewById(R.id.rcvTicket);
         restcall= RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
+
+
+
+    }
+    protected void onResume() {
+        super.onResume();
         GetEventTicketCall();
-
-
     }
 
     public  void GetEventTicketCall(){
 
-        user_id = sharedPreference.getStringvalue("user_id");
-
-        restcall.GetTicketDetails("getpassdetails",eventId,user_id,subCatId,ticketId)
+        restcall.GetTicketDetails("getticketdetails",user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<PassListResponse>() {
@@ -102,7 +108,7 @@ public class ActivityTicket extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(ActivityTicket.this, "error", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ActivityTicket.this, "No internet", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -111,7 +117,6 @@ public class ActivityTicket extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(ActivityTicket.this, passListResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 if (passListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
                                         && passListResponse.getTicketdetailsList() != null
                                         && passListResponse.getTicketdetailsList().size() > 0) {

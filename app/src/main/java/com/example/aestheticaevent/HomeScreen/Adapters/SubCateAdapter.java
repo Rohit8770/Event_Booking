@@ -41,6 +41,11 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
         this.searchList = new ArrayList<>(subcategoryList);
     }
 
+    public void updateData(List<Subcategory> filteredList) {
+        subcategoryList.clear();
+        subcategoryList.addAll(filteredList);
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public SubViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -65,10 +70,14 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
         holder.txLocation.setText(model.getLocation());
         holder.txDate.setText(model.getDate());
         holder.txTime.setText(model.getTiming());
+        holder.txPrice.setText(model.getPrice());
+
 
         holder.itemView.setOnClickListener(v -> {
             if (subCategoryInterface != null) {
                 subCategoryInterface.onSubCategoryClicked(model.getSubCategoryId());
+
+
             }
         });
     }
@@ -79,7 +88,7 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
     }
 
     public class SubViewHolder extends RecyclerView.ViewHolder {
-        TextView textView, txLocation, txDate, txTime;
+        TextView textView, txLocation, txDate, txTime,txPrice;
         ImageView SubImg;
 
         public SubViewHolder(@NonNull View itemView) {
@@ -89,8 +98,10 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
             txLocation = itemView.findViewById(R.id.txLocation);
             txDate = itemView.findViewById(R.id.txDate);
             txTime = itemView.findViewById(R.id.txTime);
+            txPrice = itemView.findViewById(R.id.txPrice);
         }
     }
+
 
     @SuppressLint("NotifyDataSetChanged")
     public void Search(CharSequence charSequence, RecyclerView categoryListRecyclerView) {

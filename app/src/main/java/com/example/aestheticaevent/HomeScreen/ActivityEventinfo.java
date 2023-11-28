@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.aestheticaevent.BuyTicketSplash;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.DataModelNew;
 import com.example.aestheticaevent.MoreSettings.TicketRespomse.ButTicketListResponse;
 import com.example.aestheticaevent.MoreSettings.ActivityTicket;
@@ -37,26 +39,56 @@ import rx.schedulers.Schedulers;
 
 public class ActivityEventinfo extends AppCompatActivity {
 
-    ImageView textImg;
-    TextView txName, txCalander, txStartTime, txEndTime, txtLocation, txAbout, txtPrice, txtVenue;
+    ImageView textImg, ivFollowed;
+    TextView txName;
+    TextView txCalander;
+    TextView txStartTime;
+    TextView txEndTime;
+    TextView txtLocation;
+    TextView txAbout;
+    TextView txtPrice;
+    TextView txtVenue;
+    TextView tvFollow;
+    TextView txtorg;
     Restcall restcall;
     ImageView ivProfileBack;
     String subCatId, categoryId, userId, eventId, ticketId;
     LinearLayout btnBuy;
     SharedPreference sharedPreference;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eventinfo);
+
         ivProfileBack = findViewById(R.id.ivProfileBack);
         btnBuy = findViewById(R.id.btnBuy);
+        txtorg = findViewById(R.id.txtorg);
+
+        ivFollowed = findViewById(R.id.ivFollowed);
+        tvFollow = findViewById(R.id.tvFollow);
+
         sharedPreference = new SharedPreference(ActivityEventinfo.this);
 
-        /*Intent intent = getIntent();
-        if (intent != null) {
-        }
-*/
+        ivFollowed.setVisibility(View.GONE);
+
+
+        ivFollowed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ivFollowed.setVisibility(View.GONE);
+                tvFollow.setVisibility(View.VISIBLE);
+
+            }
+        });
+        tvFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvFollow.setVisibility(View.GONE);
+                ivFollowed.setVisibility(View.VISIBLE);
+            }
+        });
 
         btnBuy.setOnClickListener(new View.OnClickListener() {
 
@@ -70,13 +102,13 @@ public class ActivityEventinfo extends AppCompatActivity {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         createNotificationChannel(ActivityEventinfo.this);
                     }
-                    Intent resultIntent = new Intent(ActivityEventinfo.this, Activity_HomeScreen.class);
+                    Intent resultIntent = new Intent(ActivityEventinfo.this, ActivityNotification.class);
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(ActivityEventinfo.this);
                     stackBuilder.addNextIntentWithParentStack(resultIntent);
                     PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                     Notification notification = new NotificationCompat.Builder(ActivityEventinfo.this, "alarm_channel")
                             .setContentTitle("Congratulations")
-                            .setContentText("Meeting Room is Booked SuccessFully")
+                            .setContentText("Your Event is Booked SuccessFully")
                             .setSmallIcon(R.drawable.location)
                             .setContentIntent(resultPendingIntent)
                             .build();
@@ -158,6 +190,8 @@ public class ActivityEventinfo extends AppCompatActivity {
 
                                     txName.setText(dataModelNew.getEventList().get(0).getSub_category_name());
 
+                                    txtorg.setText(dataModelNew.getEventList().get(0).getOrganizer());
+
                                     Glide
                                             .with(ActivityEventinfo.this)
                                             .load(dataModelNew.getEventList().get(0).getPicture())
@@ -177,8 +211,6 @@ public class ActivityEventinfo extends AppCompatActivity {
                         });
                     }
                 });
-
-
     }
 
     private void AddTicketDetailsCall() {
@@ -207,7 +239,6 @@ public class ActivityEventinfo extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if (butTicketListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)) {
-                                    ticketId=butTicketListResponse.getId().toString().trim();
                                 }
                                 Toast.makeText(ActivityEventinfo.this, "" + butTicketListResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -227,10 +258,7 @@ public class ActivityEventinfo extends AppCompatActivity {
 
     private void handleBuyEvent() {
         Toast.makeText(ActivityEventinfo.this, "Your Ticket is Booked!", Toast.LENGTH_SHORT).show();
-        Intent ticketIntent = new Intent(ActivityEventinfo.this, ActivityTicket.class);
-        ticketIntent.putExtra("subCatId", subCatId);
-        ticketIntent.putExtra("ticketId", ticketId);
-        ticketIntent.putExtra("eventId", eventId);
+        Intent ticketIntent = new Intent(ActivityEventinfo.this, BuyTicketSplash.class);
         startActivity(ticketIntent);
     }
 }

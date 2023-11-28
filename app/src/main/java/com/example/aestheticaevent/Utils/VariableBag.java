@@ -12,7 +12,7 @@ public class VariableBag {
     public static  String USER_ID="user_id";
 
     // API
-    public static  String BASE_URL="http://192.168.0.153/eventhub/";
+    public static  String BASE_URL="http:/192.168.0.153/eventhub/";
     public static  String API_KEY="";
     public static  String SUCCESS_CODE="200";
     public static  String FAIL_CODE="201";

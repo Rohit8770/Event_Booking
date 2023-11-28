@@ -71,10 +71,7 @@ public interface Restcall {
     @POST("controller/passcontrollerapi.php")
     Single<PassListResponse> GetTicketDetails(
             @Field("tag") String tag,
-            @Field("event_id") String event_id,
-            @Field("user_id") String user_id,
-            @Field("sub_category_id") String sub_category_id,
-            @Field("ticket_id") String ticket_id);
+            @Field("user_id") String user_id);
 
 }
 

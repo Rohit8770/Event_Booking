@@ -62,7 +62,23 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
+        <ImageView
+            android:id="@+id/ivItemUnLike"
+            android:layout_width="@dimen/_20ssp"
+            android:layout_height="@dimen/_47ssp"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/_15ssp"
+            android:src="@drawable/unlike"
+            app:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/ivItemLike"
+            android:layout_width="@dimen/_20ssp"
+            android:layout_height="@dimen/_47ssp"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/_15ssp"
+            android:src="@drawable/like" />
+        <!--<androidx.cardview.widget.CardView
             android:layout_width="@dimen/_30ssp"
             android:layout_height="@dimen/_30ssp"
             android:layout_margin="@dimen/_5ssp"
@@ -83,7 +99,7 @@
                     android:src="@drawable/like"/>
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>-->
 
     </androidx.cardview.widget.CardView>
 

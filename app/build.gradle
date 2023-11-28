@@ -79,7 +79,7 @@ dependencies {
 
     //biometric
     implementation "androidx.biometric:biometric:1.1.0"
-    debugImplementation "com.infinum.dbinspector:dbinspector:5.4.9"
-    releaseImplementation "com.infinum.dbinspector:dbinspector-no-op:5.4.9"
+  /*  debugImplementation "com.infinum.dbinspector:dbinspector:5.4.9"
+    releaseImplementation "com.infinum.dbinspector:dbinspector-no-op:5.4.9"*/
 
 }

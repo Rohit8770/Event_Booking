@@ -3,4 +3,6 @@
 
     <string name="Rs">\u20B9</string>
     <string name="Rss">Get \u20B950 For Ticket</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Ticketdetails implements Serializable, Parcelable {
+public class Ticketdetails{
 
     @SerializedName("ticket_id")
     @Expose
@@ -15,6 +15,12 @@ public class Ticketdetails implements Serializable, Parcelable {
     @SerializedName("user_id")
     @Expose
     private String userId;
+    @SerializedName("event_id")
+    @Expose
+    private String eventId;
+    @SerializedName("sub_category_id")
+    @Expose
+    private String subCategoryId;
     @SerializedName("username")
     @Expose
     private String username;
@@ -39,37 +45,21 @@ public class Ticketdetails implements Serializable, Parcelable {
     @SerializedName("organizer")
     @Expose
     private String organizer;
-    public final static Creator<Ticketdetails> CREATOR = new Creator<Ticketdetails>() {
 
 
-        public Ticketdetails createFromParcel(android.os.Parcel in) {
-            return new Ticketdetails(in);
-        }
-
-        public Ticketdetails[] newArray(int size) {
-            return (new Ticketdetails[size]);
-        }
-
-    };
-    private final static long serialVersionUID = 7913577259919905328L;
-
-    @SuppressWarnings({
-            "unchecked"
-    })
-    protected Ticketdetails(android.os.Parcel in) {
-        this.ticketId = ((String) in.readValue((String.class.getClassLoader())));
-        this.userId = ((String) in.readValue((String.class.getClassLoader())));
-        this.username = ((String) in.readValue((String.class.getClassLoader())));
-        this.subCategoryName = ((String) in.readValue((String.class.getClassLoader())));
-        this.timing = ((String) in.readValue((String.class.getClassLoader())));
-        this.date = ((String) in.readValue((String.class.getClassLoader())));
-        this.location = ((String) in.readValue((String.class.getClassLoader())));
-        this.price = ((String) in.readValue((String.class.getClassLoader())));
-        this.currentTime = ((String) in.readValue((String.class.getClassLoader())));
-        this.organizer = ((String) in.readValue((String.class.getClassLoader())));
-    }
-
-    public Ticketdetails() {
+    public Ticketdetails(String ticketId, String userId, String eventId, String subCategoryId, String username, String subCategoryName, String timing, String date, String location, String price, String currentTime, String organizer) {
+        this.ticketId = ticketId;
+        this.userId = userId;
+        this.eventId = eventId;
+        this.subCategoryId = subCategoryId;
+        this.username = username;
+        this.subCategoryName = subCategoryName;
+        this.timing = timing;
+        this.date = date;
+        this.location = location;
+        this.price = price;
+        this.currentTime = currentTime;
+        this.organizer = organizer;
     }
 
     public String getTicketId() {
@@ -86,6 +76,22 @@ public class Ticketdetails implements Serializable, Parcelable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
+    public String getSubCategoryId() {
+        return subCategoryId;
+    }
+
+    public void setSubCategoryId(String subCategoryId) {
+        this.subCategoryId = subCategoryId;
     }
 
     public String getUsername() {
@@ -151,22 +157,4 @@ public class Ticketdetails implements Serializable, Parcelable {
     public void setOrganizer(String organizer) {
         this.organizer = organizer;
     }
-
-    public void writeToParcel(android.os.Parcel dest, int flags) {
-        dest.writeValue(ticketId);
-        dest.writeValue(userId);
-        dest.writeValue(username);
-        dest.writeValue(subCategoryName);
-        dest.writeValue(timing);
-        dest.writeValue(date);
-        dest.writeValue(location);
-        dest.writeValue(price);
-        dest.writeValue(currentTime);
-        dest.writeValue(organizer);
-    }
-
-    public int describeContents() {
-        return 0;
-    }
-
 }

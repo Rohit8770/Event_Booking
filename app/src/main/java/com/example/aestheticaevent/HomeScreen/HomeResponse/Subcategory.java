@@ -1,5 +1,6 @@
 package com.example.aestheticaevent.HomeScreen.HomeResponse;
 
+import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
@@ -28,11 +29,20 @@ public class Subcategory {
     @SerializedName("picture")
     @Expose
     private String picture;
+    @SerializedName("price")
+    @Expose
+    private String price;
+    @SerializedName("status")
+    @Expose
+    private String status;
+
+
     public final static Parcelable.Creator<Subcategory> CREATOR = new Parcelable.Creator<Subcategory>() {
 
 
-        public Subcategory createFromParcel(android.os.Parcel in) {
-            return new Subcategory(in);
+        @Override
+        public Subcategory createFromParcel(Parcel source) {
+            return null;
         }
 
         public Subcategory[] newArray(int size) {
@@ -42,18 +52,22 @@ public class Subcategory {
     };
     private final static long serialVersionUID = -5235805594277337686L;
 
+    public Subcategory(String categoryId, String subCategoryId, String subCategoryName, String location, String timing, String date, String picture, String price, String status) {
+        this.categoryId = categoryId;
+        this.subCategoryId = subCategoryId;
+        this.subCategoryName = subCategoryName;
+        this.location = location;
+        this.timing = timing;
+        this.date = date;
+        this.picture = picture;
+        this.price = price;
+        this.status = status;
+    }
+
     @SuppressWarnings({
             "unchecked"
     })
-    protected Subcategory(android.os.Parcel in) {
-        this.categoryId = ((String) in.readValue((String.class.getClassLoader())));
-        this.subCategoryId = ((String) in.readValue((String.class.getClassLoader())));
-        this.subCategoryName = ((String) in.readValue((String.class.getClassLoader())));
-        this.location = ((String) in.readValue((String.class.getClassLoader())));
-        this.timing = ((String) in.readValue((String.class.getClassLoader())));
-        this.date = ((String) in.readValue((String.class.getClassLoader())));
-        this.picture = ((String) in.readValue((String.class.getClassLoader())));
-    }
+
 
     public Subcategory() {
     }
@@ -82,6 +96,14 @@ public class Subcategory {
         this.subCategoryName = subCategoryName;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getLocation() {
         return location;
     }
@@ -92,6 +114,14 @@ public class Subcategory {
 
     public String getTiming() {
         return timing;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public void setTiming(String timing) {

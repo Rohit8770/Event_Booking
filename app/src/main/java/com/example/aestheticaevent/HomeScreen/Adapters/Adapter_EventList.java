@@ -15,7 +15,10 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.aestheticaevent.HomeScreen.ActivityEventinfo;
 import com.example.aestheticaevent.HomeScreen.ActivitySubCategoryEvent;
+import com.example.aestheticaevent.HomeScreen.ActivitySubEvent;
+import com.example.aestheticaevent.HomeScreen.Fragment.UpComingFragment;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.CategoryListResponse;
 import com.example.aestheticaevent.Models.Model_EventList;
 import com.example.aestheticaevent.R;
@@ -27,6 +30,17 @@ public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.Ev
     Context context;
     List<CategoryListResponse.Category> categoryList;
     List<CategoryListResponse.Category> searchList;
+
+    Adapter_EventList.CategoryInterface categoryInterface;
+
+    public interface CategoryInterface {
+        void onCategoryClicked(String categoryId, String categoryName);
+    }
+
+
+    public void setCategoryInterface(Adapter_EventList.CategoryInterface categoryInterface) {
+        this.categoryInterface = categoryInterface;
+    }
 
     public Adapter_EventList(Context context, List<CategoryListResponse.Category> categoryList) {
         this.context = context;
@@ -57,12 +71,38 @@ public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.Ev
 
         holder.itemTextView.setText(category.getCategoryName());
 
-        holder.LayoutId.setOnClickListener(new View.OnClickListener() {
+      /*  holder.LayoutId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ActivitySubCategoryEvent.class);
                 i.putExtra("categoryId", category.getCategoryId());
                 v.getContext().startActivity(i);
+            }
+        });*/
+
+        holder.itemView.setOnClickListener(v -> {
+            if (categoryInterface != null) {
+                categoryInterface.onCategoryClicked(category.getCategoryId(), category.getCategoryName());
+            }
+        });
+
+
+        holder.ivItemLike.setVisibility(View.GONE);
+
+        holder.ivItemUnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                holder.ivItemUnLike.setVisibility(View.GONE);
+                holder.ivItemLike.setVisibility(View.VISIBLE);
+            }
+        });
+
+        holder.ivItemLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.ivItemLike.setVisibility(View.GONE);
+                holder.ivItemUnLike.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -73,7 +113,7 @@ public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.Ev
     }
 
     static class EventViewHolder extends RecyclerView.ViewHolder {
-        ImageView itemEventImage;
+        ImageView itemEventImage,ivItemLike, ivItemUnLike;
         TextView itemTextView;
         CardView LayoutId;
 
@@ -82,6 +122,8 @@ public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.Ev
             itemEventImage = itemView.findViewById(R.id.itemEventImage);
             itemTextView = itemView.findViewById(R.id.itemTextView);
             LayoutId = itemView.findViewById(R.id.LayoutId);
+            ivItemLike = itemView.findViewById(R.id.ivItemLike);
+            ivItemUnLike = itemView.findViewById(R.id.ivItemUnLike);
         }
     }
 

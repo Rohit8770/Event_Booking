@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.aestheticaevent.HomeScreen.HomeResponse.CategoryListResponse;
 import com.example.aestheticaevent.MoreSettings.TicketRespomse.Ticketdetails;
 import com.example.aestheticaevent.R;
 
@@ -24,8 +25,9 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
     public TicketAdapter(Context context, List<Ticketdetails> ticketdetailsList) {
         this.context = context;
         this.ticketdetailsList = ticketdetailsList;
-        this.searchList = searchList;
+        this.searchList =  new ArrayList<>(ticketdetailsList);
     }
+
 
     @NonNull
     @Override
@@ -33,7 +35,6 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         View view = LayoutInflater.from(context).inflate(R.layout.ticket_item_file, parent, false);
         return new TicketViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull TicketAdapter.TicketViewHolder holder, int position) {
         Ticketdetails userdetails = searchList.get(position);
@@ -82,7 +83,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
                 int flag=0;
                 List<Ticketdetails> filterList=new ArrayList<>();
                 for(Ticketdetails Row:ticketdetailsList){
-                    if(Row.getUsername().toString().toLowerCase().contains(charString.toLowerCase())){
+                    if(Row.getSubCategoryName().toString().toLowerCase().contains(charString.toLowerCase())){
                         filterList.add(Row);
                         flag=1;
                     }

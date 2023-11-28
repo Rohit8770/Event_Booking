@@ -30,7 +30,7 @@ public class ButTicketListResponse implements Serializable, Parcelable
 
     }
             ;
-    private final static long serialVersionUID = 8004622059879698721L;
+    private final static long serialVersionUID = -1775840735720283296L;
 
     @SuppressWarnings({
             "unchecked"

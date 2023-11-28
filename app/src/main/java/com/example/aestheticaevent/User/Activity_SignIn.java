@@ -50,6 +50,7 @@ public class Activity_SignIn extends AppCompatActivity {
 
         sharedPreference=new SharedPreference(this);
         etSignInEmail = findViewById(R.id.etSignInEmail);
+        btnBack = findViewById(R.id.btnBack);
         etSignInPassword = findViewById(R.id.etSignInPassword);
         ivSignInCloseEye = findViewById(R.id.ivSignInCloseEye);
         tvSignInSignUp = findViewById(R.id.tvSignInSignUp);
@@ -58,6 +59,13 @@ public class Activity_SignIn extends AppCompatActivity {
 
         restcall= RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
 
+      /*  btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Activity_SignIn.this, Activity_HomeScreen.class);
+                startActivity(intent);
+            }
+        });*/
 
 
         tvSignInForgotPassword.setOnClickListener(new View.OnClickListener() {

@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.aestheticaevent.HomeScreen.Activity_HomeScreen;
 import com.example.aestheticaevent.R;
+import com.example.aestheticaevent.Utils.SharedPreference;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +43,7 @@ public class Activity_MyProfile extends AppCompatActivity {
     String currentPhotoPath = "";
     ActivityResultLauncher<Intent> cameraLauncher;
     File currecntPhotoFile;
+    SharedPreference sharedPreference;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -49,6 +51,7 @@ public class Activity_MyProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
 
+        sharedPreference=new SharedPreference(Activity_MyProfile.this);
         cvProfileEditButton = findViewById(R.id.cvProfileEditButton);
 
         etProfileEditEmail = findViewById(R.id.etProfileEditEmail);
@@ -58,6 +61,10 @@ public class Activity_MyProfile extends AppCompatActivity {
 
         civProfileCamera = findViewById(R.id.civProfileCamera);
         civProfileUser = findViewById(R.id.civProfileUser);
+
+
+        etSignUpName.setText(sharedPreference.getStringvalue("userName"));
+        etProfileEditEmail.setText(sharedPreference.getStringvalue("email"));
 
         ivProfileBack.setOnClickListener(new View.OnClickListener() {
             @Override

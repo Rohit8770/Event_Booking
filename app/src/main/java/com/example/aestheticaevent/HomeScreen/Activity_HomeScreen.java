@@ -1,12 +1,13 @@
 package com.example.aestheticaevent.HomeScreen;
 
-import static com.infinum.dbinspector.DbInspector.show;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -25,6 +26,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -32,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.aestheticaevent.HomeScreen.Fragment.UpComingFragment;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.CategoryListResponse;
 import com.example.aestheticaevent.MoreSettings.ActivityTicket;
 import com.example.aestheticaevent.User.Activity_SignIn;
@@ -63,7 +66,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
     private Adapter_EventList adapterEventList;
     private EditText etEventSearch;
     private SwipeRefreshLayout swipeRefreshLayout;
-    ImageView ivSetting;
+    ImageView ivSetting,imgNotification;
     TextView tv, tvHomeMenuUserName, tvHomeMenuUserEmail,txtInvite;
     CircleImageView civHomeMenuUserImage;
     View layout, layoutProfile, layoutContactUs, layoutHelpAndFAQs, layoutInviteAndShare, layoutLogOut, layoutSetting,layoutTicket;
@@ -73,6 +76,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
     private BiometricPrompt.PromptInfo promptInfo;
     private RelativeLayout LayoutRelative;
     Restcall restcall;
+   /* Button btnBack1;*/
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -80,8 +84,8 @@ public class Activity_HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-
         txtInvite=findViewById(R.id.txtInvite);
+      //  btnBack1=findViewById(R.id.btnBack1);
         sharedPreference=new SharedPreference(Activity_HomeScreen.this);
         rcvEvent = findViewById(R.id.rcvEvent);
         etEventSearch = findViewById(R.id.etEventSearch);
@@ -100,7 +104,17 @@ public class Activity_HomeScreen extends AppCompatActivity {
         layoutSetting = findViewById(R.id.layoutSetting);
         layoutTicket = findViewById(R.id.layoutTicket);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        imgNotification = findViewById(R.id.imgNotification);
         restcall= RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
+
+        imgNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Activity_HomeScreen.this, ActivityNotification.class);
+                startActivity(intent);
+            }
+        });
+
 
         layout.setVisibility(View.GONE);
         tv.setVisibility(View.GONE);
@@ -189,25 +203,13 @@ public class Activity_HomeScreen extends AppCompatActivity {
         layoutInviteAndShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("text/plain");
-                String share = "look all Programmings";
-                String subject = "https://play.google.com/store/apps/details?id=in.seekmyvision.seekmyvision";
-                i.putExtra(Intent.EXTRA_SUBJECT,share);
-                i.putExtra(Intent.EXTRA_TEXT,subject);
-                startActivity(Intent.createChooser(i,"Seek my vision"));
+                ShareData();
             }
         });
         txtInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("text/plain");
-                String share = "look all Programmings";
-                String subject = "https://play.google.com/store/apps/details?id=in.seekmyvision.seekmyvision";
-                i.putExtra(Intent.EXTRA_SUBJECT,share);
-                i.putExtra(Intent.EXTRA_TEXT,subject);
-                startActivity(Intent.createChooser(i,"Seek my vision"));
+                ShareData();
             }
         });
 
@@ -272,22 +274,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
         });
 
 
-      /*  rvEventList.setLayoutManager(new LinearLayoutManager(this));
 
-        // Create a list of Model_EventList objects
-        List<Model_EventList> eventList = createEventList();
-
-        // Create and set the adapter
-        adapterEventList = new Adapter_EventList(this, eventList);
-        rvEventList.setAdapter(adapterEventList);
-
-        etEventSearch.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                performSearch(v.getText().toString());
-                return true;
-            }
-            return false;
-        });*/
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
             GetCategoryCall();
@@ -297,41 +284,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
         });
     }
 
-  /*  private void showLogoutConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Activity_HomeScreen.this);
-        builder.setTitle("Logout");
-        builder.setMessage("Are you sure you want to logout?");
 
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Activity_HomeScreen.this, Activity_SignIn.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        AlertDialog alertDialog = builder.create();
-
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
-                alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorAccent));
-            }
-        });
-        alertDialog.show();
-    }*/
-  /*  private void performSearch(String query) {
-        adapterEventList.filter(query);
-    }*/
 
     private List<Model_EventList> createEventList() {
         List<Model_EventList> eventList = new ArrayList<>();
@@ -379,11 +332,20 @@ public class Activity_HomeScreen extends AppCompatActivity {
                                     // Update the adapter with the new data
                                     adapterEventList = new Adapter_EventList(Activity_HomeScreen.this, categoryListResponse.getCategoryList());
                                     rcvEvent.setAdapter(adapterEventList);
+
+                                    adapterEventList.setCategoryInterface(new Adapter_EventList.CategoryInterface() {
+                                        @Override
+                                        public void onCategoryClicked(String categoryId,String categoryName) {
+                                            Intent i = new Intent(Activity_HomeScreen.this, ActivitySubEvent.class);
+                                            i.putExtra("categoryId", categoryId);
+                                            i.putExtra("categoryName", categoryName);
+                                            startActivity(i);
+                                        }
+                                    });
                                 }
                             }
                         });
                     }
-
                 });
   }
 
@@ -407,7 +369,6 @@ public class Activity_HomeScreen extends AppCompatActivity {
                     }
                 });
             }
-
             promptInfo = new androidx.biometric.BiometricPrompt.PromptInfo.Builder()
                     .setTitle("Insert fingerprint")
                     .setDescription("Use Fingerprint To Log In")
@@ -419,12 +380,11 @@ public class Activity_HomeScreen extends AppCompatActivity {
         }
     }
 
-
     @Override
     public void onBackPressed() {
-         super.onBackPressed();
-        new android.app.AlertDialog.Builder(this)
-                .setTitle("Exit")
+     //   super.onBackPressed();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Exit")
                 .setMessage("Are you sure you want to exit the app?")
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
@@ -436,8 +396,27 @@ public class Activity_HomeScreen extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
-                })
-                .show();
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+                alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+            }
+        });
+
+        alertDialog.show();
     }
 
+    public  void  ShareData(){
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        String share = "look all Programmings";
+        String subject = "https://play.google.com/store/apps/details?id=in.seekmyvision.seekmyvision";
+        i.putExtra(Intent.EXTRA_SUBJECT,share);
+        i.putExtra(Intent.EXTRA_TEXT,subject);
+        startActivity(Intent.createChooser(i,"Seek my vision"));
+    }
 }

@@ -2,209 +2,175 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_10ssp"
-        app:cardElevation="@dimen/_5ssp"
-        app:cardCornerRadius="@dimen/_10ssp">
+        android:layout_height="@dimen/_150sdp"
+        android:layout_margin="@dimen/_5ssp"
+        app:cardCornerRadius="@dimen/_10ssp"
+        app:cardElevation="@dimen/_20ssp">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/background_ticket_color" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/background_ticket_image" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20ssp"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/txtEventSubCateName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sub-Category Name"
+                android:textColor="#FFE2BF"
+                android:textSize="@dimen/_20ssp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/txtUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6ssp"
+                android:text="Username"
+                android:textColor="#FFE2BF"
+                android:textSize="@dimen/_13ssp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtBookingTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wed Nov-15-2023"
+                android:textColor="#FFE2BF"
+                android:textSize="@dimen/_13ssp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/_30ssp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/_10ssp"
+                android:layout_height="@dimen/_20ssp"
+                android:layout_marginLeft="@dimen/_20ssp"
+                android:src="@drawable/location_ticket"
+                app:tint="#FFE2BF" />
+
+            <TextView
+                android:id="@+id/txtEventAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_5ssp"
+                android:text="Law Garden Ahmedabad"
+                android:textColor="#FFE2BF" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_20ssp"
+                android:text="Price :-"
+                android:textColor="#FFE2BF" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_5ssp"
+                android:text="@string/Rs"
+                android:textColor="#FFE2BF" />
+
+            <TextView
+                android:id="@+id/txtPassPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="1000"
+                android:textColor="#FFE2BF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/_10ssp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/_10ssp"
+                android:layout_height="@dimen/_20ssp"
+                android:layout_marginLeft="@dimen/_20ssp"
+                android:src="@drawable/clock"
+                app:tint="#FFE2BF" />
+
+            <TextView
+                android:id="@+id/txtEventTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_5ssp"
+                android:text="03.33 PM"
+                android:textColor="#FFE2BF" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_20ssp"
+                android:text="Booking Time :-"
+                android:textColor="#FFE2BF" />
+
+            <TextView
+                android:id="@+id/txtEventDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_5ssp"
+                android:text="2023-11-27 10:18:27"
+                android:textColor="#FFE2BF" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginRight="@dimen/_20ssp"
+            android:gravity="end">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/txtEventSubCateName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="Sub-Category Name"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_20sdp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5ssp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5ssp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Username"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Event Date"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Event Time"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Event Address"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pass Price"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Booking Time"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5ssp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=":"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=":"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=":"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=":"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=":"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=":"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=":"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=":"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5ssp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/txtUserName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Username"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp" />
-
-                    <TextView
-                        android:id="@+id/txtEventDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Event Date"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp" />
-                    <TextView
-                        android:id="@+id/txtEventTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Event Time"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp" />
-                    <TextView
-                        android:id="@+id/txtEventAddress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Event Address"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp" />
-                    <TextView
-                        android:id="@+id/txtPassPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Pass Price"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp" />
-                    <TextView
-                        android:id="@+id/txtBookingTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Booking Time"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_15ssp" />
-                </LinearLayout>
-            </LinearLayout>
+            <ImageView
+                android:layout_width="@dimen/_20ssp"
+                android:layout_height="@dimen/_50ssp"
+                android:src="@drawable/ticket_logo"
+                app:civ_border_width="@dimen/_2ssp" />
         </LinearLayout>
 
-
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text=" -----------------------------------------------------------------------------------------" />
+
 </LinearLayout>

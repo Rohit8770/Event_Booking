@@ -11,6 +11,20 @@
         android:id="@+id/layoutMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+      <!--  <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/_7ssp"
+            android:layout_marginTop="@dimen/_150sdp"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btnBack1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SKIP"
+                android:backgroundTint="@color/colorAccent"
+                android:textColor="@color/black" />
+        </LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/mainHeader"
@@ -39,6 +53,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_20ssp" />
                 <ImageView
+                    android:id="@+id/imgNotification"
                     android:layout_width="@dimen/_20ssp"
                     android:layout_height="@dimen/_20ssp"
                     android:layout_marginTop="@dimen/_15ssp"
