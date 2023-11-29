@@ -1,4 +1,4 @@
-package com.example.aestheticaevent.MoreSettings.TicketAdapterss;
+package com.example.aestheticaevent.MoreSettings.Ticket.TicketAdapterss;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,8 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.aestheticaevent.HomeScreen.HomeResponse.CategoryListResponse;
-import com.example.aestheticaevent.MoreSettings.TicketRespomse.Ticketdetails;
+import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.Ticketdetails;
 import com.example.aestheticaevent.R;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         holder.txtEventDate.setText(userdetails.getDate());
         holder.txtEventAddress.setText(userdetails.getLocation());
         holder.txtPassPrice.setText(userdetails.getPrice());
-        holder.txtBookingTime.setText(userdetails.getCurrentTime());
+        holder.txtBookingTime.setText(userdetails.getTicketTime());
     }
 
     @Override

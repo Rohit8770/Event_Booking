@@ -6,27 +6,24 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import androidx.biometric.BiometricPrompt;
-import androidx.biometric.BiometricManager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -34,9 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.aestheticaevent.HomeScreen.Fragment.UpComingFragment;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.CategoryListResponse;
-import com.example.aestheticaevent.MoreSettings.ActivityTicket;
+import com.example.aestheticaevent.MoreSettings.Ticket.ActivityTicket;
 import com.example.aestheticaevent.User.Activity_SignIn;
 import com.example.aestheticaevent.HomeScreen.Adapters.Adapter_EventList;
 import com.example.aestheticaevent.Models.Model_EventList;
@@ -46,6 +42,7 @@ import com.example.aestheticaevent.MoreSettings.Activity_MyProfile;
 import com.example.aestheticaevent.MoreSettings.Activity_Settings;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.Utils.SharedPreference;
+import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
@@ -76,7 +73,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
     private BiometricPrompt.PromptInfo promptInfo;
     private RelativeLayout LayoutRelative;
     Restcall restcall;
-   /* Button btnBack1;*/
+    Tools tools;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -85,7 +82,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
         setContentView(R.layout.activity_home_screen);
 
         txtInvite=findViewById(R.id.txtInvite);
-      //  btnBack1=findViewById(R.id.btnBack1);
+        tools=new Tools();
         sharedPreference=new SharedPreference(Activity_HomeScreen.this);
         rcvEvent = findViewById(R.id.rcvEvent);
         etEventSearch = findViewById(R.id.etEventSearch);
@@ -128,7 +125,13 @@ public class Activity_HomeScreen extends AppCompatActivity {
 
         tvHomeMenuUserName.setText(sharedPreference.getStringvalue("userName"));
         tvHomeMenuUserEmail.setText(sharedPreference.getStringvalue("email"));
-
+        String photoPath1 = sharedPreference.getStringvalue("photo");
+        if (!TextUtils.isEmpty(photoPath1)) {
+            Glide.with(this)
+                    .load(Uri.parse(photoPath1))
+                    .placeholder(R.drawable.person_image)
+                    .into(civHomeMenuUserImage);
+        }
 
         Intent intent = getIntent();
         if (intent != null && intent.getExtras() != null) {
@@ -286,11 +289,11 @@ public class Activity_HomeScreen extends AppCompatActivity {
 
 
 
-    private List<Model_EventList> createEventList() {
+ /*   private List<Model_EventList> createEventList() {
         List<Model_EventList> eventList = new ArrayList<>();
         eventList.add(new Model_EventList("Holi Celebration", R.drawable.splash_screen_logo));
         return eventList;
-    }
+    }*/
 
 
 
@@ -299,6 +302,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
         GetCategoryCall();
     }
   public  void GetCategoryCall(){
+        tools.stopLoading();
         restcall.getcategory("getcategory")
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
@@ -312,6 +316,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 Toast.makeText(Activity_HomeScreen.this, "No Internet", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -322,6 +327,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 if (categoryListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
                                         && categoryListResponse.getCategoryList() != null
                                         && categoryListResponse.getCategoryList().size() > 0) {

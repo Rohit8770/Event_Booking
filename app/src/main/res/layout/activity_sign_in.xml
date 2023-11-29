@@ -225,35 +225,43 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll8"
+   <!-- <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ll7"
+        >-->
+    <LinearLayout
+        android:id="@+id/ll8"
+        android:layout_width="150sp"
+        android:layout_height="55sp"
         android:layout_marginTop="@dimen/_20ssp"
-        android:gravity="center">
+        android:layout_below="@id/ll7"
+        android:background="@drawable/fb_design"
+        android:layout_marginLeft="@dimen/_100sdp">
 
         <ImageView
-            android:id="@+id/ivSignInGoogleLogin"
-            android:layout_width="@dimen/_40ssp"
-            android:layout_height="@dimen/_30ssp"
-            android:src="@drawable/google_icon" />
-
-        <ImageView
-            android:id="@+id/ivSignInFacebookLogin"
-            android:layout_width="@dimen/_40ssp"
-            android:layout_height="@dimen/_33ssp"
-            android:layout_marginLeft="@dimen/_30ssp"
-            android:src="@drawable/facebook_icon" />
+            android:layout_width="40sp"
+            android:layout_marginTop="13sp"
+            android:layout_marginLeft="@dimen/_10ssp"
+            android:layout_height="30sp"
+            android:src="@drawable/google" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="19sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/_11ssp"
+            android:text="GOOGLE"
+            android:fontFamily="@font/sofia_pro_medium"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
+   <!-- </LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/ll9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll8"
-        android:layout_marginTop="@dimen/_20ssp"
+        android:layout_marginTop="@dimen/_10ssp"
         android:gravity="center"
         android:orientation="horizontal">
 

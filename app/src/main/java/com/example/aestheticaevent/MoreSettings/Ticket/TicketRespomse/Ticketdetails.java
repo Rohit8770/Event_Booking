@@ -1,4 +1,4 @@
-package com.example.aestheticaevent.MoreSettings.TicketRespomse;
+package com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse;
 
 import android.os.Parcelable;
 
@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Ticketdetails{
+public class Ticketdetails {
 
     @SerializedName("ticket_id")
     @Expose
@@ -39,15 +39,14 @@ public class Ticketdetails{
     @SerializedName("price")
     @Expose
     private String price;
-    @SerializedName("current_time")
+    @SerializedName("ticket_time")
     @Expose
-    private String currentTime;
+    private String ticketTime;
     @SerializedName("organizer")
     @Expose
     private String organizer;
 
-
-    public Ticketdetails(String ticketId, String userId, String eventId, String subCategoryId, String username, String subCategoryName, String timing, String date, String location, String price, String currentTime, String organizer) {
+    public Ticketdetails(String ticketId, String userId, String eventId, String subCategoryId, String username, String subCategoryName, String timing, String date, String location, String price, String ticketTime, String organizer) {
         this.ticketId = ticketId;
         this.userId = userId;
         this.eventId = eventId;
@@ -58,7 +57,7 @@ public class Ticketdetails{
         this.date = date;
         this.location = location;
         this.price = price;
-        this.currentTime = currentTime;
+        this.ticketTime = ticketTime;
         this.organizer = organizer;
     }
 
@@ -142,12 +141,12 @@ public class Ticketdetails{
         this.price = price;
     }
 
-    public String getCurrentTime() {
-        return currentTime;
+    public String getTicketTime() {
+        return ticketTime;
     }
 
-    public void setCurrentTime(String currentTime) {
-        this.currentTime = currentTime;
+    public void setTicketTime(String ticketTime) {
+        this.ticketTime = ticketTime;
     }
 
     public String getOrganizer() {

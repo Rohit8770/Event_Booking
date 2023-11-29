@@ -1,6 +1,8 @@
 package com.example.aestheticaevent.User.UserResponse;
 
 import java.io.Serializable;
+
+import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -22,11 +24,17 @@ public class LoginResponse implements Serializable, Parcelable {
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("user_image")
+    @Expose
+    private String user_image;
+
+
     public final static Creator<LoginResponse> CREATOR = new Creator<LoginResponse>() {
 
 
-        public LoginResponse createFromParcel(android.os.Parcel in) {
-            return new LoginResponse(in);
+        @Override
+        public LoginResponse createFromParcel(Parcel source) {
+            return null;
         }
 
         public LoginResponse[] newArray(int size) {
@@ -38,12 +46,13 @@ public class LoginResponse implements Serializable, Parcelable {
     private final static long serialVersionUID = -1357585573421634550L;
 
 
-    protected LoginResponse(android.os.Parcel in) {
-        this.userId = ((String) in.readValue((String.class.getClassLoader())));
-        this.username = ((String) in.readValue((String.class.getClassLoader())));
-        this.email = ((String) in.readValue((String.class.getClassLoader())));
-        this.message = ((String) in.readValue((String.class.getClassLoader())));
-        this.status = ((String) in.readValue((String.class.getClassLoader())));
+    public LoginResponse(String userId, String username, String email, String message, String status, String user_image) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.message = message;
+        this.status = status;
+        this.user_image = user_image;
     }
 
     public LoginResponse() {
@@ -67,6 +76,14 @@ public class LoginResponse implements Serializable, Parcelable {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getUser_image() {
+        return user_image;
+    }
+
+    public void setUser_image(String user_image) {
+        this.user_image = user_image;
     }
 
     public void setUserId(String userId) {

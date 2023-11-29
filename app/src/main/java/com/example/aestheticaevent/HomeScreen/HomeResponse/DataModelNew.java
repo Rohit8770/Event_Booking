@@ -51,84 +51,95 @@ import java.util.List;
 
          @SerializedName("sub_category_id")
          @Expose
-         String sub_category_id;
+         private String subCategoryId;
          @SerializedName("category_id")
          @Expose
-         String category_id;
+         private String categoryId;
          @SerializedName("sub_category_name")
          @Expose
-         String sub_category_name;
-         @SerializedName("location")
-         @Expose
-         String location;
-         @SerializedName("start_time")
-         @Expose
-         String start_time;
-         @SerializedName("end_time")
-         @Expose
-         String end_time;
-
-         @SerializedName("date")
-         @Expose
-         String date;
-         @SerializedName("picture")
-         @Expose
-         String picture;
-         @SerializedName("organizer")
-         @Expose
-         String organizer;
-         @SerializedName("event_id")
-         @Expose
-         String event_id;
-         @SerializedName("desciprtion")
-         @Expose
-         String desciprtion;
-         @SerializedName("price")
-         @Expose
-         String price;
+         private String subCategoryName;
          @SerializedName("venue")
          @Expose
-         String venue;
+         private String venue;
+         @SerializedName("location")
+         @Expose
+         private String location;
+         @SerializedName("timing")
+         @Expose
+         private String timing;
+         @SerializedName("end_time")
+         @Expose
+         private String endTime;
+         @SerializedName("date")
+         @Expose
+         private String date;
+         @SerializedName("picture")
+         @Expose
+         private String picture;
+         @SerializedName("organizer_image")
+         @Expose
+         private String organizerImage;
+         @SerializedName("organizer")
+         @Expose
+         private String organizer;
+         @SerializedName("event_id")
+         @Expose
+         private String eventId;
+         @SerializedName("desciprtion")
+         @Expose
+         private String desciprtion;
+         @SerializedName("price")
+         @Expose
+         private String price;
 
 
-         public newList(String sub_category_id, String category_id, String sub_category_name, String location, String start_time, String end_time, String date, String picture, String organizer, String event_id, String desciprtion, String price, String venue) {
-             this.sub_category_id = sub_category_id;
-             this.category_id = category_id;
-             this.sub_category_name = sub_category_name;
+         public newList(String subCategoryId, String categoryId, String subCategoryName, String venue, String location, String timing, String endTime, String date, String picture, String organizerImage, String organizer, String eventId, String desciprtion, String price) {
+             this.subCategoryId = subCategoryId;
+             this.categoryId = categoryId;
+             this.subCategoryName = subCategoryName;
+             this.venue = venue;
              this.location = location;
-             this.start_time = start_time;
-             this.end_time = end_time;
+             this.timing = timing;
+             this.endTime = endTime;
              this.date = date;
              this.picture = picture;
+             this.organizerImage = organizerImage;
              this.organizer = organizer;
-             this.event_id = event_id;
+             this.eventId = eventId;
              this.desciprtion = desciprtion;
              this.price = price;
+         }
+
+         public String getSubCategoryId() {
+             return subCategoryId;
+         }
+
+         public void setSubCategoryId(String subCategoryId) {
+             this.subCategoryId = subCategoryId;
+         }
+
+         public String getCategoryId() {
+             return categoryId;
+         }
+
+         public void setCategoryId(String categoryId) {
+             this.categoryId = categoryId;
+         }
+
+         public String getSubCategoryName() {
+             return subCategoryName;
+         }
+
+         public void setSubCategoryName(String subCategoryName) {
+             this.subCategoryName = subCategoryName;
+         }
+
+         public String getVenue() {
+             return venue;
+         }
+
+         public void setVenue(String venue) {
              this.venue = venue;
-         }
-
-         public String getSub_category_id() {
-             return sub_category_id;
-         }
-
-         public void setSub_category_id(String sub_category_id) {
-             this.sub_category_id = sub_category_id;
-         }
-
-         public String getCategory_id() {
-             return category_id;
-         }
-
-         public void setCategory_id(String category_id) {
-             this.category_id = category_id;
-         }
-
-         public String getSub_category_name() {
-             return sub_category_name;
-         }
-
-         public void setSub_category_name(String sub_category_name) {
-             this.sub_category_name = sub_category_name;
          }
 
          public String getLocation() {
@@ -139,20 +150,20 @@ import java.util.List;
              this.location = location;
          }
 
-         public String getStart_time() {
-             return start_time;
+         public String getTiming() {
+             return timing;
          }
 
-         public void setStart_time(String start_time) {
-             this.start_time = start_time;
+         public void setTiming(String timing) {
+             this.timing = timing;
          }
 
-         public String getEnd_time() {
-             return end_time;
+         public String getEndTime() {
+             return endTime;
          }
 
-         public void setEnd_time(String end_time) {
-             this.end_time = end_time;
+         public void setEndTime(String endTime) {
+             this.endTime = endTime;
          }
 
          public String getDate() {
@@ -171,6 +182,14 @@ import java.util.List;
              this.picture = picture;
          }
 
+         public String getOrganizerImage() {
+             return organizerImage;
+         }
+
+         public void setOrganizerImage(String organizerImage) {
+             this.organizerImage = organizerImage;
+         }
+
          public String getOrganizer() {
              return organizer;
          }
@@ -179,12 +198,12 @@ import java.util.List;
              this.organizer = organizer;
          }
 
-         public String getEvent_id() {
-             return event_id;
+         public String getEventId() {
+             return eventId;
          }
 
-         public void setEvent_id(String event_id) {
-             this.event_id = event_id;
+         public void setEventId(String eventId) {
+             this.eventId = eventId;
          }
 
          public String getDesciprtion() {
@@ -201,14 +220,6 @@ import java.util.List;
 
          public void setPrice(String price) {
              this.price = price;
-         }
-
-         public String getVenue() {
-             return venue;
-         }
-
-         public void setVenue(String venue) {
-             this.venue = venue;
          }
      }
  }

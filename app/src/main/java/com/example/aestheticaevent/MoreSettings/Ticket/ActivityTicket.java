@@ -1,4 +1,4 @@
-package com.example.aestheticaevent.MoreSettings;
+package com.example.aestheticaevent.MoreSettings.Ticket;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,9 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.aestheticaevent.HomeScreen.Activity_HomeScreen;
-import com.example.aestheticaevent.MoreSettings.TicketAdapterss.TicketAdapter;
-import com.example.aestheticaevent.MoreSettings.TicketRespomse.PassListResponse;
+import com.example.aestheticaevent.MoreSettings.Ticket.TicketAdapterss.TicketAdapter;
+import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.PassListResponse;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.Utils.SharedPreference;
 import com.example.aestheticaevent.Utils.VariableBag;

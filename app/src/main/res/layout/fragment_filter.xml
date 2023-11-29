@@ -127,7 +127,7 @@
                     android:gravity="center">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/cvFilterSave"
+                        android:id="@+id/txtFilter"
                         android:layout_width="@dimen/_60ssp"
                         android:layout_height="@dimen/_30ssp"
                         android:backgroundTint="#5669FF"

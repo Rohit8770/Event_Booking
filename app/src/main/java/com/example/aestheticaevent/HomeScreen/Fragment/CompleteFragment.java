@@ -23,12 +23,18 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.aestheticaevent.HomeScreen.ActivityEventinfo;
+import com.example.aestheticaevent.HomeScreen.Adapters.CompleteAdapter;
 import com.example.aestheticaevent.HomeScreen.Adapters.SubCateAdapter;
+import com.example.aestheticaevent.HomeScreen.HomeResponse.CompleteResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.SubCategoryListResponse;
+import com.example.aestheticaevent.HomeScreen.HomeResponse.Subcategory;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
@@ -38,24 +44,21 @@ public class CompleteFragment extends Fragment {
     private String filterName = "";
     private String filterDate = "";
     private String filterLocation = "";
-
     RecyclerView rvEventList;
     Restcall restcall;
     String categoryId;
-    SubCateAdapter subCateAdapter;
+    CompleteAdapter completeAdapter;
     ImageView ivProfileBack;
-    EditText etSubCateSearch;
-    LinearLayout LyFilterBtn;
+    EditText etSubCategorySearch;
     SwipeRefreshLayout swipeRefreshUpcomingLayout;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.fragment_complete, container, false);
 
-            ivProfileBack = v.findViewById(R.id.ivProfileBack);
-            etSubCateSearch = v.findViewById(R.id.etSubCateSearch);
-            LyFilterBtn = v.findViewById(R.id.LyFilterBtn);
+        etSubCategorySearch = v.findViewById(R.id.etSubCategorySearch);
             swipeRefreshUpcomingLayout = v.findViewById(R.id.swipeRefreshUpcomingLayout);
 
             swipeRefreshUpcomingLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -67,18 +70,9 @@ public class CompleteFragment extends Fragment {
                 }
             });
 
-            LyFilterBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FragmentManager fragmentManager = getParentFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    FragmentFilter fragmentFilter = new FragmentFilter();
-                    fragmentFilter.show(fragmentTransaction, "#tag");
-                    fragmentFilter.setCancelable(false);
-                }
-            });
 
-            etSubCateSearch.addTextChangedListener(new TextWatcher() {
+
+        etSubCategorySearch.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -86,8 +80,8 @@ public class CompleteFragment extends Fragment {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    if (subCateAdapter != null) {
-                        subCateAdapter.Search(charSequence, rvEventList);
+                    if (completeAdapter != null) {
+                        completeAdapter.Search(charSequence, rvEventList);
                     }
                 }
 
@@ -95,33 +89,26 @@ public class CompleteFragment extends Fragment {
                 public void afterTextChanged(Editable editable) {
                 }
             });
-
-
-
             Intent intent = getActivity().getIntent();
             if (intent != null) {
                 categoryId = intent.getStringExtra("categoryId");
             }
-
-
-            rvEventList = v.findViewById(R.id.rvEventList);
+        rvEventList = v.findViewById(R.id.rvEventList);
             restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
-
-
 
             return v;
         }
 
         public void onResume() {
             super.onResume();
-            GetSubCategoryCall();
+            Getclosedevents();
         }
 
-        public void GetSubCategoryCall() {
-            restcall.Getsubcategory("getsubcategory", categoryId)
+        public void Getclosedevents() {
+            restcall.Getclosedevents("getclosedevents", categoryId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.newThread())
-                    .subscribe(new Subscriber<SubCategoryListResponse>() {
+                    .subscribe(new Subscriber<CompleteResponse>() {
                         @Override
                         public void onCompleted() {
                         }
@@ -137,30 +124,18 @@ public class CompleteFragment extends Fragment {
                         }
 
                         @Override
-                        public void onNext(SubCategoryListResponse subCategoryListResponse) {
+                        public void onNext(CompleteResponse completeResponse) {
                             requireActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (subCategoryListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
-                                            && subCategoryListResponse.getSubcategoryList() != null
-                                            && subCategoryListResponse.getSubcategoryList().size() > 0) {
-
-                                        //    applyFilters(subCategoryListResponse.getSubcategoryList());
-
+                                    if (completeResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
+                                            && completeResponse.getCloseeventList() != null
+                                            && completeResponse.getCloseeventList().size() > 0) {
 
                                         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
                                         rvEventList.setLayoutManager(layoutManager);
-                                        subCateAdapter = new SubCateAdapter(getContext(), subCategoryListResponse.getSubcategoryList());
-                                        subCateAdapter.setSubCategoryInterface(new SubCateAdapter.SubCategoryInterface() {
-                                            @Override
-                                            public void onSubCategoryClicked(String subCategoryId) {
-                                                Intent i = new Intent(getContext(), ActivityEventinfo.class);
-                                                i.putExtra("subCatId", subCategoryId);
-                                                i.putExtra("categoryId", categoryId);
-                                                requireActivity().startActivity(i);
-                                            }
-                                        });
-                                        rvEventList.setAdapter(subCateAdapter);
+                                        completeAdapter = new CompleteAdapter(getContext(), completeResponse.getCloseeventList());
+                                        rvEventList.setAdapter(completeAdapter);
                                     }
                                 }
                             });

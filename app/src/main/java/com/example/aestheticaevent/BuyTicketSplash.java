@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.aestheticaevent.MoreSettings.ActivityTicket;
+import com.example.aestheticaevent.MoreSettings.Ticket.ActivityTicket;
 
 public class BuyTicketSplash extends AppCompatActivity {
     ImageView ivBackGroundGIF;
@@ -29,12 +29,13 @@ public class BuyTicketSplash extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i=new Intent(BuyTicketSplash.this, ActivityTicket.class);
                 startActivity(i);
+                finish();
             }
         });
 
         Glide.with(this)
                 .asGif()
-                .load(R.drawable.background_gif)
+                .load(R.drawable.backgroud_gif)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(ivBackGroundGIF);
     }

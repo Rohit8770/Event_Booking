@@ -14,6 +14,8 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,19 +28,24 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.aestheticaevent.BuyTicketSplash;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.DataModelNew;
-import com.example.aestheticaevent.MoreSettings.TicketRespomse.ButTicketListResponse;
-import com.example.aestheticaevent.MoreSettings.ActivityTicket;
+import com.example.aestheticaevent.HomeScreen.HomeResponse.ButTicketListResponse;
+import com.example.aestheticaevent.HomeScreen.HomeResponse.LocationLisResponse;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.Utils.SharedPreference;
+import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
+
+import java.util.List;
+import java.util.Locale;
 
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
 public class ActivityEventinfo extends AppCompatActivity {
 
+    Context context;
     ImageView textImg, ivFollowed;
     TextView txName;
     TextView txCalander;
@@ -47,24 +54,25 @@ public class ActivityEventinfo extends AppCompatActivity {
     TextView txtLocation;
     TextView txAbout;
     TextView txtPrice;
-    TextView txtVenue;
+    TextView txtVenue,txtVenue1;
     TextView tvFollow;
     TextView txtorg;
     Restcall restcall;
     ImageView ivProfileBack;
-    String subCatId, categoryId, userId, eventId, ticketId;
+    String subCatId, categoryId, userId, eventId;
     LinearLayout btnBuy;
     SharedPreference sharedPreference;
-
+    Tools tools;
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eventinfo);
 
+        tools=new Tools();
         ivProfileBack = findViewById(R.id.ivProfileBack);
         btnBuy = findViewById(R.id.btnBuy);
-        txtorg = findViewById(R.id.txtorg);
+        txtVenue1 = findViewById(R.id.txtVenue1);
 
         ivFollowed = findViewById(R.id.ivFollowed);
         tvFollow = findViewById(R.id.tvFollow);
@@ -74,6 +82,19 @@ public class ActivityEventinfo extends AppCompatActivity {
         ivFollowed.setVisibility(View.GONE);
 
 
+        txtVenue1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GetsubcategoryCall();
+
+            /*    double latitude = LocationLisResponse.Subcategory.
+                double longitude = LocationLisResponse.Subcategory.get(0).getLongitude();
+
+                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(intent);*/
+            }
+        });
         ivFollowed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,18 +123,19 @@ public class ActivityEventinfo extends AppCompatActivity {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         createNotificationChannel(ActivityEventinfo.this);
                     }
-                    Intent resultIntent = new Intent(ActivityEventinfo.this, ActivityNotification.class);
+                    showNotification();
+                   /* Intent resultIntent = new Intent(ActivityEventinfo.this, ActivityNotification.class);
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(ActivityEventinfo.this);
                     stackBuilder.addNextIntentWithParentStack(resultIntent);
                     PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                     Notification notification = new NotificationCompat.Builder(ActivityEventinfo.this, "alarm_channel")
                             .setContentTitle("Congratulations")
                             .setContentText("Your Event is Booked SuccessFully")
-                            .setSmallIcon(R.drawable.location)
+                            .setSmallIcon(R.drawable.notification_alarm)
                             .setContentIntent(resultPendingIntent)
                             .build();
                     NotificationManager notificationManager = (NotificationManager) ActivityEventinfo.this.getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.notify(0, notification);
+                    notificationManager.notify(0, notification);*/
                 });
                 builder.setNegativeButton("Cancel", (dialog, which) -> {
                     dialog.dismiss();
@@ -162,6 +184,7 @@ public class ActivityEventinfo extends AppCompatActivity {
     }
 
     private void Geteventinfo(String subCatId) {
+        tools.stopLoading();
         restcall.Geteventinfo("geteventinfo", subCatId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
@@ -175,6 +198,7 @@ public class ActivityEventinfo extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 Log.e("API Error", "Error: " + e.getLocalizedMessage());
                                 Toast.makeText(ActivityEventinfo.this, "No Internet", Toast.LENGTH_SHORT).show();
                             }
@@ -186,25 +210,26 @@ public class ActivityEventinfo extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 if (dataModelNew.getStatus().equals(VariableBag.SUCCESS_CODE)) {
 
-                                    txName.setText(dataModelNew.getEventList().get(0).getSub_category_name());
+                                    txName.setText(dataModelNew.getEventList().get(0).getSubCategoryName());
 
-                                    txtorg.setText(dataModelNew.getEventList().get(0).getOrganizer());
 
                                     Glide
                                             .with(ActivityEventinfo.this)
                                             .load(dataModelNew.getEventList().get(0).getPicture())
                                             .into(textImg);
 
-                                    txStartTime.setText(dataModelNew.getEventList().get(0).getStart_time());
-                                    txEndTime.setText(dataModelNew.getEventList().get(0).getEnd_time());
+                                    txStartTime.setText(dataModelNew.getEventList().get(0).getTiming());
+                                    txEndTime.setText(dataModelNew.getEventList().get(0).getEndTime());
                                     txCalander.setText(dataModelNew.getEventList().get(0).getDate());
                                     txtLocation.setText(dataModelNew.getEventList().get(0).getLocation());
                                     txAbout.setText(dataModelNew.getEventList().get(0).getDesciprtion());
                                     txtPrice.setText(dataModelNew.getEventList().get(0).getPrice());
                                     txtVenue.setText(dataModelNew.getEventList().get(0).getVenue());
-                                    eventId = dataModelNew.getEventList().get(0).getEvent_id();
+                                    txtVenue1.setText(dataModelNew.getEventList().get(0).getVenue());
+                                    eventId = dataModelNew.getEventList().get(0).getEventId();
                                 }
                                 Toast.makeText(ActivityEventinfo.this, "" + dataModelNew.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -247,6 +272,58 @@ public class ActivityEventinfo extends AppCompatActivity {
                 });
     }
 
+    private void GetsubcategoryCall() {
+        restcall.GetsubcategoryCall("getsubcategory",categoryId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<LocationLisResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.e("API Error", "Error: " + e.getLocalizedMessage());
+                                Toast.makeText(ActivityEventinfo.this, "No Internet", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNext(LocationLisResponse locationLisResponses) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (locationLisResponses.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)) {
+                                    List<LocationLisResponse.Subcategory> subcategoryList = locationLisResponses.getSubcategoryList();
+
+                                    if (subcategoryList != null && !subcategoryList.isEmpty()) {
+                                        double latitude = Double.parseDouble(subcategoryList.get(0).getLatitude());
+                                        double longitude = Double.parseDouble(subcategoryList.get(0).getLongitude());
+
+                                        String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
+                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                        startActivity(intent);
+                                    } else {
+                                        // Handle the case where the location data is not available
+                                        Toast.makeText(ActivityEventinfo.this, "Location data not available", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                                Toast.makeText(ActivityEventinfo.this, "" + locationLisResponses.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+    }
+
+
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void createNotificationChannel(Context context) {
         NotificationChannel channel = new NotificationChannel("alarm_channel", "Alarm Channel", NotificationManager.IMPORTANCE_HIGH);
@@ -261,4 +338,38 @@ public class ActivityEventinfo extends AppCompatActivity {
         Intent ticketIntent = new Intent(ActivityEventinfo.this, BuyTicketSplash.class);
         startActivity(ticketIntent);
     }
+
+    private void showNotification() {
+        Intent resultIntent = new Intent(ActivityEventinfo.this, ActivityNotification.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(ActivityEventinfo.this);
+        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        Notification notification = new NotificationCompat.Builder(ActivityEventinfo.this, "alarm_channel")
+                .setContentTitle("Congratulations")
+                .setContentText("Your Event is Booked Successfully")
+                .setSmallIcon(R.drawable.notification_alarm)
+                .setContentIntent(resultPendingIntent)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .build();
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(0, notification);
+    }
+
 }
+
+/*
+
+List<ModelDataClass> list;  // api se milta hai
+user selete -- name;
+
+List<ModelDataClass> newList;
+
+    for(int i=0;i<list.size();i++){
+        if(list.get(i).getDate().euqle(etvdate.gettext().toString)){
+            newList.add(list.get(i))
+        }
+    }
+
+newList set adapter-------
+ */

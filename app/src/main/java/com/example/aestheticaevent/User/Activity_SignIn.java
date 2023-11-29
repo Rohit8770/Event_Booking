@@ -22,6 +22,7 @@ import com.example.aestheticaevent.HomeScreen.Activity_HomeScreen;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.User.UserResponse.LoginResponse;
 import com.example.aestheticaevent.Utils.SharedPreference;
+import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
@@ -41,6 +42,7 @@ public class Activity_SignIn extends AppCompatActivity {
     Button btnBack;
     SharedPreference sharedPreference;
     boolean isPasswordVisible = false;
+    Tools tools;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class Activity_SignIn extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
 
+        tools=new Tools();
         sharedPreference=new SharedPreference(this);
         etSignInEmail = findViewById(R.id.etSignInEmail);
         btnBack = findViewById(R.id.btnBack);
@@ -149,6 +152,7 @@ public class Activity_SignIn extends AppCompatActivity {
     }
 
     private void LoginUser() {
+        tools.stopLoading();
         restcall.LoginUser("login", etSignInEmail.getText().toString().trim(),
                         etSignInPassword.getText().toString().trim())
                 .subscribeOn(Schedulers.io())
@@ -162,17 +166,18 @@ public class Activity_SignIn extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 Log.e("API Error", "Error: " + e.getLocalizedMessage());
                                 Toast.makeText(Activity_SignIn.this, "No Internet", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
-
                     @Override
                     public void onNext(LoginResponse loginResponse) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 if (loginResponse.getStatus().equals(VariableBag.SUCCESS_CODE)) {
                                     etSignInEmail.setText("");
                                     etSignInPassword.setText("");
@@ -181,13 +186,12 @@ public class Activity_SignIn extends AppCompatActivity {
                                     sharedPreference.setStringvalue("user_id", loginResponse.getUserId());
                                     sharedPreference.setStringvalue("userName", loginResponse.getUsername());
                                     sharedPreference.setStringvalue("email", loginResponse.getEmail());
+                                    sharedPreference.setStringvalue("photo",loginResponse.getUser_image());
                                 }
                                 Toast.makeText(Activity_SignIn.this, ""+loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
                 });
-
-
     }
 }

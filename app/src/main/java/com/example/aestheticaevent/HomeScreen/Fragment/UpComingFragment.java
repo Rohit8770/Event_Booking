@@ -28,10 +28,14 @@ import com.example.aestheticaevent.HomeScreen.ActivitySubEvent;
 import com.example.aestheticaevent.HomeScreen.Activity_HomeScreen;
 import com.example.aestheticaevent.HomeScreen.Adapters.SubCateAdapter;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.SubCategoryListResponse;
+import com.example.aestheticaevent.HomeScreen.HomeResponse.Subcategory;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
@@ -45,6 +49,8 @@ public class UpComingFragment extends Fragment {
     RecyclerView rvEventList;
     Restcall restcall;
     String categoryId;
+    List<Subcategory> apiList;
+
     SubCateAdapter subCateAdapter;
     ImageView ivProfileBack;
     EditText etSubCateSearch;
@@ -57,6 +63,8 @@ public class UpComingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_up_coming, container, false);
 
+
+        apiList = new ArrayList<>();
         ivProfileBack = v.findViewById(R.id.ivProfileBack);
         etSubCateSearch = v.findViewById(R.id.etSubCateSearch);
         LyFilterBtn = v.findViewById(R.id.LyFilterBtn);
@@ -79,6 +87,33 @@ public class UpComingFragment extends Fragment {
                 FragmentFilter fragmentFilter = new FragmentFilter();
                 fragmentFilter.show(fragmentTransaction, "#tag");
                 fragmentFilter.setCancelable(false);
+                fragmentFilter.setupInterface(new FragmentFilter.DataClick() {
+                    @Override
+                    public void dataClick(String name, String date, String location) {
+
+
+                        if (name!=null){
+                            List<Subcategory> newList = new ArrayList<>();
+                            for (int i=0;i<apiList.size();i++){
+                                if (apiList.get(i).getSubCategoryName().equals(name)){
+                                    newList.add(apiList.get(i));
+                                }
+                            }
+                            for (int i=0;i<apiList.size();i++){
+                                if (apiList.get(i).getDate().equals(date)){
+                                    newList.add(apiList.get(i));
+                                }
+                            }
+                            for (int i=0;i<apiList.size();i++){
+                                if (apiList.get(i).getLocation().equals(location)){
+                                    newList.add(apiList.get(i));
+                                }
+                            }
+                            subCateAdapter.updateData(newList);
+                        }
+
+                    }
+                });
             }
         });
 
@@ -113,16 +148,14 @@ public class UpComingFragment extends Fragment {
 
 
 
+        Getupcomingevents();
         return v;
     }
 
-    public void onResume() {
-        super.onResume();
-        GetSubCategoryCall();
-    }
 
-    public void GetSubCategoryCall() {
-        restcall.Getsubcategory("getsubcategory", categoryId)
+
+    public void Getupcomingevents() {
+        restcall.Getupcomingevents("getupcomingevents", categoryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<SubCategoryListResponse>() {
@@ -149,12 +182,22 @@ public class UpComingFragment extends Fragment {
                                         && subCategoryListResponse.getSubcategoryList() != null
                                         && subCategoryListResponse.getSubcategoryList().size() > 0) {
 
-                                    //    applyFilters(subCategoryListResponse.getSubcategoryList());
+                                    apiList = subCategoryListResponse.getSubcategoryList();
+                                  /*  List<Subcategory> activeSubCategories = new ArrayList<>();
+                                    List<Subcategory> inActiveSubCategories = new ArrayList<>();
 
+                                    for (Subcategory subCategory : subCategoryListResponse.getSubcategoryList()) {
+                                        if (subCategory.getSub_category_status().equals("0")){
+                                            activeSubCategories.add(subCategory);
+                                        }else{
+                                            inActiveSubCategories.add(subCategory);
+                                        }
+                                    }*/
 
                                     LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
                                     rvEventList.setLayoutManager(layoutManager);
                                     subCateAdapter = new SubCateAdapter(getContext(), subCategoryListResponse.getSubcategoryList());
+                                    rvEventList.setAdapter(subCateAdapter);
                                     subCateAdapter.setSubCategoryInterface(new SubCateAdapter.SubCategoryInterface() {
                                         @Override
                                         public void onSubCategoryClicked(String subCategoryId) {
@@ -164,11 +207,24 @@ public class UpComingFragment extends Fragment {
                                             requireActivity().startActivity(i);
                                         }
                                     });
-                                    rvEventList.setAdapter(subCateAdapter);
                                 }
                             }
                         });
                     }
                 });
     }
+
+    /*private void applyFilters(List<Subcategory> subcategoryList) {
+        List<Subcategory> upcomingEvents = new ArrayList<>();
+        List<Subcategory> completedEvents = new ArrayList<>();
+
+        // Separate upcoming and completed events based on status
+        for (Subcategory subcategory : subcategoryList) {
+            if (subcategory.getStatus() == 0) {
+                upcomingEvents.add(subcategory);
+            } else {
+                completedEvents.add(subcategory);
+            }
+        }*/
+
 }

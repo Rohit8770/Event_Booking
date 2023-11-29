@@ -1,8 +1,7 @@
-package com.example.aestheticaevent.MoreSettings.TicketRespomse;
+package com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse;
 
-import java.io.Serializable;
 import java.util.List;
-import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

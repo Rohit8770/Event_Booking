@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -74,9 +75,9 @@
                     android:layout_marginLeft="@dimen/_5ssp"
                     android:layout_marginTop="@dimen/_3ssp"
                     android:fontFamily="@font/sofia_pro_semi_bold"
-                    android:text="DJ Party Event"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_15ssp" />
+                    android:textSize="@dimen/_15ssp"
+                    tools:text="DJ Party Event" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -99,7 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Money"
+                        tools:text="Money"
                         android:textColor="@color/black"
                         android:textStyle="bold" />
 
@@ -116,7 +117,7 @@
                         android:id="@+id/txTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2.00 PM"
+                        tools:text="2.00 PM"
                         android:textColor="#5669FF"
                         android:textStyle="bold" />
 
@@ -124,7 +125,7 @@
                         android:id="@+id/txDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Apr 28  "
+                        tools:text="Apr 28  "
                         android:textColor="#5669FF"
                         android:textStyle="bold" />
 
@@ -149,7 +150,7 @@
                         android:id="@+id/txLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Juhu Beach - West Mumbai" />
+                        tools:text="Juhu Beach - West Mumbai" />
 
                 </LinearLayout>
 

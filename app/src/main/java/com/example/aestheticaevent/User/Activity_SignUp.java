@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -43,19 +44,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
 public class Activity_SignUp extends AppCompatActivity {
     EditText etSignUpName, etSignUpEmail, etSignUpPassword, etSignUpCorrectPassword;
     ImageView ivSignUpBack, ivSignUpPasswordCloseEye, ivSignUpCPCloseEye, ivSignUpGoogleLogin, ivSignUpFacebookLogin;
-    TextView tvSignUpSignIn;
+    TextView txEventLogin;
     CardView cvSignUpButton;
     Restcall restcall;
     boolean isPasswordVisible = false;
     Tools tools;
-    CircleImageView cameraivProfileCamera,cameraivProfileUser;
-
+    CircleImageView cameraivProfileCamera, cameraivProfileUser;
     String currentPhotoPath = "";
     private File currentPhotoFile;
     private static final int REQUEST_CAMERA_PERMISSION = 101;
@@ -67,24 +70,27 @@ public class Activity_SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-      //  tools=new Tools();
+        tools = new Tools();
+        cameraivProfileCamera = findViewById(R.id.cameraivProfileCamera);
+        cameraivProfileUser = findViewById(R.id.cameraivProfileUser);
 
         etSignUpName = findViewById(R.id.etSignUpName);
         etSignUpEmail = findViewById(R.id.etSignUpEmail);
         etSignUpPassword = findViewById(R.id.etSignUpPassword);
         etSignUpCorrectPassword = findViewById(R.id.etSignUpCorrectPassword);
-        cameraivProfileCamera = findViewById(R.id.cameraivProfileCamera);
-        cameraivProfileUser = findViewById(R.id.cameraivProfileUser);
-
         ivSignUpBack = findViewById(R.id.ivSignUpBack);
         ivSignUpPasswordCloseEye = findViewById(R.id.ivSignUpPasswordCloseEye);
         ivSignUpCPCloseEye = findViewById(R.id.ivSignUpCPCloseEye);
-        ivSignUpGoogleLogin = findViewById(R.id.ivSignUpGoogleLogin);
-        ivSignUpFacebookLogin = findViewById(R.id.ivSignUpFacebookLogin);
-        tvSignUpSignIn = findViewById(R.id.tvSignUpSignIn);
+        txEventLogin = findViewById(R.id.txEventLogin);
         cvSignUpButton = findViewById(R.id.cvSignUpButton);
-        restcall= RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
+        restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
 
+        txEventLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
@@ -136,26 +142,15 @@ public class Activity_SignUp extends AppCompatActivity {
                 String password = etSignUpPassword.getText().toString().trim();
                 String confirmPassword = etSignUpCorrectPassword.getText().toString().trim();
 
-                // Validate name
                 if (name.isEmpty()) {
                     etSignUpName.setError("Name is required");
-                }
-
-                // Validate email format
-                else if (!isValidEmail(email)) {
+                } else if (!isValidEmail(email)) {
                     etSignUpEmail.setError("Enter a valid email address");
-                }
-
-                // Validate strong password format
-                else if (!isValidPassword(password)) {
+                } else if (!isValidPassword(password)) {
                     etSignUpPassword.setError("Password must be strong");
-                }
-
-                // Check if passwords are the same
-                else if (!password.equals(confirmPassword)) {
+                } else if (!password.equals(confirmPassword)) {
                     etSignUpCorrectPassword.setError("Passwords do not match");
-                }
-                else {
+                } else {
                     CallRegisterUser();
                 }
             }
@@ -179,13 +174,13 @@ public class Activity_SignUp extends AppCompatActivity {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
-    // Password validation method for strong password
     private boolean isValidPassword(String password) {
         String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
         Pattern pattern = Pattern.compile(passwordPattern);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
+
     private boolean checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
@@ -193,6 +188,7 @@ public class Activity_SignUp extends AppCompatActivity {
         }
         return true;
     }
+
     private void openCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -211,6 +207,7 @@ public class Activity_SignUp extends AppCompatActivity {
             }
         }
     }
+
     private File createImageFile() throws IOException {
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -223,44 +220,62 @@ public class Activity_SignUp extends AppCompatActivity {
 
 
     private void CallRegisterUser() {
-        restcall.RegisterUser("addUser", etSignUpName.getText().toString().trim(),
-                        etSignUpEmail.getText().toString().trim(),etSignUpPassword.getText().toString().trim(),
-                        etSignUpCorrectPassword.getText().toString().trim())
+        tools.showLoading();
+        RequestBody tag = RequestBody.create(MediaType.parse("text/plain"), "addUser");
+        RequestBody userName = RequestBody.create(MediaType.parse("text/plain"), etSignUpName.getText().toString().trim());
+        RequestBody email = RequestBody.create(MediaType.parse("text/plain"), etSignUpEmail.getText().toString().trim());
+        RequestBody password = RequestBody.create(MediaType.parse("text/plain"), etSignUpPassword.getText().toString().trim());
+        RequestBody confirmPassword = RequestBody.create(MediaType.parse("text/plain"), etSignUpCorrectPassword.getText().toString().trim());
+        MultipartBody.Part fileToUpload = null;
+
+        if (fileToUpload == null && currentPhotoPath != "") {
+            try {
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
+                File file = new File(currentPhotoPath);
+                RequestBody rbPhoto = RequestBody.create(MediaType.parse("multipart/from-data"), file);
+                fileToUpload = MultipartBody.Part.createFormData("user_image", file.getName(), rbPhoto);
+
+            } catch (Exception e) {
+                Toast.makeText(this, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        }
+
+        restcall.RegisterUser(tag, userName, email, password, confirmPassword, fileToUpload)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<RegisterResponse>() {
                     @Override
-                    public void onCompleted() {}
+                    public void onCompleted() {
+                    }
 
                     @Override
                     public void onError(Throwable e) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 Log.e("API Error", "Error: " + e.getLocalizedMessage());
                                 Toast.makeText(Activity_SignUp.this, "Error", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
+
                     @Override
                     public void onNext(RegisterResponse registerResponse) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 if (registerResponse.getStatus().equals(VariableBag.SUCCESS_CODE)) {
                                     etSignUpName.setText("");
                                     etSignUpEmail.setText("");
                                     etSignUpPassword.setText("");
                                     etSignUpCorrectPassword.setText("");
-                                   /* Glide
-                                            .with(Activity_SignUp.this)
-                                            .load(registerResponse.getEventList().get(0).getPicture())
-                                            .into(cameraivProfileUser);*/
-
-
                                     finish();
                                 }
-                                Toast.makeText(Activity_SignUp.this, ""+registerResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Activity_SignUp.this, "" + registerResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

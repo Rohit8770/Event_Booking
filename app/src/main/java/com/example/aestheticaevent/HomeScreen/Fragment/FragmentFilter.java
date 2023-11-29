@@ -2,43 +2,44 @@ package com.example.aestheticaevent.HomeScreen.Fragment;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.aestheticaevent.Models.Model_EventList;
 import com.example.aestheticaevent.R;
-import android.annotation.SuppressLint;
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.aestheticaevent.R;
-
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class FragmentFilter extends DialogFragment {
     ImageView img_close;
     TextView tvFilterCateName;
     EditText etFilterName, etFilterDate, etFilterLocation;
-    CardView cvFilterSave;
-
+    CardView txtFilter;
+    List<Model_EventList> dataModelNewList;
+    List<Model_EventList> newdataModelNewList;
+    DataClick dataClick;
+    public interface DataClick{
+        void dataClick(String name,String date ,String location);
+    }
+    public void setupInterface(DataClick dataClick){
+        this.dataClick = dataClick;
+    }
 
     @Override
     public void onStart() {
@@ -49,7 +50,6 @@ public class FragmentFilter extends DialogFragment {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,15 +60,46 @@ public class FragmentFilter extends DialogFragment {
         etFilterName = view.findViewById(R.id.etFilterName);
         etFilterDate = view.findViewById(R.id.etFilterDate);
         etFilterLocation = view.findViewById(R.id.etFilterLocation);
-        cvFilterSave = view.findViewById(R.id.cvFilterSave);
+        txtFilter = view.findViewById(R.id.txtFilter);
+        dataModelNewList=new ArrayList<Model_EventList>();
+        newdataModelNewList=new ArrayList<>();
 
+        txtFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+             //   dataClick.dataClick(etFilterName.getText().toString());
+                String name = etFilterName.getText().toString();
+                String date = etFilterDate.getText().toString();
+                String location = etFilterLocation.getText().toString();
+
+                dataClick.dataClick(name, date, location);
+                dismiss();
+            }
+        });
+
+
+              /*
+
+List<ModelDataClass> list;  // api se milta hai
+user selete -- name;
+
+List<ModelDataClass> newList;
+
+    for(int i=0;i<list.size();i++){
+        if(list.get(i).getDate().euqle(etvdate.gettext().toString)){
+            newList.add(list.get(i))
+        }
+    }
+
+newList set adapter-------
+ */
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
             }
         });
-
         etFilterDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

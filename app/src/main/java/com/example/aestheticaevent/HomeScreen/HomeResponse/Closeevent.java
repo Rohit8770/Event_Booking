@@ -1,12 +1,13 @@
 package com.example.aestheticaevent.HomeScreen.HomeResponse;
 
-import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Subcategory {
+import java.io.Serializable;
+
+public class Closeevent implements Serializable, Parcelable {
 
     @SerializedName("category_id")
     @Expose
@@ -38,40 +39,37 @@ public class Subcategory {
     @SerializedName("sub_category_status")
     @Expose
     private String subCategoryStatus;
+    public final static Creator<Closeevent> CREATOR = new Creator<Closeevent>() {
 
 
-    public final static Parcelable.Creator<Subcategory> CREATOR = new Parcelable.Creator<Subcategory>() {
-
-
-        @Override
-        public Subcategory createFromParcel(Parcel source) {
-            return null;
+        public Closeevent createFromParcel(android.os.Parcel in) {
+            return new Closeevent(in);
         }
 
-        public Subcategory[] newArray(int size) {
-            return (new Subcategory[size]);
+        public Closeevent[] newArray(int size) {
+            return (new Closeevent[size]);
         }
 
     };
-    private final static long serialVersionUID = -5235805594277337686L;
-
-    public Subcategory(String categoryId, String subCategoryId, String subCategoryName, String location, String timing, String date, String picture, String price) {
-        this.categoryId = categoryId;
-        this.subCategoryId = subCategoryId;
-        this.subCategoryName = subCategoryName;
-        this.location = location;
-        this.timing = timing;
-        this.date = date;
-        this.picture = picture;
-        this.price = price;
-    }
+    private final static long serialVersionUID = -4774968535814551914L;
 
     @SuppressWarnings({
             "unchecked"
     })
+    protected Closeevent(android.os.Parcel in) {
+        this.categoryId = ((String) in.readValue((String.class.getClassLoader())));
+        this.subCategoryId = ((String) in.readValue((String.class.getClassLoader())));
+        this.subCategoryName = ((String) in.readValue((String.class.getClassLoader())));
+        this.location = ((String) in.readValue((String.class.getClassLoader())));
+        this.timing = ((String) in.readValue((String.class.getClassLoader())));
+        this.date = ((String) in.readValue((String.class.getClassLoader())));
+        this.picture = ((String) in.readValue((String.class.getClassLoader())));
+        this.price = ((String) in.readValue((String.class.getClassLoader())));
+        this.organizer = ((String) in.readValue((String.class.getClassLoader())));
+        this.subCategoryStatus = ((String) in.readValue((String.class.getClassLoader())));
+    }
 
-
-    public Subcategory() {
+    public Closeevent() {
     }
 
     public String getCategoryId() {
@@ -95,8 +93,8 @@ public class Subcategory {
     }
 
     public void setSubCategoryName(String subCategoryName) {
-        this.subCategoryName = subCategoryName; }
-
+        this.subCategoryName = subCategoryName;
+    }
 
     public String getLocation() {
         return location;
@@ -108,14 +106,6 @@ public class Subcategory {
 
     public String getTiming() {
         return timing;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
     }
 
     public void setTiming(String timing) {
@@ -138,6 +128,30 @@ public class Subcategory {
         this.picture = picture;
     }
 
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(String organizer) {
+        this.organizer = organizer;
+    }
+
+    public String getSubCategoryStatus() {
+        return subCategoryStatus;
+    }
+
+    public void setSubCategoryStatus(String subCategoryStatus) {
+        this.subCategoryStatus = subCategoryStatus;
+    }
+
     public void writeToParcel(android.os.Parcel dest, int flags) {
         dest.writeValue(categoryId);
         dest.writeValue(subCategoryId);
@@ -146,6 +160,9 @@ public class Subcategory {
         dest.writeValue(timing);
         dest.writeValue(date);
         dest.writeValue(picture);
+        dest.writeValue(price);
+        dest.writeValue(organizer);
+        dest.writeValue(subCategoryStatus);
     }
 
     public int describeContents() {

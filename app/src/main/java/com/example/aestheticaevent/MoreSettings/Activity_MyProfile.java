@@ -65,7 +65,14 @@ public class Activity_MyProfile extends AppCompatActivity {
 
         etSignUpName.setText(sharedPreference.getStringvalue("userName"));
         etProfileEditEmail.setText(sharedPreference.getStringvalue("email"));
-
+        String photoPath = sharedPreference.getStringvalue("photo");
+        if (!TextUtils.isEmpty(photoPath)) {
+            // Using Glide
+            Glide.with(this)
+                    .load(Uri.parse(photoPath))
+                    .placeholder(R.drawable.person_image)
+                    .into(civProfileUser);
+        }
         ivProfileBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

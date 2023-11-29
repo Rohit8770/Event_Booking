@@ -1,58 +1,61 @@
 package com.example.aestheticaevent.HomeScreen.HomeResponse;
 
+import java.io.Serializable;
 import android.os.Parcelable;
-
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
+import java.util.List;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.util.List;
 
-public class SubCategoryListResponse implements Serializable {
+public class CompleteResponse implements Serializable, Parcelable
+{
 
-
-    @SerializedName("subcategoryList")
+    @SerializedName("closeeventList")
     @Expose
-    private List<Subcategory> subcategoryList;
+    private List<Closeevent> closeeventList;
     @SerializedName("message")
     @Expose
     private String message;
     @SerializedName("status")
     @Expose
     private String status;
-    public final static Parcelable.Creator<SubCategoryListResponse> CREATOR = new Parcelable.Creator<SubCategoryListResponse>() {
+    public final static Creator<CompleteResponse> CREATOR = new Creator<CompleteResponse>() {
 
 
-        public SubCategoryListResponse createFromParcel(android.os.Parcel in) {
-            return new SubCategoryListResponse(in);
+        public CompleteResponse createFromParcel(android.os.Parcel in) {
+            return new CompleteResponse(in);
         }
 
-        public SubCategoryListResponse[] newArray(int size) {
-            return (new SubCategoryListResponse[size]);
+        public CompleteResponse[] newArray(int size) {
+            return (new CompleteResponse[size]);
         }
 
     }
             ;
-    private final static long serialVersionUID = 8606122694835143423L;
+    private final static long serialVersionUID = -4462266916500516363L;
 
     @SuppressWarnings({
             "unchecked"
     })
-    protected SubCategoryListResponse(android.os.Parcel in) {
-        in.readList(this.subcategoryList, (com.example.aestheticaevent.HomeScreen.HomeResponse.Subcategory.class.getClassLoader()));
+    protected CompleteResponse(android.os.Parcel in) {
+        in.readList(this.closeeventList, (com.example.aestheticaevent.HomeScreen.HomeResponse.Closeevent.class.getClassLoader()));
         this.message = ((String) in.readValue((String.class.getClassLoader())));
         this.status = ((String) in.readValue((String.class.getClassLoader())));
     }
 
-    public SubCategoryListResponse() {
+    public CompleteResponse() {
     }
 
-    public List<Subcategory> getSubcategoryList() {
-        return subcategoryList;
+    public List<Closeevent> getCloseeventList() {
+        return closeeventList;
     }
 
-    public void setSubcategoryList(List<Subcategory> subcategoryList) {
-        this.subcategoryList = subcategoryList;
+    public void setCloseeventList(List<Closeevent> closeeventList) {
+        this.closeeventList = closeeventList;
     }
 
     public String getMessage() {
@@ -72,7 +75,7 @@ public class SubCategoryListResponse implements Serializable {
     }
 
     public void writeToParcel(android.os.Parcel dest, int flags) {
-        dest.writeList(subcategoryList);
+        dest.writeList(closeeventList);
         dest.writeValue(message);
         dest.writeValue(status);
     }
@@ -80,5 +83,5 @@ public class SubCategoryListResponse implements Serializable {
     public int describeContents() {
         return 0;
     }
-}
 
+}

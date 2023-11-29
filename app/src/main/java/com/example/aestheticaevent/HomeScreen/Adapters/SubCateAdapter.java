@@ -42,10 +42,11 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
     }
 
     public void updateData(List<Subcategory> filteredList) {
-        subcategoryList.clear();
-        subcategoryList.addAll(filteredList);
+        this.subcategoryList = filteredList;
+        this.searchList = filteredList;
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public SubViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -57,29 +58,31 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
     public void onBindViewHolder(@NonNull SubViewHolder holder, int position) {
         Subcategory model = searchList.get(position);
 
-        try {
-            Glide.with(context)
-                    .load(model.getPicture())
-                    .placeholder(R.drawable.person_image)
-                    .error(R.drawable.ic_launcher_foreground)
-                    .into(holder.SubImg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        holder.textView.setText(model.getSubCategoryName());
-        holder.txLocation.setText(model.getLocation());
-        holder.txDate.setText(model.getDate());
-        holder.txTime.setText(model.getTiming());
-        holder.txPrice.setText(model.getPrice());
-
-
-        holder.itemView.setOnClickListener(v -> {
-            if (subCategoryInterface != null) {
-                subCategoryInterface.onSubCategoryClicked(model.getSubCategoryId());
-
-
+            try {
+                Glide.with(context)
+                        .load(model.getPicture())
+                        .placeholder(R.drawable.person_image)
+                        .error(R.drawable.ic_launcher_foreground)
+                        .into(holder.SubImg);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+            holder.textView.setText(model.getSubCategoryName());
+            holder.txLocation.setText(model.getLocation());
+              holder.txDate.setText(model.getDate());
+            holder.txTime.setText(model.getTiming());
+            holder.txPrice.setText(model.getPrice());
+
+
+            holder.itemView.setOnClickListener(v -> {
+                if (subCategoryInterface != null) {
+                    subCategoryInterface.onSubCategoryClicked(model.getSubCategoryId());
+
+
+                }
+            });
+
+
     }
 
     @Override
@@ -88,7 +91,7 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
     }
 
     public class SubViewHolder extends RecyclerView.ViewHolder {
-        TextView textView, txLocation, txDate, txTime,txPrice;
+        TextView textView, txLocation, txDate, txTime, txPrice;
         ImageView SubImg;
 
         public SubViewHolder(@NonNull View itemView) {
@@ -105,30 +108,29 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
 
     @SuppressLint("NotifyDataSetChanged")
     public void Search(CharSequence charSequence, RecyclerView categoryListRecyclerView) {
-        try{
-            String charString=charSequence.toString().toLowerCase().trim();
-            if(charString.isEmpty()){
-                searchList=subcategoryList;
+        try {
+            String charString = charSequence.toString().toLowerCase().trim();
+            if (charString.isEmpty()) {
+                searchList = subcategoryList;
                 categoryListRecyclerView.setVisibility(View.VISIBLE);
-            }else{
-                int flag=0;
-                List<Subcategory> filterList=new ArrayList<>();
-                for(Subcategory Row:subcategoryList){
-                    if(Row.getSubCategoryName().toString().toLowerCase().contains(charString.toLowerCase())){
+            } else {
+                int flag = 0;
+                List<Subcategory> filterList = new ArrayList<>();
+                for (Subcategory Row : subcategoryList) {
+                    if (Row.getSubCategoryName().toString().toLowerCase().contains(charString.toLowerCase())) {
                         filterList.add(Row);
-                        flag=1;
+                        flag = 1;
                     }
                 }
                 if (flag == 1) {
-                    searchList=filterList;
+                    searchList = filterList;
                     categoryListRecyclerView.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     categoryListRecyclerView.setVisibility(View.GONE);
                 }
             }
             notifyDataSetChanged();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <uses-permission android:name="android.permission.NOTIFICATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
@@ -50,7 +52,7 @@
             android:name=".BuyTicketSplash"
             android:exported="false" />
         <activity
-            android:name=".MoreSettings.ActivityTicket"
+            android:name=".MoreSettings.Ticket.ActivityTicket"
             android:exported="false" />
         <activity
             android:name=".HomeScreen.ActivityEventinfo"

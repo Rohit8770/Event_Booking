@@ -1,4 +1,4 @@
- package com.example.aestheticaevent.MoreSettings.TicketRespomse;
+ package com.example.aestheticaevent.HomeScreen.HomeResponse;
 
 import java.io.Serializable;
 import android.os.Parcelable;

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MoreSettings.ActivityTicket">
+    tools:context=".MoreSettings.Ticket.ActivityTicket">
 
     <LinearLayout
         android:id="@+id/layoutHeaderSCEvents"

@@ -42,16 +42,16 @@
         android:textColor="@color/black"
         android:textSize="@dimen/_15ssp"
         android:fontFamily="@font/sofia_pro_semi_bold"/>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_margin="@dimen/_5ssp"
-        android:backgroundTint="@color/ss_light_grey"
         app:cardCornerRadius="@dimen/_5ssp"
         android:layout_height="@dimen/_50ssp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_11ssp"
+            android:layout_marginTop="@dimen/_4ssp"
             android:layout_marginLeft="@dimen/_5ssp"
             android:orientation="horizontal">
             <TextView
@@ -59,69 +59,75 @@
                 android:layout_height="wrap_content"
                 android:text="Notification"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_18ssp"
-                android:fontFamily="@font/sofia_pro_semi_bold"/>
-       <androidx.appcompat.widget.SwitchCompat
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_gravity="end"
-           android:layout_marginRight="@dimen/_7ssp"
-           />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_margin="@dimen/_5ssp"
-        android:backgroundTint="@color/ss_light_grey"
-        app:cardCornerRadius="@dimen/_5ssp"
-        android:layout_height="@dimen/_50ssp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_11ssp"
-            android:layout_marginLeft="@dimen/_5ssp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Display sound"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_18ssp"
-                android:fontFamily="@font/sofia_pro_semi_bold"/>
+                android:layout_marginTop="@dimen/_7ssp"
+                android:textSize="@dimen/_16ssp"
+                android:fontFamily="@font/sofia_pro_regular"/>
             <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/Notification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginRight="@dimen/_7ssp"
-                />
+                android:thumbTint="@color/colorAccent"
+                android:layout_marginRight="@dimen/_7ssp" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_margin="@dimen/_5ssp"
-        android:backgroundTint="@color/ss_light_grey"
         app:cardCornerRadius="@dimen/_5ssp"
         android:layout_height="@dimen/_50ssp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_11ssp"
+            android:layout_marginTop="@dimen/_4ssp"
             android:layout_marginLeft="@dimen/_5ssp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lock screen"
+                android:text="Touch Id / Face Id"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_18ssp"
-                android:fontFamily="@font/sofia_pro_semi_bold"/>
+                android:layout_marginTop="@dimen/_7ssp"
+                android:textSize="@dimen/_16ssp"
+                android:fontFamily="@font/sofia_pro_regular"/>
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/SwitchLock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginRight="@dimen/_7ssp"
-                />
+                android:thumbTint="@color/colorAccent"
+                android:layout_marginRight="@dimen/_7ssp" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/_5ssp"
+        app:cardCornerRadius="@dimen/_5ssp"
+        android:layout_height="@dimen/_50ssp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4ssp"
+            android:layout_marginLeft="@dimen/_5ssp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sound"
+                android:textColor="@color/black"
+                android:layout_marginTop="@dimen/_7ssp"
+                android:textSize="@dimen/_16ssp"
+                android:fontFamily="@font/sofia_pro_regular"/>
+            <androidx.appcompat.widget.SwitchCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:thumbTint="@color/colorAccent"
+                android:layout_marginRight="@dimen/_7ssp" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -137,59 +143,57 @@
         android:fontFamily="@font/sofia_pro_semi_bold"/>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_marginLeft="@dimen/_7ssp"
-        android:backgroundTint="@color/ss_light_grey"
-        android:layout_marginRight="@dimen/_7ssp"
-        android:layout_marginTop="@dimen/_12ssp"
+        android:layout_margin="@dimen/_5ssp"
         app:cardCornerRadius="@dimen/_5ssp"
-        android:layout_height="@dimen/_50ssp">
+        android:layout_height="@dimen/_60ssp">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4ssp"
             android:layout_marginLeft="@dimen/_5ssp"
             android:orientation="vertical">
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Application Name"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_18ssp"
-                android:fontFamily="@font/sofia_pro_semi_bold"/>
+                android:layout_marginTop="@dimen/_3ssp"
+                android:textSize="@dimen/_16ssp"
+                android:fontFamily="@font/sofia_pro_regular"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="ASTHETIC EVENTS"
-                android:layout_marginTop="@dimen/_5ssp"
+                android:layout_marginTop="@dimen/_10ssp"
                 android:textSize="@dimen/_13ssp"/>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_marginLeft="@dimen/_7ssp"
-        android:layout_marginTop="@dimen/_11ssp"
+        android:layout_margin="@dimen/_5ssp"
         app:cardCornerRadius="@dimen/_5ssp"
-        android:backgroundTint="@color/ss_light_grey"
-        android:layout_marginRight="@dimen/_7ssp"
-        android:layout_height="@dimen/_50ssp">
+        android:layout_height="@dimen/_60ssp">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4ssp"
             android:layout_marginLeft="@dimen/_5ssp"
             android:orientation="vertical">
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Application version"
+                android:text="Application Version"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_18ssp"
-                android:fontFamily="@font/sofia_pro_semi_bold"/>
+                android:layout_marginTop="@dimen/_3ssp"
+                android:textSize="@dimen/_16ssp"
+                android:fontFamily="@font/sofia_pro_regular"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="v3.3"
-                android:layout_marginTop="@dimen/_5ssp"
-                android:textSize="@dimen/_14ssp"/>
+                android:text="V2.2"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:textSize="@dimen/_13ssp"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
