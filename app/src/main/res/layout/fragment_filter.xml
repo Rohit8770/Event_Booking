@@ -1,152 +1,309 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeScreen.Fragment.FragmentFilter">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:elevation="@dimen/_4ssp"
+        app:cardCornerRadius="@dimen/_15ssp"
+        app:cardUseCompatPadding="true">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5sdp"
-            app:cardCornerRadius="@dimen/_15ssp"
-            android:elevation="@dimen/_4ssp"
-            app:cardUseCompatPadding="true">
+            android:background="@color/bg_grey"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp">
+
+            <LinearLayout
+                android:id="@+id/layoutHeaderSCEvents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img_close"
+                    android:layout_width="@dimen/_30ssp"
+                    android:layout_height="@dimen/_30ssp"
+                    android:src="@drawable/arrow_back" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10ssp"
+                    android:text="Filter"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_20ssp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:text="Select Date"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_18ssp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etFilterDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/background_shape"
+                android:editable="false"
+                android:focusable="false"
+                android:hint="Select the Date"
+                android:imeOptions="actionNext"
+                android:inputType="date"
+                android:padding="@dimen/_10ssp"
+                android:textColor="@color/black2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:text="Select Price Range"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_18ssp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.slider.RangeSlider
+                android:id="@+id/priceRangeFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:stepSize="100"
+                android:valueFrom="0"
+                android:valueTo="5000"
+                android:background="@drawable/background_shape" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/shape"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5ssp">
+
+                <TextView
+                    android:id="@+id/txprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 "
+                    android:textSize="@dimen/_20ssp" />
+
+              <!--  <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" to "
+                    android:textSize="@dimen/_20ssp" />
+
+                <TextView
+                    android:id="@+id/txMaxPriceRange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" 5000"
+                    android:textSize="@dimen/_20ssp" />-->
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/bg_grey"
-                android:padding="@dimen/_10sdp">
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_20ssp"
+                android:gravity="center">
 
-                <LinearLayout
-                    android:id="@+id/layoutHeaderSCEvents"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/img_close"
-                        android:layout_width="@dimen/_30ssp"
-                        android:layout_height="@dimen/_30ssp"
-                        android:src="@drawable/arrow_back" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/txtFilter"
+                    android:layout_width="@dimen/_60ssp"
+                    android:layout_height="@dimen/_30ssp"
+                    android:backgroundTint="#5669FF"
+                    app:cardCornerRadius="@dimen/_3ssp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10ssp"
-                        android:text="Filter"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_20ssp" />
-                </LinearLayout>
+                        android:layout_gravity="center"
+                        android:text="Done"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15ssp" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15ssp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Select "
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_18ssp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvFilterCateName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Party Name"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_18ssp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <EditText
-                    android:id="@+id/etFilterName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:hint="Write Name"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:singleLine="true"
-                    android:textColor="@color/black2"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Select Date"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_18ssp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/etFilterDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:editable="false"
-                    android:focusable="false"
-                    android:hint="Select the Date"
-                    android:imeOptions="actionNext"
-                    android:inputType="date"
-                    android:textColor="@color/black2" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Select Location"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_18ssp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/etFilterLocation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:editable="false"
-                    android:hint="Select Location"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:textColor="@color/black2"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_20ssp"
-                    android:gravity="center">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/txtFilter"
-                        android:layout_width="@dimen/_60ssp"
-                        android:layout_height="@dimen/_30ssp"
-                        android:backgroundTint="#5669FF"
-                        app:cardCornerRadius="@dimen/_3ssp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Done"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_15ssp" />
-
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
 
+    <!-- <androidx.cardview.widget.CardView
+         android:id="@+id/cardView"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_margin="@dimen/_5sdp"
+         app:cardCornerRadius="@dimen/_15ssp"
+         android:elevation="@dimen/_4ssp"
+         app:cardUseCompatPadding="true">
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+             android:background="@color/bg_grey"
+             android:padding="@dimen/_10sdp">
+
+             <LinearLayout
+                 android:id="@+id/layoutHeaderSCEvents"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal">
+
+                 <ImageView
+                     android:id="@+id/img_close"
+                     android:layout_width="@dimen/_30ssp"
+                     android:layout_height="@dimen/_30ssp"
+                     android:src="@drawable/arrow_back" />
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginLeft="@dimen/_10ssp"
+                     android:text="Filter"
+                     android:textColor="@color/black"
+                     android:textSize="@dimen/_20ssp" />
+             </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="@dimen/_15ssp"
+                 android:orientation="horizontal">
+
+                 <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:text="Select "
+                     android:textColor="@color/black"
+                     android:textSize="@dimen/_18ssp"
+                     android:textStyle="bold" />
+
+                 <TextView
+                     android:id="@+id/tvFilterCateName"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:text="Party Name"
+                     android:textColor="@color/black"
+                     android:textSize="@dimen/_18ssp"
+                     android:textStyle="bold" />
+
+             </LinearLayout>
+
+             <EditText
+                 android:id="@+id/etFilterName"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="@dimen/_10sdp"
+                 android:hint="Write Name"
+                 android:imeOptions="actionNext"
+                 android:inputType="text"
+                 android:singleLine="true"
+                 android:textColor="@color/black2"/>
+
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="Price"
+                 android:textColor="@color/black"
+                 android:textSize="@dimen/_18ssp"
+                 android:textStyle="bold" />
+
+             <EditText
+                 android:id="@+id/etFilterPrice"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="@dimen/_10sdp"
+                 android:hint="Write Name"
+                 android:imeOptions="actionNext"
+                 android:inputType="text"
+                 android:singleLine="true"
+                 android:textColor="@color/black2"/>
+
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="Select Date"
+                 android:textColor="@color/black"
+                 android:textSize="@dimen/_18ssp"
+                 android:textStyle="bold" />
+
+             <EditText
+                 android:id="@+id/etFilterDate"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="@dimen/_10sdp"
+                 android:editable="false"
+                 android:focusable="false"
+                 android:hint="Select the Date"
+                 android:imeOptions="actionNext"
+                 android:inputType="date"
+                 android:textColor="@color/black2" />
+
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="Select Location"
+                 android:textColor="@color/black"
+                 android:textSize="@dimen/_18ssp"
+                 android:textStyle="bold" />
+
+             <EditText
+                 android:id="@+id/etFilterLocation"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="@dimen/_10sdp"
+                 android:editable="false"
+                 android:hint="Select Location"
+                 android:imeOptions="actionNext"
+                 android:inputType="text"
+                 android:textColor="@color/black2"/>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:layout_marginTop="@dimen/_20ssp"
+                 android:gravity="center">
+
+                 <androidx.cardview.widget.CardView
+                     android:id="@+id/txtFilter"
+                     android:layout_width="@dimen/_60ssp"
+                     android:layout_height="@dimen/_30ssp"
+                     android:backgroundTint="#5669FF"
+                     app:cardCornerRadius="@dimen/_3ssp">
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center"
+                         android:text="Done"
+                         android:textColor="@color/white"
+                         android:textSize="@dimen/_15ssp" />
+
+                 </androidx.cardview.widget.CardView>
+
+             </LinearLayout>
+
+         </LinearLayout>
+     </androidx.cardview.widget.CardView>-->

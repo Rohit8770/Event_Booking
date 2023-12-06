@@ -1,32 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/abc_transparent"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="10sp"
-    android:layout_height="match_parent">
+    android:padding="10sp">
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
         <ProgressBar
-            android:layout_width="70sp"
-            android:layout_height="70sp"
+            android:layout_width="@dimen/_60ssp"
+            android:layout_height="@dimen/_50ssp"
             android:layout_gravity="center"
-            android:indeterminateTint="@color/black"/>
+            android:backgroundTint="@color/black"
+            android:indeterminate="true" />
 
         <ImageView
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_gravity="center"/>
+            android:layout_width="@dimen/_30ssp"
+            android:layout_height="@dimen/_30ssp"
+            android:layout_marginLeft="@dimen/_15ssp"
+            android:layout_marginTop="@dimen/_9ssp"
+            android:src="@drawable/splash_screen_logo"
+            app:tint="@color/black2" />
 
     </FrameLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Loading"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:text="Loading..." />
 
 </LinearLayout>

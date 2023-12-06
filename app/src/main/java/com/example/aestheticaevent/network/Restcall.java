@@ -3,10 +3,14 @@ package com.example.aestheticaevent.network;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.CategoryListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.CompleteResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.DataModelNew;
+import com.example.aestheticaevent.HomeScreen.HomeResponse.ForgetPasswordListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.LocationLisResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.SubCategoryListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.TicketListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.ButTicketListResponse;
+import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.ChangePasswordListResponse;
+import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.DeleteListResponse;
+import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.EditListResponse;
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.PassListResponse;
 import com.example.aestheticaevent.User.UserResponse.LoginResponse;
 import com.example.aestheticaevent.User.UserResponse.RegisterResponse;
@@ -29,8 +33,9 @@ public interface Restcall {
             @Part("username") RequestBody username,
             @Part("email") RequestBody email,
             @Part("password") RequestBody password,
-            @Part("confirm_password") RequestBody confirm_password,
-            @Part MultipartBody.Part user_image);
+            @Part MultipartBody.Part user_image,
+            @Part("mobile") RequestBody mobile,
+            @Part("device_token") String device_token);
 
     @FormUrlEncoded
     @POST("controller/registercontroller.php")
@@ -78,6 +83,7 @@ public interface Restcall {
             @Field("event_id") String event_id,
             @Field("user_id") String user_id,
             @Field("sub_category_id") String sub_category_id,
+            @Field("qty_member") String qty_member,
             @Field("category_id") String category_id);
 
     @FormUrlEncoded
@@ -91,6 +97,44 @@ public interface Restcall {
     Single<LocationLisResponse> GetsubcategoryCall(
             @Field("tag") String tag,
             @Field("category_id") String category_id);
+
+
+    @FormUrlEncoded
+    @POST("controller/registercontroller.php")
+    Single<DeleteListResponse> Deleteuser(
+            @Field("tag") String tag,
+            @Field("user_id") String user_id);
+
+
+
+    @Multipart
+    @POST("controller/passwordcontroller.php")
+    Single<EditListResponse> Editprofile(
+            @Part("tag") RequestBody tag,
+            @Part("user_id") RequestBody user_id,
+            @Part("username") RequestBody username,
+            @Part("email") RequestBody email,
+            @Part MultipartBody.Part user_image,
+            @Part("mobile") RequestBody mobile);
+
+
+    @FormUrlEncoded
+    @POST("controller/passwordcontroller.php")
+    Single<ChangePasswordListResponse> ChangePassword(
+            @Field("tag") String tag,
+            @Field("user_id") String user_id,
+            @Field("password") String password,
+            @Field("newPass") String newPass,
+            @Field("conPass") String conPass);
+
+    @FormUrlEncoded
+    @POST("controller/passwordcontroller.php")
+    Single<ForgetPasswordListResponse> AddForgetNewPassword(
+            @Field("tag") String tag,
+            @Field("user_id") String user_id,
+            @Field("newPass") String newPass,
+            @Field("conPass") String conPass,
+            @Field("mobile") String mobile);
 
 }
 

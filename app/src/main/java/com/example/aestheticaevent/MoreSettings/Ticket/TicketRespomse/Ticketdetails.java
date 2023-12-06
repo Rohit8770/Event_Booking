@@ -45,8 +45,14 @@ public class Ticketdetails {
     @SerializedName("organizer")
     @Expose
     private String organizer;
+    @SerializedName("total_price")
+    @Expose
+    private String total_price;
+    @SerializedName("qty_member")
+    @Expose
+    private String qty_member;
 
-    public Ticketdetails(String ticketId, String userId, String eventId, String subCategoryId, String username, String subCategoryName, String timing, String date, String location, String price, String ticketTime, String organizer) {
+    public Ticketdetails(String ticketId, String userId, String eventId, String subCategoryId, String username, String subCategoryName, String timing, String date, String location, String price, String ticketTime, String organizer, String total_price, String qty_member) {
         this.ticketId = ticketId;
         this.userId = userId;
         this.eventId = eventId;
@@ -59,6 +65,8 @@ public class Ticketdetails {
         this.price = price;
         this.ticketTime = ticketTime;
         this.organizer = organizer;
+        this.total_price = total_price;
+        this.qty_member = qty_member;
     }
 
     public String getTicketId() {
@@ -155,5 +163,21 @@ public class Ticketdetails {
 
     public void setOrganizer(String organizer) {
         this.organizer = organizer;
+    }
+
+    public String getTotal_price() {
+        return total_price;
+    }
+
+    public void setTotal_price(String total_price) {
+        this.total_price = total_price;
+    }
+
+    public String getQty_member() {
+        return qty_member;
+    }
+
+    public void setQty_member(String qty_member) {
+        this.qty_member = qty_member;
     }
 }

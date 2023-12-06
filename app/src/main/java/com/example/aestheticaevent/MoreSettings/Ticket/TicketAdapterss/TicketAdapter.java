@@ -42,8 +42,10 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         holder.txtEventTime.setText(userdetails.getTiming());
         holder.txtEventDate.setText(userdetails.getDate());
         holder.txtEventAddress.setText(userdetails.getLocation());
-        holder.txtPassPrice.setText(userdetails.getPrice());
+        holder.txtPassPrice.setText(userdetails.getTotal_price());
         holder.txtBookingTime.setText(userdetails.getTicketTime());
+        holder.txTicketNumber.setText(userdetails.getTicketId());
+        holder.txtBookingPerson.setText(userdetails.getQty_member());
     }
 
     @Override
@@ -53,7 +55,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
 
     public class TicketViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtUserName,txtEventSubCateName,txtEventDate,txtEventTime,txtEventAddress,txtPassPrice,txtBookingTime;
+        TextView txtUserName,txtEventSubCateName,txtEventDate,txtEventTime,txtEventAddress,txtPassPrice,txtBookingTime,txTicketNumber,txtBookingPerson;
         public TicketViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -64,6 +66,8 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
             txtPassPrice=itemView.findViewById(R.id.txtPassPrice);
             txtBookingTime=itemView.findViewById(R.id.txtBookingTime);
             txtEventSubCateName=itemView.findViewById(R.id.txtEventSubCateName);
+            txTicketNumber=itemView.findViewById(R.id.txTicketNumber);
+            txtBookingPerson=itemView.findViewById(R.id.txtBookingPerson);
 
         }
     }

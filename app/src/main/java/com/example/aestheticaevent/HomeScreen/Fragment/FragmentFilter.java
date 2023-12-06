@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.aestheticaevent.Models.Model_EventList;
 import com.example.aestheticaevent.R;
+import com.google.android.material.slider.RangeSlider;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -19,23 +19,28 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class FragmentFilter extends DialogFragment {
     ImageView img_close;
     TextView tvFilterCateName;
-    EditText etFilterName, etFilterDate, etFilterLocation;
+    TextView txprice;
+    int price=0;
+    EditText etFilterName,etFilterPrice, etFilterDate, etFilterLocation;
     CardView txtFilter;
-    List<Model_EventList> dataModelNewList;
-    List<Model_EventList> newdataModelNewList;
+    RangeSlider priceRangeFilter;
     DataClick dataClick;
     public interface DataClick{
-        void dataClick(String name,String date ,String location);
+        void dataClick(int price,String date);
     }
     public void setupInterface(DataClick dataClick){
         this.dataClick = dataClick;
@@ -55,29 +60,64 @@ public class FragmentFilter extends DialogFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filter, container, false);
 
-        tvFilterCateName = view.findViewById(R.id.tvFilterCateName);
+       // tvFilterCateName = view.findViewById(R.id.tvFilterCateName);
         img_close = view.findViewById(R.id.img_close);
-        etFilterName = view.findViewById(R.id.etFilterName);
+      //  etFilterName = view.findViewById(R.id.etFilterName);
         etFilterDate = view.findViewById(R.id.etFilterDate);
-        etFilterLocation = view.findViewById(R.id.etFilterLocation);
+        etFilterDate.setText("Select the Date");
+       // etFilterLocation = view.findViewById(R.id.etFilterLocation);
         txtFilter = view.findViewById(R.id.txtFilter);
-        dataModelNewList=new ArrayList<Model_EventList>();
-        newdataModelNewList=new ArrayList<>();
+        txprice = view.findViewById(R.id.txprice);
+        priceRangeFilter = view.findViewById(R.id.priceRangeFilter);
 
+        etFilterDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
         txtFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-             //   dataClick.dataClick(etFilterName.getText().toString());
-                String name = etFilterName.getText().toString();
+                dataClick.dataClick(price,etFilterDate.getText().toString().trim());
+             /*   String name = etFilterName.getText().toString();
                 String date = etFilterDate.getText().toString();
                 String location = etFilterLocation.getText().toString();
+                String price = etFilterPrice.getText().toString();
 
-                dataClick.dataClick(name, date, location);
+                dataClick.dataClick(name, date, location,price);*/
                 dismiss();
             }
         });
+        priceRangeFilter.addOnChangeListener(new RangeSlider.OnChangeListener() {
+         @Override
+         public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
+         txprice.setText("0 - " + floatToInt(value));
+         price = floatToInt(value);
 
+         }
+        });
+        return view;
+    }
+    public static int floatToInt(Float value){
+        String str = String.valueOf(value);
+        String newStr = "";
+        for (int i=0;i<str.length();i++){
+            if (str.charAt(i) == '.'){
+                break;
+            }else {
+                newStr = newStr+str.charAt(i);
+            }
+        }
+        return Integer.parseInt(newStr);
+    }
 
               /*
 
@@ -94,53 +134,33 @@ List<ModelDataClass> newList;
 
 newList set adapter-------
  */
-        img_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        etFilterDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog(etFilterDate);
-            }
-        });
 
-        return view;
-    }
+    private void showDatePickerDialog() {
+        etFilterDate.setFocusable(false);
+        etFilterDate.setClickable(true);
 
-    private void showDatePickerDialog(final EditText editText) {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        Calendar currentDate = Calendar.getInstance();
+        int year = currentDate.get(Calendar.YEAR);
+        int month = currentDate.get(Calendar.MONTH);
+        int day = currentDate.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                requireContext(), new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                editText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+            public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
+                Calendar selectedDate = Calendar.getInstance();
+                selectedDate.set(selectedYear, selectedMonth, selectedDay);
+                if (selectedDate.getTimeInMillis() >= currentDate.getTimeInMillis()) {
+                    // Format the date as "EEE MMM-dd-yyyy"
+                    String formattedDate = new SimpleDateFormat("EEE MMM-dd-yyyy", Locale.getDefault()).format(selectedDate.getTime());
+                    etFilterDate.setText(formattedDate);
+                }
             }
         }, year, month, day);
-
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
-
-        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == DialogInterface.BUTTON_POSITIVE) {
-                }
-            }
-        });
-
-        datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == DialogInterface.BUTTON_NEGATIVE) {
-                }
-            }
-        });
+        datePickerDialog.getDatePicker().setMinDate(currentDate.getTimeInMillis());
         datePickerDialog.show();
     }
+
+
 }
 
 

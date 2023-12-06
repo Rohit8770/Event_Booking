@@ -29,6 +29,7 @@ import com.example.aestheticaevent.HomeScreen.HomeResponse.CompleteResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.SubCategoryListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.Subcategory;
 import com.example.aestheticaevent.R;
+import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
@@ -48,6 +49,7 @@ public class CompleteFragment extends Fragment {
     Restcall restcall;
     String categoryId;
     CompleteAdapter completeAdapter;
+    Tools tools;
     ImageView ivProfileBack;
     EditText etSubCategorySearch;
     SwipeRefreshLayout swipeRefreshUpcomingLayout;
@@ -58,6 +60,7 @@ public class CompleteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.fragment_complete, container, false);
 
+        tools=new Tools(getContext());
         etSubCategorySearch = v.findViewById(R.id.etSubCategorySearch);
             swipeRefreshUpcomingLayout = v.findViewById(R.id.swipeRefreshUpcomingLayout);
 
@@ -105,6 +108,7 @@ public class CompleteFragment extends Fragment {
         }
 
         public void Getclosedevents() {
+        tools.showLoading();
             restcall.Getclosedevents("getclosedevents", categoryId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.newThread())
@@ -118,6 +122,7 @@ public class CompleteFragment extends Fragment {
                             requireActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    tools.stopLoading();
                                     Toast.makeText(getContext(), "No Internet", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -128,6 +133,7 @@ public class CompleteFragment extends Fragment {
                             requireActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    tools.stopLoading();
                                     if (completeResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
                                             && completeResponse.getCloseeventList() != null
                                             && completeResponse.getCloseeventList().size() > 0) {

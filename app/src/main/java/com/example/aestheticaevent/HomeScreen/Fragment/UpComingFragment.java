@@ -30,6 +30,7 @@ import com.example.aestheticaevent.HomeScreen.Adapters.SubCateAdapter;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.SubCategoryListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.Subcategory;
 import com.example.aestheticaevent.R;
+import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
@@ -55,6 +56,7 @@ public class UpComingFragment extends Fragment {
     ImageView ivProfileBack;
     EditText etSubCateSearch;
     LinearLayout LyFilterBtn;
+    Tools tools;
     SwipeRefreshLayout swipeRefreshUpcomingLayout;
 
     @SuppressLint("MissingInflatedId")
@@ -63,8 +65,8 @@ public class UpComingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_up_coming, container, false);
 
-
         apiList = new ArrayList<>();
+        tools=new Tools(getContext());
         ivProfileBack = v.findViewById(R.id.ivProfileBack);
         etSubCateSearch = v.findViewById(R.id.etSubCateSearch);
         LyFilterBtn = v.findViewById(R.id.LyFilterBtn);
@@ -82,6 +84,9 @@ public class UpComingFragment extends Fragment {
         LyFilterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tools.vibrate();
+                tools.playBeepSound();
+
                 FragmentManager fragmentManager = getParentFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 FragmentFilter fragmentFilter = new FragmentFilter();
@@ -89,30 +94,44 @@ public class UpComingFragment extends Fragment {
                 fragmentFilter.setCancelable(false);
                 fragmentFilter.setupInterface(new FragmentFilter.DataClick() {
                     @Override
-                    public void dataClick(String name, String date, String location) {
+                    public void dataClick(int price,String date) {
+
+                        List<Subcategory> newList = new ArrayList<>();
+                        if (apiList != null) {
+                            if (price !=0 && date.equals("Select the Date")){
+                                for (int i = 0; i < apiList.size(); i++) {
+                                    if (floatToInt(Float.valueOf(apiList.get(i).getPrice())) < price) {
+
+                                        newList.add(apiList.get(i));
+                                    }
+                                }
+                            } else if (price == 0 && !date.equals("Select the Date")) {
+                                for (int i=0;i<apiList.size();i++){
+                                    if (apiList.get(i).getDate().equals(date)){
+                                        newList.add(apiList.get(i));
+                                    }
+                                }
+                            } else if (price != 0 && !date.equals("Select the Date")) {
+                                List<Subcategory> filterList = new ArrayList<>();
 
 
-                        if (name!=null){
-                            List<Subcategory> newList = new ArrayList<>();
-                            for (int i=0;i<apiList.size();i++){
-                                if (apiList.get(i).getSubCategoryName().equals(name)){
-                                    newList.add(apiList.get(i));
+                                for (int i=0;i<apiList.size();i++){
+                                    if (apiList.get(i).getDate().equals(date)){
+                                        filterList.add(apiList.get(i));
+                                    }
+                                }
+
+                                for (int i = 0; i < filterList.size(); i++) {
+                                    if (floatToInt(Float.valueOf(filterList.get(i).getPrice())) < price) {
+
+                                        newList.add(filterList.get(i));
+                                    }
                                 }
                             }
-                            for (int i=0;i<apiList.size();i++){
-                                if (apiList.get(i).getDate().equals(date)){
-                                    newList.add(apiList.get(i));
-                                }
-                            }
-                            for (int i=0;i<apiList.size();i++){
-                                if (apiList.get(i).getLocation().equals(location)){
-                                    newList.add(apiList.get(i));
-                                }
-                            }
-                            subCateAdapter.updateData(newList);
                         }
-
+                        subCateAdapter.updateData(newList);
                     }
+
                 });
             }
         });
@@ -141,13 +160,8 @@ public class UpComingFragment extends Fragment {
         if (intent != null) {
             categoryId = intent.getStringExtra("categoryId");
         }
-
-
         rvEventList = v.findViewById(R.id.rvEventList);
             restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
-
-
-
         Getupcomingevents();
         return v;
     }
@@ -155,6 +169,7 @@ public class UpComingFragment extends Fragment {
 
 
     public void Getupcomingevents() {
+        tools.showLoading();
         restcall.Getupcomingevents("getupcomingevents", categoryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
@@ -168,6 +183,7 @@ public class UpComingFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 Toast.makeText(getContext(), "No Internet", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -178,21 +194,12 @@ public class UpComingFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 if (subCategoryListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
                                         && subCategoryListResponse.getSubcategoryList() != null
                                         && subCategoryListResponse.getSubcategoryList().size() > 0) {
 
                                     apiList = subCategoryListResponse.getSubcategoryList();
-                                  /*  List<Subcategory> activeSubCategories = new ArrayList<>();
-                                    List<Subcategory> inActiveSubCategories = new ArrayList<>();
-
-                                    for (Subcategory subCategory : subCategoryListResponse.getSubcategoryList()) {
-                                        if (subCategory.getSub_category_status().equals("0")){
-                                            activeSubCategories.add(subCategory);
-                                        }else{
-                                            inActiveSubCategories.add(subCategory);
-                                        }
-                                    }*/
 
                                     LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
                                     rvEventList.setLayoutManager(layoutManager);
@@ -213,18 +220,17 @@ public class UpComingFragment extends Fragment {
                     }
                 });
     }
-
-    /*private void applyFilters(List<Subcategory> subcategoryList) {
-        List<Subcategory> upcomingEvents = new ArrayList<>();
-        List<Subcategory> completedEvents = new ArrayList<>();
-
-        // Separate upcoming and completed events based on status
-        for (Subcategory subcategory : subcategoryList) {
-            if (subcategory.getStatus() == 0) {
-                upcomingEvents.add(subcategory);
-            } else {
-                completedEvents.add(subcategory);
+    public static int floatToInt(Float value){
+        String str = String.valueOf(value);
+        String newStr = "";
+        for (int i=0;i<str.length();i++){
+            if (str.charAt(i) == '.'){
+                break;
+            }else {
+                newStr = newStr+str.charAt(i);
             }
-        }*/
+        }
+        return Integer.parseInt(newStr);
+    }
 
 }

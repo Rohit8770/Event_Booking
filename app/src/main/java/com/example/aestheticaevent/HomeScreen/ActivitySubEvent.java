@@ -30,6 +30,7 @@ import com.example.aestheticaevent.HomeScreen.Fragment.FragmentFilter;
 import com.example.aestheticaevent.HomeScreen.Fragment.UpComingFragment;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.SubCategoryListResponse;
 import com.example.aestheticaevent.R;
+import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
@@ -47,6 +48,7 @@ public class ActivitySubEvent extends AppCompatActivity {
     CompleteFragment completeFragment;
     ImageView ivProfileBack;
     TextView EventSubId;
+    Tools tools;
 
 
     @SuppressLint("MissingInflatedId")
@@ -56,6 +58,7 @@ public class ActivitySubEvent extends AppCompatActivity {
         setContentView(R.layout.activity_sub_event);
         ivProfileBack=findViewById(R.id.ivProfileBack);
         EventSubId=findViewById(R.id.EventSubId);
+        tools=new Tools(this);
 
         ivProfileBack.setOnClickListener(new View.OnClickListener() {
             @Override

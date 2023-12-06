@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
+
 import androidx.biometric.BiometricPrompt;
 
 import android.content.DialogInterface;
@@ -23,6 +24,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,7 +37,6 @@ import com.example.aestheticaevent.HomeScreen.HomeResponse.CategoryListResponse;
 import com.example.aestheticaevent.MoreSettings.Ticket.ActivityTicket;
 import com.example.aestheticaevent.User.Activity_SignIn;
 import com.example.aestheticaevent.HomeScreen.Adapters.Adapter_EventList;
-import com.example.aestheticaevent.Models.Model_EventList;
 import com.example.aestheticaevent.MoreSettings.Activity_ContactUs;
 import com.example.aestheticaevent.MoreSettings.Activity_HelpAndFAQs;
 import com.example.aestheticaevent.MoreSettings.Activity_MyProfile;
@@ -46,6 +47,7 @@ import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -57,16 +59,15 @@ import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
 
-
 public class Activity_HomeScreen extends AppCompatActivity {
     private RecyclerView rcvEvent;
     private Adapter_EventList adapterEventList;
     private EditText etEventSearch;
     private SwipeRefreshLayout swipeRefreshLayout;
-    ImageView ivSetting,imgNotification;
-    TextView tv, tvHomeMenuUserName, tvHomeMenuUserEmail,txtInvite;
+    ImageView ivSetting, imgNotification;
+    TextView tv, tvHomeMenuUserName, tvHomeMenuUserEmail, txtInvite;
     CircleImageView civHomeMenuUserImage;
-    View layout, layoutProfile, layoutContactUs, layoutHelpAndFAQs, layoutInviteAndShare, layoutLogOut, layoutSetting,layoutTicket;
+    View layout, layoutProfile, layoutContactUs, layoutHelpAndFAQs, layoutInviteAndShare, layoutLogOut, layoutSetting, layoutTicket;
     SharedPreference sharedPreference;
     private SharedPreferences sharedPreferences;
     private BiometricPrompt biometricPrompt;
@@ -81,14 +82,14 @@ public class Activity_HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        txtInvite=findViewById(R.id.txtInvite);
-        tools=new Tools();
-        sharedPreference=new SharedPreference(Activity_HomeScreen.this);
+        txtInvite = findViewById(R.id.txtInvite);
+        tools = new Tools(this);
+        sharedPreference = new SharedPreference(Activity_HomeScreen.this);
         rcvEvent = findViewById(R.id.rcvEvent);
         etEventSearch = findViewById(R.id.etEventSearch);
         layout = findViewById(R.id.layout);
         tv = findViewById(R.id.tv);
-        LayoutRelative=findViewById(R.id.LayoutRelative);
+        LayoutRelative = findViewById(R.id.LayoutRelative);
         tvHomeMenuUserName = findViewById(R.id.tvHomeMenuUserName);
         tvHomeMenuUserEmail = findViewById(R.id.tvHomeMenuUserEmail);
         civHomeMenuUserImage = findViewById(R.id.civHomeMenuUserImage);
@@ -102,8 +103,10 @@ public class Activity_HomeScreen extends AppCompatActivity {
         layoutTicket = findViewById(R.id.layoutTicket);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         imgNotification = findViewById(R.id.imgNotification);
-        restcall= RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
+        restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
 
+
+      //  getFCMToken();
         imgNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,12 +163,14 @@ public class Activity_HomeScreen extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (adapterEventList!=null){
+                if (adapterEventList != null) {
                     adapterEventList.Search(charSequence, rcvEvent);
                 }
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
             }
@@ -222,13 +227,14 @@ public class Activity_HomeScreen extends AppCompatActivity {
 
                 Intent intent = new Intent(Activity_HomeScreen.this, Activity_Settings.class);
                 startActivity(intent);
+                finish();
             }
         });
 
         layoutTicket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Activity_HomeScreen.this, ActivityTicket  .class);
+                Intent intent = new Intent(Activity_HomeScreen.this, ActivityTicket.class);
                 startActivity(intent);
 
             }
@@ -277,8 +283,6 @@ public class Activity_HomeScreen extends AppCompatActivity {
         });
 
 
-
-
         swipeRefreshLayout.setOnRefreshListener(() -> {
             GetCategoryCall();
             new Handler().postDelayed(() -> {
@@ -288,21 +292,13 @@ public class Activity_HomeScreen extends AppCompatActivity {
     }
 
 
-
- /*   private List<Model_EventList> createEventList() {
-        List<Model_EventList> eventList = new ArrayList<>();
-        eventList.add(new Model_EventList("Holi Celebration", R.drawable.splash_screen_logo));
-        return eventList;
-    }*/
-
-
-
-    protected  void onResume(){
+    protected void onResume() {
         super.onResume();
         GetCategoryCall();
     }
-  public  void GetCategoryCall(){
-        tools.stopLoading();
+
+    public void GetCategoryCall() {
+        tools.showLoading();
         restcall.getcategory("getcategory")
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
@@ -332,7 +328,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
                                         && categoryListResponse.getCategoryList() != null
                                         && categoryListResponse.getCategoryList().size() > 0) {
 
-                                    LinearLayoutManager layoutManager = new LinearLayoutManager(Activity_HomeScreen.this,RecyclerView.HORIZONTAL,false);
+                                    LinearLayoutManager layoutManager = new LinearLayoutManager(Activity_HomeScreen.this, RecyclerView.HORIZONTAL, false);
                                     rcvEvent.setLayoutManager(layoutManager);
 
                                     // Update the adapter with the new data
@@ -341,7 +337,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
 
                                     adapterEventList.setCategoryInterface(new Adapter_EventList.CategoryInterface() {
                                         @Override
-                                        public void onCategoryClicked(String categoryId,String categoryName) {
+                                        public void onCategoryClicked(String categoryId, String categoryName) {
                                             Intent i = new Intent(Activity_HomeScreen.this, ActivitySubEvent.class);
                                             i.putExtra("categoryId", categoryId);
                                             i.putExtra("categoryName", categoryName);
@@ -353,7 +349,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
                         });
                     }
                 });
-  }
+    }
 
     private void enableBiometricAuthentication() {
         BiometricManager biometricManager = BiometricManager.from(this);
@@ -367,6 +363,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
                         Toast.makeText(Activity_HomeScreen.this, "Biometric authentication enabled", Toast.LENGTH_SHORT).show();
                         LayoutRelative.setVisibility(View.VISIBLE);
                     }
+
                     public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
                         if (errorCode == androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED) {
@@ -388,7 +385,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-     //   super.onBackPressed();
+        //   super.onBackPressed();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Exit")
                 .setMessage("Are you sure you want to exit the app?")
@@ -416,13 +413,25 @@ public class Activity_HomeScreen extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public  void  ShareData(){
+    public void ShareData() {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("text/plain");
         String share = "look all Programmings";
         String subject = "https://play.google.com/store/apps/details?id=in.seekmyvision.seekmyvision";
-        i.putExtra(Intent.EXTRA_SUBJECT,share);
-        i.putExtra(Intent.EXTRA_TEXT,subject);
-        startActivity(Intent.createChooser(i,"Seek my vision"));
+        i.putExtra(Intent.EXTRA_SUBJECT, share);
+        i.putExtra(Intent.EXTRA_TEXT, subject);
+        startActivity(Intent.createChooser(i, "Seek my vision"));
     }
+   /* void getFCMToken(){
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                String token=task.getResult();
+                Log.i("token",token);
+
+            }
+
+
+        });
+
+    }*/
 }

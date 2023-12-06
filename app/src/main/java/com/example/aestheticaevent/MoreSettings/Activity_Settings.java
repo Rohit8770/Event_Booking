@@ -7,8 +7,11 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -16,14 +19,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.aestheticaevent.HomeScreen.ActivityEventinfo;
+import com.example.aestheticaevent.HomeScreen.Activity_HomeScreen;
+import com.example.aestheticaevent.HomeScreen.Adapters.SubCateAdapter;
+import com.example.aestheticaevent.HomeScreen.HomeResponse.SubCategoryListResponse;
+import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.DeleteListResponse;
 import com.example.aestheticaevent.R;
+import com.example.aestheticaevent.User.Activity_SignIn;
 import com.example.aestheticaevent.Utils.SharedPreference;
+import com.example.aestheticaevent.Utils.Tools;
+import com.example.aestheticaevent.Utils.VariableBag;
+import com.example.aestheticaevent.network.RestClient;
+import com.example.aestheticaevent.network.Restcall;
 
 import java.util.concurrent.Executor;
 
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
+
 public class Activity_Settings extends AppCompatActivity {
-
-
     SwitchCompat SwitchLock;
     private SharedPreferences sharedPreferences;
     private static final String SWITCH_STATE_KEY = "biometricSwitchState";
@@ -31,26 +45,55 @@ public class Activity_Settings extends AppCompatActivity {
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
     ImageView ivHelpAndFAQsBack;
-    LinearLayout main_layout;
+    SharedPreference sharedPreference;
+    LinearLayout main_layout, lyDeleteAccount,llChangePassword;
+    Restcall restcall;
+    String userId;
+    Tools tools;
+    SwitchCompat SoundId;
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, Activity_HomeScreen.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        SwitchLock=findViewById(R.id.SwitchLock);
+        SwitchLock = findViewById(R.id.SwitchLock);
 
-        main_layout=findViewById(R.id.main_layout);
-        ivHelpAndFAQsBack=findViewById(R.id.ivHelpAndFAQsBack);
+        tools=new Tools(this);
+        sharedPreference = new SharedPreference(this);
+        main_layout = findViewById(R.id.main_layout);
+        lyDeleteAccount = findViewById(R.id.lyDeleteAccount);
+        ivHelpAndFAQsBack = findViewById(R.id.ivHelpAndFAQsBack);
+        SoundId = findViewById(R.id.SoundId);
+        llChangePassword = findViewById(R.id.llChangePassword);
 
+        userId = sharedPreference.getStringvalue("user_id");
+
+        llChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(Activity_Settings.this, ActivityChangePassword.class);
+                startActivity(i);
+            }
+        });
         ivHelpAndFAQsBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+
             }
         });
         sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         isBiometricEnabled = sharedPreferences.getBoolean(SWITCH_STATE_KEY, false);
         SwitchLock.setChecked(isBiometricEnabled);
+        restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
 
 
         SwitchLock.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -75,6 +118,27 @@ public class Activity_Settings extends AppCompatActivity {
 
         ivHelpAndFAQsBack.setOnClickListener(v -> finish());
 
+
+        lyDeleteAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Activity_Settings.this);
+                builder.setTitle("Delete Account")
+                        .setMessage("Are you sure you want to delete your account?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Deleteuser();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
+            }
+        });
+
     }
 
     @Override
@@ -97,6 +161,7 @@ public class Activity_Settings extends AppCompatActivity {
                     Toast.makeText(Activity_Settings.this, "Biometric authentication enabled", Toast.LENGTH_SHORT).show();
                     main_layout.setVisibility(View.VISIBLE);
                 }
+
                 public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);
                     if (errorCode == BiometricPrompt.ERROR_USER_CANCELED) {
@@ -121,4 +186,44 @@ public class Activity_Settings extends AppCompatActivity {
         Toast.makeText(this, "Biometric authentication disabled", Toast.LENGTH_SHORT).show();
     }
 
+
+    public void Deleteuser() {
+        tools.showLoading();
+        restcall.Deleteuser("deleteuser", userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<DeleteListResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tools.stopLoading();
+                                Toast.makeText(Activity_Settings.this, "No Internet", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    @Override
+                    public void onNext(DeleteListResponse deleteListResponse) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tools.stopLoading();
+                                if (deleteListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)) {
+                                    sharedPreference.setLoggedIn(false);
+                                    Intent i = new Intent(Activity_Settings.this, Activity_SignIn.class);
+                                    startActivity(i);
+                                    finish();
+
+                                    Toast.makeText(Activity_Settings.this, deleteListResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                });
+    }
 }

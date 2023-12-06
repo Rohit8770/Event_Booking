@@ -20,7 +20,6 @@ import com.example.aestheticaevent.HomeScreen.ActivitySubCategoryEvent;
 import com.example.aestheticaevent.HomeScreen.ActivitySubEvent;
 import com.example.aestheticaevent.HomeScreen.Fragment.UpComingFragment;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.CategoryListResponse;
-import com.example.aestheticaevent.Models.Model_EventList;
 import com.example.aestheticaevent.R;
 
 import java.util.ArrayList;

@@ -52,6 +52,9 @@ import java.util.List;
          @SerializedName("sub_category_id")
          @Expose
          private String subCategoryId;
+         @SerializedName("event_id")
+         @Expose
+         private String eventId;
          @SerializedName("category_id")
          @Expose
          private String categoryId;
@@ -76,15 +79,9 @@ import java.util.List;
          @SerializedName("picture")
          @Expose
          private String picture;
-         @SerializedName("organizer_image")
-         @Expose
-         private String organizerImage;
          @SerializedName("organizer")
          @Expose
          private String organizer;
-         @SerializedName("event_id")
-         @Expose
-         private String eventId;
          @SerializedName("desciprtion")
          @Expose
          private String desciprtion;
@@ -93,7 +90,7 @@ import java.util.List;
          private String price;
 
 
-         public newList(String subCategoryId, String categoryId, String subCategoryName, String venue, String location, String timing, String endTime, String date, String picture, String organizerImage, String organizer, String eventId, String desciprtion, String price) {
+         public newList(String subCategoryId, String categoryId, String subCategoryName, String venue, String location, String timing, String endTime, String date, String picture,String organizer, String eventId, String desciprtion, String price) {
              this.subCategoryId = subCategoryId;
              this.categoryId = categoryId;
              this.subCategoryName = subCategoryName;
@@ -103,7 +100,6 @@ import java.util.List;
              this.endTime = endTime;
              this.date = date;
              this.picture = picture;
-             this.organizerImage = organizerImage;
              this.organizer = organizer;
              this.eventId = eventId;
              this.desciprtion = desciprtion;
@@ -182,13 +178,6 @@ import java.util.List;
              this.picture = picture;
          }
 
-         public String getOrganizerImage() {
-             return organizerImage;
-         }
-
-         public void setOrganizerImage(String organizerImage) {
-             this.organizerImage = organizerImage;
-         }
 
          public String getOrganizer() {
              return organizer;

@@ -411,6 +411,8 @@
 
     </LinearLayout>
 
+
+
     <LinearLayout
         android:id="@+id/ll4"
         android:layout_width="@dimen/_250sdp"
@@ -440,12 +442,45 @@
 
 
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/mobileId"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_40ssp"
+        android:layout_below="@id/ll4"
+        android:layout_marginLeft="@dimen/_30ssp"
+        android:layout_marginTop="@dimen/_20ssp"
+        android:background="@drawable/shape">
+
+        <ImageView
+            android:layout_width="@dimen/_20ssp"
+            android:layout_height="@dimen/_20ssp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/_10ssp"
+            android:src="@drawable/phone_call_logo" />
+
+        <EditText
+            android:id="@+id/etSignUpPhone"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:inputType="number"
+            android:maxLength="10"
+            android:layout_marginLeft="@dimen/_10ssp"
+            android:background="@null"
+            android:hint="Phone Number"
+            android:textSize="@dimen/_15ssp" />
+
+
+    </LinearLayout>
+
+
+
 
     <LinearLayout
         android:id="@+id/ll5"
         android:layout_width="@dimen/_250sdp"
         android:layout_height="@dimen/_40ssp"
-        android:layout_below="@id/ll4"
+        android:layout_below="@id/mobileId"
         android:layout_marginLeft="@dimen/_30ssp"
         android:layout_marginTop="@dimen/_20ssp"
         android:background="@drawable/shape">
@@ -477,7 +512,7 @@
 
 
     </LinearLayout>
-
+<!--
     <LinearLayout
         android:id="@+id/ll6"
         android:layout_width="@dimen/_250sdp"
@@ -513,13 +548,13 @@
             android:src="@drawable/close_eye_icon" />
 
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/ll7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ll6"
+        android:layout_below="@id/ll5"
         android:layout_marginTop="@dimen/_20ssp"
         android:gravity="center">
 

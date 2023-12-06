@@ -41,5 +41,6 @@
 
     <color name="transparent">@android:color/transparent</color>
     <color name="lightgreen">#00F8FF</color>
+    <color name="abc_transparent">#00FFFFFF</color>
 
 </resources>

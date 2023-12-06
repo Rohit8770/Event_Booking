@@ -3,6 +3,7 @@ package com.example.aestheticaevent.HomeScreen;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.core.app.NotificationCompat;
 
 import android.annotation.SuppressLint;
@@ -18,8 +19,10 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,26 +56,38 @@ public class ActivityEventinfo extends AppCompatActivity {
     TextView txEndTime;
     TextView txtLocation;
     TextView txAbout;
+    int count = 1;
     TextView txtPrice;
-    TextView txtVenue,txtVenue1;
+    TextView txtVenue, txtVenue1;
     TextView tvFollow;
-    TextView txtorg;
     Restcall restcall;
     ImageView ivProfileBack;
     String subCatId, categoryId, userId, eventId;
     LinearLayout btnBuy;
     SharedPreference sharedPreference;
+    int countTicket = 1;
+    AppCompatSpinner spinerAddOn;
+    String price;
+    TextView tvBuy;
     Tools tools;
+    ImageView buttonDecrement, buttonIncrement;
+
+    private TextView textViewResult;
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eventinfo);
 
-        tools=new Tools();
+        tools = new Tools(this);
         ivProfileBack = findViewById(R.id.ivProfileBack);
         btnBuy = findViewById(R.id.btnBuy);
         txtVenue1 = findViewById(R.id.txtVenue1);
+     //   spinerAddOn = findViewById(R.id.spinerAddOn);
+        tvBuy = findViewById(R.id.tvBuy);
+        buttonDecrement = findViewById(R.id.buttonDecrement);
+        buttonIncrement = findViewById(R.id.buttonIncrement);
 
         ivFollowed = findViewById(R.id.ivFollowed);
         tvFollow = findViewById(R.id.tvFollow);
@@ -86,21 +101,38 @@ public class ActivityEventinfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 GetsubcategoryCall();
-
-            /*    double latitude = LocationLisResponse.Subcategory.
-                double longitude = LocationLisResponse.Subcategory.get(0).getLongitude();
-
-                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude);
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                startActivity(intent);*/
             }
         });
+
+        textViewResult = findViewById(R.id.textViewResult);
+
+
+        buttonIncrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (countTicket < 99) {
+                    countTicket++;
+                    textViewResult.setText(countTicket + "");
+                    tvBuy.setText("Buy Ticket " + Integer.parseInt(price) * countTicket + getString(R.string.Rs));
+                }
+            }
+        });
+        buttonDecrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (countTicket > 1) {
+                    countTicket--;
+                    textViewResult.setText(countTicket + "");
+                    tvBuy.setText("Buy Ticket " + Integer.parseInt(price) * countTicket + getString(R.string.Rs));
+                }
+            }
+        });
+
         ivFollowed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ivFollowed.setVisibility(View.GONE);
                 tvFollow.setVisibility(View.VISIBLE);
-
             }
         });
         tvFollow.setOnClickListener(new View.OnClickListener() {
@@ -112,13 +144,14 @@ public class ActivityEventinfo extends AppCompatActivity {
         });
 
         btnBuy.setOnClickListener(new View.OnClickListener() {
-
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ActivityEventinfo.this);
                 builder.setTitle("Confirmation");
                 builder.setMessage("Are you sure you want to buy this event?");
                 builder.setPositiveButton("Buy", (dialog, which) -> {
                     handleBuyEvent();
+
+
                     AddTicketDetailsCall();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         createNotificationChannel(ActivityEventinfo.this);
@@ -153,7 +186,6 @@ public class ActivityEventinfo extends AppCompatActivity {
             }
         });
 
-
         ivProfileBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,7 +200,6 @@ public class ActivityEventinfo extends AppCompatActivity {
             categoryId = i.getStringExtra("categoryId");
             userId = sharedPreference.getStringvalue(VariableBag.USER_ID);
 
-
             textImg = findViewById(R.id.textImg);
             txName = findViewById(R.id.txName);
             txCalander = findViewById(R.id.txCalander);
@@ -176,7 +207,6 @@ public class ActivityEventinfo extends AppCompatActivity {
             txEndTime = findViewById(R.id.txEndTime);
             txtLocation = findViewById(R.id.txtLocation);
             txAbout = findViewById(R.id.txAbout);
-            txtPrice = findViewById(R.id.txtPrice);
             txtVenue = findViewById(R.id.txtVenue);
             restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
             Geteventinfo(subCatId);
@@ -184,7 +214,7 @@ public class ActivityEventinfo extends AppCompatActivity {
     }
 
     private void Geteventinfo(String subCatId) {
-        tools.stopLoading();
+        tools.showLoading();
         restcall.Geteventinfo("geteventinfo", subCatId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
@@ -226,10 +256,12 @@ public class ActivityEventinfo extends AppCompatActivity {
                                     txCalander.setText(dataModelNew.getEventList().get(0).getDate());
                                     txtLocation.setText(dataModelNew.getEventList().get(0).getLocation());
                                     txAbout.setText(dataModelNew.getEventList().get(0).getDesciprtion());
-                                    txtPrice.setText(dataModelNew.getEventList().get(0).getPrice());
+                                    price = dataModelNew.getEventList().get(0).getPrice();
                                     txtVenue.setText(dataModelNew.getEventList().get(0).getVenue());
                                     txtVenue1.setText(dataModelNew.getEventList().get(0).getVenue());
                                     eventId = dataModelNew.getEventList().get(0).getEventId();
+                                    tvBuy.setText("Buy Ticket " + Integer.parseInt(price) * 1 + getString(R.string.Rs));
+
                                 }
                                 Toast.makeText(ActivityEventinfo.this, "" + dataModelNew.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -239,7 +271,8 @@ public class ActivityEventinfo extends AppCompatActivity {
     }
 
     private void AddTicketDetailsCall() {
-        restcall.AddTicketDetails("Addticketdetails", eventId, userId, subCatId, categoryId)
+        tools.showLoading();
+        restcall.AddTicketDetails("Addticketdetails", eventId, userId, subCatId, String.valueOf(countTicket), categoryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<ButTicketListResponse>() {
@@ -252,6 +285,7 @@ public class ActivityEventinfo extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 Log.e("API Error", "Error: " + e.getLocalizedMessage());
                                 Toast.makeText(ActivityEventinfo.this, "No Internet", Toast.LENGTH_SHORT).show();
                             }
@@ -263,7 +297,9 @@ public class ActivityEventinfo extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 if (butTicketListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)) {
+
                                 }
                                 Toast.makeText(ActivityEventinfo.this, "" + butTicketListResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -273,7 +309,8 @@ public class ActivityEventinfo extends AppCompatActivity {
     }
 
     private void GetsubcategoryCall() {
-        restcall.GetsubcategoryCall("getsubcategory",categoryId)
+        tools.showLoading();
+        restcall.GetsubcategoryCall("getsubcategory", categoryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<LocationLisResponse>() {
@@ -286,6 +323,7 @@ public class ActivityEventinfo extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 Log.e("API Error", "Error: " + e.getLocalizedMessage());
                                 Toast.makeText(ActivityEventinfo.this, "No Internet", Toast.LENGTH_SHORT).show();
                             }
@@ -297,8 +335,9 @@ public class ActivityEventinfo extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 if (locationLisResponses.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)) {
-                                    List<LocationLisResponse.Subcategory> subcategoryList = locationLisResponses.getSubcategoryList();
+                                    List<LocationLisResponse.Subcategory> subcategoryList = locationLisResponses.getSubList();
 
                                     if (subcategoryList != null && !subcategoryList.isEmpty()) {
                                         double latitude = Double.parseDouble(subcategoryList.get(0).getLatitude());
@@ -319,9 +358,6 @@ public class ActivityEventinfo extends AppCompatActivity {
                     }
                 });
     }
-
-
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)

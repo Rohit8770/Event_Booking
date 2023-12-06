@@ -27,6 +27,9 @@ public class LoginResponse implements Serializable, Parcelable {
     @SerializedName("user_image")
     @Expose
     private String user_image;
+    @SerializedName("mobile")
+    @Expose
+    private String mobile;
 
 
     public final static Creator<LoginResponse> CREATOR = new Creator<LoginResponse>() {
@@ -46,13 +49,14 @@ public class LoginResponse implements Serializable, Parcelable {
     private final static long serialVersionUID = -1357585573421634550L;
 
 
-    public LoginResponse(String userId, String username, String email, String message, String status, String user_image) {
+    public LoginResponse(String userId, String username, String email, String message, String status, String user_image, String mobile) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.message = message;
         this.status = status;
         this.user_image = user_image;
+        this.mobile = mobile;
     }
 
     public LoginResponse() {
@@ -72,6 +76,14 @@ public class LoginResponse implements Serializable, Parcelable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getUserId() {

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.aestheticaevent.ActivityFragments.FirsttActivity;
 import com.example.aestheticaevent.User.Activity_SignIn;
 
 public class SplashScreen extends AppCompatActivity {
@@ -29,7 +30,7 @@ public class SplashScreen extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Intent intent = new Intent(SplashScreen.this, Activity_SignIn.class);
+                Intent intent = new Intent(SplashScreen.this, FirsttActivity.class);
                 startActivity(intent);
                 finish();
             }

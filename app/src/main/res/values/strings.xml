@@ -5,4 +5,26 @@
     <string name="Rss">Get \u20B950 For Ticket</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="default_web_client_id">895418397349-3je4l83g494uf0vr8r09nan3onaq4g1j.apps.googleusercontent.com</string>
+
+    <string name="facebook_app_id">1291013625622937</string>
+    <string name="fb_login_protocol_scheme">fb1291013625622937</string>
+    <string name="facebook_client_token">eeb1c1ecb64fbc22f28e030c5e69c5bd</string>
+
+
+    <string-array name="numbers">
+        <item>Qty:0</item>
+        <item>Qty:1</item>
+        <item>Qty:2</item>
+        <item>Qty:3</item>
+        <item>Qty:4</item>
+        <item>Qty:5</item>
+        <item>Qty:6</item>
+        <item>Qty:7</item>
+        <item>Qty:8</item>
+        <item>Qty:9</item>
+        <item>Qty:10</item>
+    </string-array>
 </resources>

@@ -14,6 +14,7 @@ import com.example.aestheticaevent.HomeScreen.Adapters.NotificationAdapter;
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.PassListResponse;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.Utils.SharedPreference;
+import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
@@ -27,12 +28,15 @@ public class ActivityNotification extends AppCompatActivity {
     RecyclerView rcvNotification;
     Restcall restcall;
     String user_id;
+    Tools tools;
     SharedPreference sharedPreference;
     NotificationAdapter notificationAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+
+        tools=new Tools(this);
         ivNotificationBack=findViewById(R.id.ivNotificationBack);
         rcvNotification=findViewById(R.id.rcvNotification);
         sharedPreference=new SharedPreference(ActivityNotification.this);
@@ -43,6 +47,7 @@ public class ActivityNotification extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ActivityNotification.this, Activity_HomeScreen.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -57,7 +62,7 @@ public class ActivityNotification extends AppCompatActivity {
         GetEventTicketCall();
     }
     public  void GetEventTicketCall(){
-
+        tools.showLoading();
         restcall.GetTicketDetails("getticketdetails",user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
@@ -70,6 +75,7 @@ public class ActivityNotification extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 Toast.makeText(ActivityNotification.this, "No internet", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -79,6 +85,7 @@ public class ActivityNotification extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 if (passListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
                                         && passListResponse.getTicketdetailsList() != null
                                         && passListResponse.getTicketdetailsList().size() > 0) {

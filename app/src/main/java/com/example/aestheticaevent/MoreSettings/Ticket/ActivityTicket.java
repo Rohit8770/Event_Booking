@@ -19,6 +19,7 @@ import com.example.aestheticaevent.MoreSettings.Ticket.TicketAdapterss.TicketAda
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.PassListResponse;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.Utils.SharedPreference;
+import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
@@ -34,12 +35,15 @@ public class ActivityTicket extends AppCompatActivity {
     TicketAdapter ticketAdapter;
     EditText etTicketSearch;
     SharedPreference sharedPreference;
+    Tools tools;
     SwipeRefreshLayout swipeRefreshTicketLayout;
     String subCatId,user_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket);
+
+        tools=new Tools(this);
         sharedPreference=new SharedPreference(ActivityTicket.this);
         etTicketSearch=findViewById(R.id.etTicketSearch);
         swipeRefreshTicketLayout=findViewById(R.id.swipeRefreshTicketLayout);
@@ -94,7 +98,7 @@ public class ActivityTicket extends AppCompatActivity {
     }
 
     public  void GetEventTicketCall(){
-
+        tools.showLoading();
         restcall.GetTicketDetails("getticketdetails",user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
@@ -107,6 +111,7 @@ public class ActivityTicket extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 Toast.makeText(ActivityTicket.this, "No internet", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -116,6 +121,7 @@ public class ActivityTicket extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tools.stopLoading();
                                 if (passListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
                                         && passListResponse.getTicketdetailsList() != null
                                         && passListResponse.getTicketdetailsList().size() > 0) {

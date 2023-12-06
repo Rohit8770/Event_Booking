@@ -2,6 +2,7 @@ package com.example.aestheticaevent.HomeScreen.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.aestheticaevent.HomeScreen.ActivityEventinfo;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.CategoryListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.SubCategoryListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.Subcategory;
@@ -42,7 +44,7 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
     }
 
     public void updateData(List<Subcategory> filteredList) {
-        this.subcategoryList = filteredList;
+     //   this.subcategoryList = filteredList;
         this.searchList = filteredList;
         notifyDataSetChanged();
     }
@@ -73,12 +75,18 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
             holder.txTime.setText(model.getTiming());
             holder.txPrice.setText(model.getPrice());
 
+          /*     holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, ActivityEventinfo.class);
+                i.putExtra("subCategoryName", model.getSubCategoryName());
+                v.getContext().startActivity(i);
+            }
+        });*/
 
             holder.itemView.setOnClickListener(v -> {
                 if (subCategoryInterface != null) {
                     subCategoryInterface.onSubCategoryClicked(model.getSubCategoryId());
-
-
                 }
             });
 

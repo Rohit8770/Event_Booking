@@ -7,7 +7,6 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -26,15 +25,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.example.aestheticaevent.HomeScreen.ActivityEventinfo;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.User.UserResponse.RegisterResponse;
 import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +39,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -51,7 +47,7 @@ import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
 public class Activity_SignUp extends AppCompatActivity {
-    EditText etSignUpName, etSignUpEmail, etSignUpPassword, etSignUpCorrectPassword;
+    EditText etSignUpName, etSignUpEmail, etSignUpPassword, etSignUpCorrectPassword, etSignUpPhone;
     ImageView ivSignUpBack, ivSignUpPasswordCloseEye, ivSignUpCPCloseEye, ivSignUpGoogleLogin, ivSignUpFacebookLogin;
     TextView txEventLogin;
     CardView cvSignUpButton;
@@ -70,20 +66,53 @@ public class Activity_SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        tools = new Tools();
+        tools = new Tools(this);
         cameraivProfileCamera = findViewById(R.id.cameraivProfileCamera);
         cameraivProfileUser = findViewById(R.id.cameraivProfileUser);
+        etSignUpPhone = findViewById(R.id.etSignUpPhone);
 
         etSignUpName = findViewById(R.id.etSignUpName);
         etSignUpEmail = findViewById(R.id.etSignUpEmail);
         etSignUpPassword = findViewById(R.id.etSignUpPassword);
-        etSignUpCorrectPassword = findViewById(R.id.etSignUpCorrectPassword);
+      //  etSignUpCorrectPassword = findViewById(R.id.etSignUpCorrectPassword);
         ivSignUpBack = findViewById(R.id.ivSignUpBack);
         ivSignUpPasswordCloseEye = findViewById(R.id.ivSignUpPasswordCloseEye);
-        ivSignUpCPCloseEye = findViewById(R.id.ivSignUpCPCloseEye);
+       // ivSignUpCPCloseEye = findViewById(R.id.ivSignUpCPCloseEye);
         txEventLogin = findViewById(R.id.txEventLogin);
         cvSignUpButton = findViewById(R.id.cvSignUpButton);
         restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
+
+        cameraivProfileUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    currentPhotoPath = "";
+                    openGallery();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            private void openGallery() {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                galleryIntent.setType("image/*");
+                galleryLauncher.launch(galleryIntent);
+            }
+
+            ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    // Handle the selected image from the gallery
+                    Uri selectedImageUri = result.getData().getData();
+                    currentPhotoPath = Tools.getRealPathFromURI(Activity_SignUp.this, selectedImageUri);
+                    Tools.displayImage(Activity_SignUp.this, cameraivProfileUser, currentPhotoPath);
+                } else {
+                    Toast.makeText(Activity_SignUp.this, "Gallery selection canceled", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+
+
 
         txEventLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,20 +156,22 @@ public class Activity_SignUp extends AppCompatActivity {
             }
         });
 
-        ivSignUpCPCloseEye.setOnClickListener(new View.OnClickListener() {
+     /*   ivSignUpCPCloseEye.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 togglePasswordVisibility(etSignUpCorrectPassword, ivSignUpCPCloseEye);
             }
-        });
+        });*/
 
         cvSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //   tools.showLoading();
                 String name = etSignUpName.getText().toString().trim();
                 String email = etSignUpEmail.getText().toString().trim();
                 String password = etSignUpPassword.getText().toString().trim();
-                String confirmPassword = etSignUpCorrectPassword.getText().toString().trim();
+                String mobile = etSignUpPhone.getText().toString().trim();
+          //      String confirmPassword = etSignUpCorrectPassword.getText().toString().trim();
 
                 if (name.isEmpty()) {
                     etSignUpName.setError("Name is required");
@@ -148,8 +179,10 @@ public class Activity_SignUp extends AppCompatActivity {
                     etSignUpEmail.setError("Enter a valid email address");
                 } else if (!isValidPassword(password)) {
                     etSignUpPassword.setError("Password must be strong");
-                } else if (!password.equals(confirmPassword)) {
-                    etSignUpCorrectPassword.setError("Passwords do not match");
+                }  else if (currentPhotoPath.isEmpty()) {
+                    Toast.makeText(Activity_SignUp.this, "Please select a profile picture", Toast.LENGTH_SHORT).show();
+                } else if (mobile.isEmpty()) {
+                    etSignUpPhone.setError("Please enter mobile number");
                 } else {
                     CallRegisterUser();
                 }
@@ -225,8 +258,8 @@ public class Activity_SignUp extends AppCompatActivity {
         RequestBody userName = RequestBody.create(MediaType.parse("text/plain"), etSignUpName.getText().toString().trim());
         RequestBody email = RequestBody.create(MediaType.parse("text/plain"), etSignUpEmail.getText().toString().trim());
         RequestBody password = RequestBody.create(MediaType.parse("text/plain"), etSignUpPassword.getText().toString().trim());
-        RequestBody confirmPassword = RequestBody.create(MediaType.parse("text/plain"), etSignUpCorrectPassword.getText().toString().trim());
         MultipartBody.Part fileToUpload = null;
+        RequestBody mobile = RequestBody.create(MediaType.parse("text/plain"), etSignUpPhone.getText().toString().trim());
 
         if (fileToUpload == null && currentPhotoPath != "") {
             try {
@@ -242,45 +275,52 @@ public class Activity_SignUp extends AppCompatActivity {
             }
         }
 
-        restcall.RegisterUser(tag, userName, email, password, confirmPassword, fileToUpload)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.newThread())
-                .subscribe(new Subscriber<RegisterResponse>() {
-                    @Override
-                    public void onCompleted() {
-                    }
+        MultipartBody.Part finalFileToUpload = fileToUpload;
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String token = task.getResult();
 
-                    @Override
-                    public void onError(Throwable e) {
-                        runOnUiThread(new Runnable() {
+
+                restcall.RegisterUser(tag, userName, email, password, finalFileToUpload, mobile, token)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.newThread())
+                        .subscribe(new Subscriber<RegisterResponse>() {
                             @Override
-                            public void run() {
-                                tools.stopLoading();
-                                Log.e("API Error", "Error: " + e.getLocalizedMessage());
-                                Toast.makeText(Activity_SignUp.this, "Error", Toast.LENGTH_SHORT).show();
+                            public void onCompleted() {
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        tools.stopLoading();
+                                        Log.e("API Error", "Error: " + e.getLocalizedMessage());
+                                        Toast.makeText(Activity_SignUp.this, "Error", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onNext(RegisterResponse registerResponse) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        tools.stopLoading();
+                                        if (registerResponse.getStatus().equals(VariableBag.SUCCESS_CODE)) {
+                                            etSignUpName.setText("");
+                                            etSignUpEmail.setText("");
+                                            etSignUpPassword.setText("");
+                                        //    etSignUpCorrectPassword.setText("");
+                                            etSignUpPhone.setText("");
+                                            finish();
+                                        }
+                                        Toast.makeText(Activity_SignUp.this, "" + registerResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         });
-                    }
-
-                    @Override
-                    public void onNext(RegisterResponse registerResponse) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                tools.stopLoading();
-                                if (registerResponse.getStatus().equals(VariableBag.SUCCESS_CODE)) {
-                                    etSignUpName.setText("");
-                                    etSignUpEmail.setText("");
-                                    etSignUpPassword.setText("");
-                                    etSignUpCorrectPassword.setText("");
-                                    finish();
-                                }
-                                Toast.makeText(Activity_SignUp.this, "" + registerResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
-
-
+            }
+        });
     }
 }

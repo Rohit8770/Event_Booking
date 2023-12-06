@@ -8,9 +8,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class LocationLisResponse  {
 
-    @SerializedName("subcategoryList")
+
+    @SerializedName("subList")
     @Expose
-    private List<Subcategory> subcategoryList;
+    private List<Subcategory> subList;
     @SerializedName("message")
     @Expose
     private String message;
@@ -18,19 +19,18 @@ public class LocationLisResponse  {
     @Expose
     private String status;
 
-
-    public LocationLisResponse(List<Subcategory> subcategoryList, String message, String status) {
-        this.subcategoryList = subcategoryList;
+    public LocationLisResponse(List<Subcategory> subList, String message, String status) {
+        this.subList = subList;
         this.message = message;
         this.status = status;
     }
 
-    public List<Subcategory> getSubcategoryList() {
-        return subcategoryList;
+    public List<Subcategory> getSubList() {
+        return subList;
     }
 
-    public void setSubcategoryList(List<Subcategory> subcategoryList) {
-        this.subcategoryList = subcategoryList;
+    public void setSubList(List<Subcategory> subList) {
+        this.subList = subList;
     }
 
     public String getMessage() {
