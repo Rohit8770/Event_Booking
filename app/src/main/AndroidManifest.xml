@@ -44,52 +44,71 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ActivityFragments.ActivityDetails"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".HomeScreen.ActivityOtpForget"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeScreen.PasswordForgetActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".HomeScreen.ActivityPhoneForgetPassword"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MoreSettings.ActivityChangePassword"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ActivityFragments.ThirdActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ActivityFragments.SecondActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ActivityFragments.FirsttActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeScreen.ActivitySubEvent"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeScreen.ActivityNotification"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".BuyTicketSplash"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MoreSettings.Ticket.ActivityTicket"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeScreen.ActivityEventinfo"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".HomeScreen.ActivitySubCategoryEvent"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MoreSettings.Activity_Settings"
-            android:exported="false" />
+            android:exported="false"
+
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".HomeScreen.Fragment.UpComingFragment"
-            android:label="UpcomingFragmentLabel" />
+            android:label="UpcomingFragmentLabel"
+
+            android:screenOrientation="portrait"/>
         <!--
  <activity
             android:name=".Events.Activity_Sub_Category_Events"
@@ -123,7 +142,7 @@
         <activity
             android:name=".SplashScreen"
             android:exported="true"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

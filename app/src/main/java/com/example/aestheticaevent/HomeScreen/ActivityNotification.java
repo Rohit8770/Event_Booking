@@ -31,6 +31,15 @@ public class ActivityNotification extends AppCompatActivity {
     Tools tools;
     SharedPreference sharedPreference;
     NotificationAdapter notificationAdapter;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(this, Activity_HomeScreen.class);
+        startActivity(i);
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

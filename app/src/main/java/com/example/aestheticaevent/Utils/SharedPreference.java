@@ -13,6 +13,8 @@ public class SharedPreference {
     private static  final String KEY_IS_LOGGED_IN = "isLoggedin";
     private static final String ONBOARDING_COMPLETED = "onboarding_completed";
 
+    private static final String KEY_USER_ID = "userId";
+
 
 
     private SharedPreferences sharedPreference;
@@ -25,10 +27,14 @@ public class SharedPreference {
         sharedPreference = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreference.edit();
     }
-    public void setLoggedIn(boolean isLoggedIn){
-        editor.putBoolean(KEY_IS_LOGGED_IN, isLoggedIn);
-        editor.apply();
+    public void setLoggedIn(boolean isLoggedIn) {
+        editor.putBoolean(KEY_IS_LOGGED_IN, isLoggedIn).apply();
     }
+
+    public Boolean getLoggedIn() {
+        return sharedPreference.getBoolean(KEY_IS_LOGGED_IN,false);
+    }
+
 
     public boolean isLoggedIn(){
         return  sharedPreference.getBoolean(KEY_IS_LOGGED_IN, false);
@@ -45,8 +51,8 @@ public class SharedPreference {
     }
 
 
-    public void setUserId(String userId){
-        editor.putString(VariableBag.USER_ID,userId).commit();
+    public void setUserId(String userId) {
+        editor.putString(KEY_USER_ID, userId).apply();
     }
 
 

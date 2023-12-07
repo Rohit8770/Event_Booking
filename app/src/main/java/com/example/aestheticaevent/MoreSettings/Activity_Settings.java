@@ -87,7 +87,8 @@ public class Activity_Settings extends AppCompatActivity {
         ivHelpAndFAQsBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i=new Intent(Activity_Settings.this, Activity_HomeScreen.class);
+                startActivity(i);
             }
         });
         sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
@@ -116,9 +117,7 @@ public class Activity_Settings extends AppCompatActivity {
         }
 
 
-        ivHelpAndFAQsBack.setOnClickListener(v -> finish());
-
-
+     //    ivHelpAndFAQsBack.setOnClickListener(v -> finish());
         lyDeleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

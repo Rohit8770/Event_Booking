@@ -65,7 +65,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
     private EditText etEventSearch;
     private SwipeRefreshLayout swipeRefreshLayout;
     ImageView ivSetting, imgNotification;
-    TextView tv, tvHomeMenuUserName, tvHomeMenuUserEmail, txtInvite;
+    TextView tv, tvHomeMenuUserName, tvHomeMenuUserEmail, txtInvite,txNodata;
     CircleImageView civHomeMenuUserImage;
     View layout, layoutProfile, layoutContactUs, layoutHelpAndFAQs, layoutInviteAndShare, layoutLogOut, layoutSetting, layoutTicket;
     SharedPreference sharedPreference;
@@ -89,6 +89,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
         etEventSearch = findViewById(R.id.etEventSearch);
         layout = findViewById(R.id.layout);
         tv = findViewById(R.id.tv);
+     //   txNodata = findViewById(R.id.txNodata);
         LayoutRelative = findViewById(R.id.LayoutRelative);
         tvHomeMenuUserName = findViewById(R.id.tvHomeMenuUserName);
         tvHomeMenuUserEmail = findViewById(R.id.tvHomeMenuUserEmail);
@@ -106,6 +107,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
         restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
 
 
+      //  txNodata.setVisibility(View.VISIBLE);
       //  getFCMToken();
         imgNotification.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -299,6 +301,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
 
     public void GetCategoryCall() {
         tools.showLoading();
+     //   txNodata.setVisibility(View.VISIBLE);
         restcall.getcategory("getcategory")
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
@@ -313,6 +316,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
                             @Override
                             public void run() {
                                 tools.stopLoading();
+                            //    txNodata.setVisibility(View.VISIBLE);
                                 Toast.makeText(Activity_HomeScreen.this, "No Internet", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -324,6 +328,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
                             @Override
                             public void run() {
                                 tools.stopLoading();
+                              //  txNodata.setVisibility(View.VISIBLE);
                                 if (categoryListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
                                         && categoryListResponse.getCategoryList() != null
                                         && categoryListResponse.getCategoryList().size() > 0) {
@@ -385,7 +390,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //   super.onBackPressed();
+         //  super.onBackPressed();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Exit")
                 .setMessage("Are you sure you want to exit the app?")

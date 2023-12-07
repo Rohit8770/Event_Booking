@@ -29,6 +29,7 @@ import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.DeleteList
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.EditListResponse;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.User.Activity_SignIn;
+import com.example.aestheticaevent.User.Activity_SignUp;
 import com.example.aestheticaevent.Utils.SharedPreference;
 import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
@@ -79,6 +80,38 @@ public class Activity_MyProfile extends AppCompatActivity {
         restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
 
 
+        imgUserProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    currentPhotoPath = "";
+                    openGallery();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            private void openGallery() {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                galleryIntent.setType("image/*");
+                galleryLauncher.launch(galleryIntent);
+            }
+
+            ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    // Handle the selected image from the gallery
+                    Uri selectedImageUri = result.getData().getData();
+                    currentPhotoPath = Tools.getRealPathFromURI(Activity_MyProfile.this, selectedImageUri);
+                    Tools.displayImage(Activity_MyProfile.this, imgUserProfile, currentPhotoPath);
+                } else {
+                    Toast.makeText(Activity_MyProfile.this, "Gallery selection canceled", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+
+
+
 
 
 
@@ -93,8 +126,6 @@ public class Activity_MyProfile extends AppCompatActivity {
             etProfileEditEmail.setText(email);
             etSignUpNumber.setText(mobile);
         }
-
-
 
        /* etSignUpName.setText(sharedPreference.getStringvalue("userName"));
         etProfileEditEmail.setText(sharedPreference.getStringvalue("email"));*/
@@ -149,8 +180,15 @@ public class Activity_MyProfile extends AppCompatActivity {
                 Editprofile();
                 String email = etProfileEditEmail.getText().toString().trim();
 
+
+
                 if (!isValidEmail(email)) {
                     etProfileEditEmail.setError("Enter a valid email address");
+                    return;
+                }
+                if (TextUtils.isEmpty(currentPhotoPath)) {
+                    // Photo is not selected
+                    Toast.makeText(Activity_MyProfile.this, "Please select a photo", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent intent = new Intent(Activity_MyProfile.this, Activity_HomeScreen.class);
@@ -220,14 +258,12 @@ public class Activity_MyProfile extends AppCompatActivity {
         String UserName = etSignUpName.getText().toString().trim();
         String Email = etProfileEditEmail.getText().toString().trim();
 
-        if (UserName.isEmpty()){
+        if (UserName.isEmpty()) {
             etSignUpName.setError("UserName cannot be empty");
             etSignUpName.requestFocus();
             tools.stopLoading();
             return;
-        }
-
-        else if (Email.isEmpty()){
+        } else if (Email.isEmpty()){
             etProfileEditEmail.setError("UserName cannot be empty");
             etProfileEditEmail.requestFocus();
             tools.stopLoading();
@@ -287,18 +323,19 @@ public class Activity_MyProfile extends AppCompatActivity {
                             public void run() {
                                 tools.stopLoading();
                                 if (editListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)) {
-                                    etSignUpName.setText("");
-                                    etProfileEditEmail.setText("");
+                                    // Update shared preferences immediately
                                     sharedPreference.setStringvalue("userName", etSignUpName.getText().toString().trim());
-                                    sharedPreference.setStringvalue("email",etProfileEditEmail.getText().toString().trim());
+                                    sharedPreference.setStringvalue("email", etProfileEditEmail.getText().toString().trim());
                                     sharedPreference.setStringvalue("photo", editListResponse.getUserImage());
                                     sharedPreference.setStringvalue("mobile", editListResponse.getMobile());
+
 
                                     Toast.makeText(Activity_MyProfile.this, editListResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
                     }
+
                 });
     }
 }

@@ -55,7 +55,7 @@
                         android:layout_width="32dp"
                         android:layout_height="40dp"
                         android:layout_margin="@dimen/_5ssp"
-                        android:src="@drawable/arrow_right"
+                        android:src="@drawable/arrow_help"
                         app:tint="@color/black" />
 
                     <TextView
@@ -76,7 +76,7 @@
                         android:layout_width="32dp"
                         android:layout_height="40dp"
                         android:layout_margin="@dimen/_5ssp"
-                        android:src="@drawable/arrow_right"
+                        android:src="@drawable/arrow_help"
                         app:tint="@color/black" />
 
                     <TextView
@@ -97,7 +97,7 @@
                         android:layout_width="32dp"
                         android:layout_height="40dp"
                         android:layout_margin="@dimen/_5ssp"
-                        android:src="@drawable/arrow_right"
+                        android:src="@drawable/arrow_help"
                         app:tint="@color/black" />
 
                     <TextView
@@ -118,7 +118,7 @@
                         android:layout_width="32dp"
                         android:layout_height="40dp"
                         android:layout_margin="@dimen/_5ssp"
-                        android:src="@drawable/arrow_right"
+                        android:src="@drawable/arrow_help"
                         app:tint="@color/black" />
 
                     <TextView
@@ -139,7 +139,7 @@
                         android:layout_width="32dp"
                         android:layout_height="40dp"
                         android:layout_margin="@dimen/_5ssp"
-                        android:src="@drawable/arrow_right"
+                        android:src="@drawable/arrow_help"
                         app:tint="@color/black" />
 
                     <TextView

@@ -79,22 +79,23 @@ public class PasswordForgetActivity extends AppCompatActivity {
                             }
                         });
                     }
+
                     @Override
                     public void onNext(ForgetPasswordListResponse changePasswordListResponse) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 tools.stopLoading();
-                                if (changePasswordListResponse.getStatus().equals(VariableBag.SUCCESS_CODE)) {
+                                if (changePasswordListResponse.getStatus().equals("success")) {
                                     etNewPassword.setText("");
                                     etConfirmPassword.setText("");
                                     Toast.makeText(PasswordForgetActivity.this, changePasswordListResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
+                                } else {
+                                    Toast.makeText(PasswordForgetActivity.this, "Password change failed", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
                     }
-
                 });
     }
 }

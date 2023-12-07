@@ -2,6 +2,7 @@ package com.example.aestheticaevent;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -9,7 +10,9 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aestheticaevent.ActivityFragments.FirsttActivity;
+import com.example.aestheticaevent.HomeScreen.Activity_HomeScreen;
 import com.example.aestheticaevent.User.Activity_SignIn;
+import com.example.aestheticaevent.Utils.SharedPreference;
 
 public class SplashScreen extends AppCompatActivity {
     ImageView splashScreenLogo;
@@ -42,5 +45,15 @@ public class SplashScreen extends AppCompatActivity {
 
         // Start the animation
         splashScreenLogo.startAnimation(fadeIn);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreference sharedPreference = new SharedPreference(this);
+        if (sharedPreference.getLoggedIn()){
+            startActivity(new Intent(this, Activity_HomeScreen.class));
+            finish();
+        }
     }
 }

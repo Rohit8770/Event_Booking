@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketAdapterss.TicketAdapter;
@@ -36,6 +37,7 @@ public class ActivityTicket extends AppCompatActivity {
     EditText etTicketSearch;
     SharedPreference sharedPreference;
     Tools tools;
+    TextView txNodata;
     SwipeRefreshLayout swipeRefreshTicketLayout;
     String subCatId,user_id;
     @Override
@@ -48,6 +50,8 @@ public class ActivityTicket extends AppCompatActivity {
         etTicketSearch=findViewById(R.id.etTicketSearch);
         swipeRefreshTicketLayout=findViewById(R.id.swipeRefreshTicketLayout);
         ivTicketBack=findViewById(R.id.ivTicketBack);
+       // txNodata=findViewById(R.id.txNodata);
+
         ivTicketBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,8 +93,6 @@ public class ActivityTicket extends AppCompatActivity {
         rcvTicket=findViewById(R.id.rcvTicket);
         restcall= RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
 
-
-
     }
     protected void onResume() {
         super.onResume();
@@ -99,6 +101,7 @@ public class ActivityTicket extends AppCompatActivity {
 
     public  void GetEventTicketCall(){
         tools.showLoading();
+     //   txNodata.setVisibility(View.GONE);
         restcall.GetTicketDetails("getticketdetails",user_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
@@ -112,6 +115,7 @@ public class ActivityTicket extends AppCompatActivity {
                             @Override
                             public void run() {
                                 tools.stopLoading();
+                                // txNodata.setVisibility(View.VISIBLE);
                                 Toast.makeText(ActivityTicket.this, "No internet", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -122,6 +126,7 @@ public class ActivityTicket extends AppCompatActivity {
                             @Override
                             public void run() {
                                 tools.stopLoading();
+                            //    txNodata.setVisibility(View.VISIBLE);
                                 if (passListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
                                         && passListResponse.getTicketdetailsList() != null
                                         && passListResponse.getTicketdetailsList().size() > 0) {
