@@ -5,12 +5,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +31,9 @@ import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
 import com.example.aestheticaevent.network.Restcall;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
@@ -46,11 +56,14 @@ public class ActivityTicket extends AppCompatActivity {
         setContentView(R.layout.activity_ticket);
 
         tools=new Tools(this);
+        tools.ScreenshotBlock(getWindow());
         sharedPreference=new SharedPreference(ActivityTicket.this);
         etTicketSearch=findViewById(R.id.etTicketSearch);
         swipeRefreshTicketLayout=findViewById(R.id.swipeRefreshTicketLayout);
         ivTicketBack=findViewById(R.id.ivTicketBack);
        // txNodata=findViewById(R.id.txNodata);
+
+
 
         ivTicketBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,4 +154,5 @@ public class ActivityTicket extends AppCompatActivity {
                     }
                 });
     }
+
 }

@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -59,7 +60,7 @@ public class ActivitySubEvent extends AppCompatActivity {
         ivProfileBack=findViewById(R.id.ivProfileBack);
         EventSubId=findViewById(R.id.EventSubId);
         tools=new Tools(this);
-
+        tools.ScreenshotBlock(getWindow());
         ivProfileBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

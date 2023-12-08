@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -199,6 +200,7 @@ public class ActivityEventinfo extends AppCompatActivity {
             subCatId = i.getStringExtra("subCatId");
             categoryId = i.getStringExtra("categoryId");
             userId = sharedPreference.getStringvalue(VariableBag.USER_ID);
+            tools.ScreenshotBlock(getWindow());
 
             textImg = findViewById(R.id.textImg);
             txName = findViewById(R.id.txName);

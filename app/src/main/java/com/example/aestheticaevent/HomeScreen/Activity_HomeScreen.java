@@ -26,6 +26,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -64,8 +65,8 @@ public class Activity_HomeScreen extends AppCompatActivity {
     private Adapter_EventList adapterEventList;
     private EditText etEventSearch;
     private SwipeRefreshLayout swipeRefreshLayout;
-    ImageView ivSetting, imgNotification;
-    TextView tv, tvHomeMenuUserName, tvHomeMenuUserEmail, txtInvite,txNodata;
+    ImageView ivSetting, imgNotification,tvNoData;
+    TextView tv, tvHomeMenuUserName, tvHomeMenuUserEmail, txtInvite,tvNoDataFound;
     CircleImageView civHomeMenuUserImage;
     View layout, layoutProfile, layoutContactUs, layoutHelpAndFAQs, layoutInviteAndShare, layoutLogOut, layoutSetting, layoutTicket;
     SharedPreference sharedPreference;
@@ -82,10 +83,13 @@ public class Activity_HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
+
         txtInvite = findViewById(R.id.txtInvite);
         tools = new Tools(this);
+        tools.ScreenshotBlock(getWindow());
         sharedPreference = new SharedPreference(Activity_HomeScreen.this);
         rcvEvent = findViewById(R.id.rcvEvent);
+        tvNoData = findViewById(R.id.tvNoData);
         etEventSearch = findViewById(R.id.etEventSearch);
         layout = findViewById(R.id.layout);
         tv = findViewById(R.id.tv);
@@ -93,6 +97,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
         LayoutRelative = findViewById(R.id.LayoutRelative);
         tvHomeMenuUserName = findViewById(R.id.tvHomeMenuUserName);
         tvHomeMenuUserEmail = findViewById(R.id.tvHomeMenuUserEmail);
+        tvNoDataFound = findViewById(R.id.tvNoDataFound);
         civHomeMenuUserImage = findViewById(R.id.civHomeMenuUserImage);
         ivSetting = findViewById(R.id.ivSetting);
         layoutProfile = findViewById(R.id.layoutProfile);
@@ -268,12 +273,10 @@ public class Activity_HomeScreen extends AppCompatActivity {
                 alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialog) {
-                        // Customize the button text color if needed
                         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
                         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorAccent));
                     }
-                });
-                alertDialog.show();
+                });alertDialog.show();
             }
         });
         ivSetting.setOnClickListener(new View.OnClickListener() {
@@ -293,7 +296,6 @@ public class Activity_HomeScreen extends AppCompatActivity {
         });
     }
 
-
     protected void onResume() {
         super.onResume();
         GetCategoryCall();
@@ -301,7 +303,6 @@ public class Activity_HomeScreen extends AppCompatActivity {
 
     public void GetCategoryCall() {
         tools.showLoading();
-     //   txNodata.setVisibility(View.VISIBLE);
         restcall.getcategory("getcategory")
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
@@ -316,27 +317,28 @@ public class Activity_HomeScreen extends AppCompatActivity {
                             @Override
                             public void run() {
                                 tools.stopLoading();
-                            //    txNodata.setVisibility(View.VISIBLE);
+                                tvNoData.setVisibility(View.VISIBLE);
+                                tvNoDataFound.setVisibility(View.VISIBLE);
                                 Toast.makeText(Activity_HomeScreen.this, "No Internet", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
-
                     @Override
                     public void onNext(CategoryListResponse categoryListResponse) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 tools.stopLoading();
-                              //  txNodata.setVisibility(View.VISIBLE);
                                 if (categoryListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
                                         && categoryListResponse.getCategoryList() != null
                                         && categoryListResponse.getCategoryList().size() > 0) {
 
+                                    rcvEvent.setVisibility(View.VISIBLE);
+                                    tvNoData.setVisibility(View.GONE);
+                                    tvNoDataFound.setVisibility(View.GONE);
+
                                     LinearLayoutManager layoutManager = new LinearLayoutManager(Activity_HomeScreen.this, RecyclerView.HORIZONTAL, false);
                                     rcvEvent.setLayoutManager(layoutManager);
-
-                                    // Update the adapter with the new data
                                     adapterEventList = new Adapter_EventList(Activity_HomeScreen.this, categoryListResponse.getCategoryList());
                                     rcvEvent.setAdapter(adapterEventList);
 
@@ -349,6 +351,11 @@ public class Activity_HomeScreen extends AppCompatActivity {
                                             startActivity(i);
                                         }
                                     });
+                                }else {
+                                    rcvEvent.setVisibility(View.GONE);
+                                    tvNoData.setVisibility(View.VISIBLE);
+                                    tvNoData.setVisibility(View.VISIBLE);
+                                    tvNoDataFound.setVisibility(View.VISIBLE);
                                 }
                             }
                         });
@@ -388,9 +395,10 @@ public class Activity_HomeScreen extends AppCompatActivity {
         }
     }
 
+    // @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-         //  super.onBackPressed();
+        //  super.onBackPressed();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Exit")
                 .setMessage("Are you sure you want to exit the app?")
@@ -427,16 +435,4 @@ public class Activity_HomeScreen extends AppCompatActivity {
         i.putExtra(Intent.EXTRA_TEXT, subject);
         startActivity(Intent.createChooser(i, "Seek my vision"));
     }
-   /* void getFCMToken(){
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                String token=task.getResult();
-                Log.i("token",token);
-
-            }
-
-
-        });
-
-    }*/
 }

@@ -10,6 +10,8 @@ public class VariableBag {
     // Flag to indicate whether a user is logged in
     public static String USER_LOGGED_IN = "user_logged_in";
     public static  String USER_ID="user_id";
+    public static  String TOKEN="token";
+    public static  String Key_Token="token";
 
     // API
     public static  String BASE_URL="http:/192.168.0.153/eventhub/";

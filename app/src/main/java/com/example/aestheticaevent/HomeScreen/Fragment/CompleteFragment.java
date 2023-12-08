@@ -60,6 +60,7 @@ public class CompleteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.fragment_complete, container, false);
 
+
         tools=new Tools(getContext());
         etSubCategorySearch = v.findViewById(R.id.etSubCategorySearch);
             swipeRefreshUpcomingLayout = v.findViewById(R.id.swipeRefreshUpcomingLayout);

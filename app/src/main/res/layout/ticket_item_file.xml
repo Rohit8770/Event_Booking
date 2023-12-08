@@ -117,6 +117,12 @@
                     android:text="03.33 PM"
                     android:textSize="@dimen/_10ssp"
                     android:textColor="#FFE2BF" />
+                <ImageView
+                    android:id="@+id/btnDownload"
+                    android:layout_width="@dimen/_25ssp"
+                    android:layout_height="@dimen/_20ssp"
+                    android:layout_marginTop="@dimen/_5ssp"
+                    android:src="@drawable/arrow_icon"/>
 
             </LinearLayout>
 

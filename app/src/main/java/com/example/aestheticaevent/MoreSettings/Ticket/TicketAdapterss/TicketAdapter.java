@@ -5,11 +5,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.aestheticaevent.MoreSettings.Ticket.ActivityTicket;
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.Ticketdetails;
 import com.example.aestheticaevent.R;
 
@@ -20,6 +22,8 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
     Context context;
     List<Ticketdetails> ticketdetailsList;
     List<Ticketdetails> searchList;
+
+
 
     public TicketAdapter(Context context, List<Ticketdetails> ticketdetailsList) {
         this.context = context;
@@ -46,6 +50,8 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         holder.txtBookingTime.setText(userdetails.getTicketTime());
         holder.txTicketNumber.setText(userdetails.getTicketId());
         holder.txtBookingPerson.setText(userdetails.getQty_member());
+
+
     }
 
     @Override
@@ -56,6 +62,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
     public class TicketViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtUserName,txtEventSubCateName,txtEventDate,txtEventTime,txtEventAddress,txtPassPrice,txtBookingTime,txTicketNumber,txtBookingPerson;
+        ImageView btnDownload;
         public TicketViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -68,11 +75,10 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
             txtEventSubCateName=itemView.findViewById(R.id.txtEventSubCateName);
             txTicketNumber=itemView.findViewById(R.id.txTicketNumber);
             txtBookingPerson=itemView.findViewById(R.id.txtBookingPerson);
+            btnDownload=itemView.findViewById(R.id.btnDownload);
 
         }
     }
-
-
 
 
     @SuppressLint("NotifyDataSetChanged")

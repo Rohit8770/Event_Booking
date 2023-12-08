@@ -85,6 +85,7 @@ public class Activity_SignIn extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         tools = new Tools(this);
+        tools.ScreenshotBlock(getWindow());
         sharedPreference = new SharedPreference(this);
         etSignInPassword = findViewById(R.id.etSignInPassword);
         tvSignInForgotPassword = findViewById(R.id.tvSignInForgotPassword);
@@ -106,8 +107,7 @@ public class Activity_SignIn extends AppCompatActivity {
         tvSignInForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Activity_SignIn.this, ActivityPhoneForgetPassword.class);
-                startActivity(i);
+
             }
         });
 

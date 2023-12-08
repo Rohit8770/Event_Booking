@@ -52,6 +52,7 @@ public class Ticketdetails {
     @Expose
     private String qty_member;
 
+
     public Ticketdetails(String ticketId, String userId, String eventId, String subCategoryId, String username, String subCategoryName, String timing, String date, String location, String price, String ticketTime, String organizer, String total_price, String qty_member) {
         this.ticketId = ticketId;
         this.userId = userId;
@@ -68,6 +69,7 @@ public class Ticketdetails {
         this.total_price = total_price;
         this.qty_member = qty_member;
     }
+
 
     public String getTicketId() {
         return ticketId;

@@ -8,10 +8,12 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.aestheticaevent.R;
+import com.example.aestheticaevent.Utils.Tools;
 
 public class Activity_HelpAndFAQs extends AppCompatActivity {
 
     ImageView ivHelpAndFAQsBack;
+    Tools tools;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -19,6 +21,8 @@ public class Activity_HelpAndFAQs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help_and_faqs);
 
+        tools=new Tools(this);
+        tools.ScreenshotBlock(getWindow());
         ivHelpAndFAQsBack =findViewById(R.id.ivHelpAndFAQsBack);
 
         ivHelpAndFAQsBack.setOnClickListener(new View.OnClickListener() {

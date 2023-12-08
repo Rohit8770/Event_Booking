@@ -68,6 +68,7 @@ public class Activity_Settings extends AppCompatActivity {
         SwitchLock = findViewById(R.id.SwitchLock);
 
         tools=new Tools(this);
+        tools.ScreenshotBlock(getWindow());
         sharedPreference = new SharedPreference(this);
         main_layout = findViewById(R.id.main_layout);
         lyDeleteAccount = findViewById(R.id.lyDeleteAccount);

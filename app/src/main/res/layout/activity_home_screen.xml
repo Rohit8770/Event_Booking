@@ -6,15 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeScreen.Activity_HomeScreen">
-    <!--<TextView
-        android:id="@+id/txNodata"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="No data Found"
-        android:textSize="@dimen/_25ssp"
-        android:textColor="@color/black"
-        android:visibility="gone"
-        android:gravity="center"/>-->
+
     <RelativeLayout
         android:id="@+id/layoutMain"
         android:layout_width="match_parent"
@@ -32,49 +24,54 @@
                 android:id="@+id/header_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="3"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="3">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1">
-                <ImageView
-                    android:id="@+id/ivSetting"
-                    android:layout_width="@dimen/_29ssp"
-                    android:layout_height="@dimen/_25ssp"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/_10ssp"
-                    android:src="@drawable/more"
-                    app:tint="@color/white" />
+
+                    <ImageView
+                        android:id="@+id/ivSetting"
+                        android:layout_width="@dimen/_29ssp"
+                        android:layout_height="@dimen/_25ssp"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_10ssp"
+                        android:src="@drawable/more"
+                        app:tint="@color/white" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="2.8"
-                    android:layout_gravity="center"
                     android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:text="Events"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_20ssp" />
-                </LinearLayout>
-                    <LinearLayout
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="0.1">
-                <ImageView
-                    android:id="@+id/imgNotification"
-                    android:layout_width="39dp"
-                    android:layout_height="@dimen/_20ssp"
-                    android:src="@drawable/notification"
-                    app:tint="@color/white" />
-                    </LinearLayout>
+                        android:gravity="center"
+                        android:text="Events"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_20ssp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.1">
+
+                    <ImageView
+                        android:id="@+id/imgNotification"
+                        android:layout_width="39dp"
+                        android:layout_height="@dimen/_20ssp"
+                        android:src="@drawable/notification"
+                        app:tint="@color/white" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -114,7 +111,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/mainHeader"
-            android:layout_margin="@dimen/_12ssp">
+            android:layout_marginStart="@dimen/_12ssp"
+            android:layout_marginTop="@dimen/_12ssp"
+            android:layout_marginEnd="@dimen/_12ssp"
+            android:layout_marginBottom="@dimen/_12ssp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -126,7 +126,7 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/layoutTwo"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_250sdp"
@@ -143,9 +143,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_10ssp" />
+
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/tvNoData"
+                    android:layout_width="@dimen/_100ssp"
+                    android:layout_height="@dimen/_100ssp"
+                    android:src="@drawable/no_data_found" />
+
+                <TextView
+                    android:id="@+id/tvNoDataFound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Data Found"
+                    android:layout_marginTop="@dimen/_10ssp"
+                    android:textSize="@dimen/_18ssp" />
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -221,7 +243,7 @@
     </RelativeLayout>
 
     <LinearLayout
-         android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="5">
 

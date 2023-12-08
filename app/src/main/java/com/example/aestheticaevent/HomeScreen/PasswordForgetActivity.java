@@ -14,6 +14,7 @@ import com.example.aestheticaevent.HomeScreen.HomeResponse.ForgetPasswordListRes
 import com.example.aestheticaevent.MoreSettings.ActivityChangePassword;
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.ChangePasswordListResponse;
 import com.example.aestheticaevent.R;
+import com.example.aestheticaevent.User.Activity_SignIn;
 import com.example.aestheticaevent.Utils.SharedPreference;
 import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
@@ -79,23 +80,32 @@ public class PasswordForgetActivity extends AppCompatActivity {
                             }
                         });
                     }
-
                     @Override
                     public void onNext(ForgetPasswordListResponse changePasswordListResponse) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 tools.stopLoading();
-                                if (changePasswordListResponse.getStatus().equals("success")) {
+                                Log.d("API Response", "Response: " + changePasswordListResponse.toString());
+
+                                if (changePasswordListResponse.getStatus().equals(VariableBag.SUCCESS_CODE)) {
                                     etNewPassword.setText("");
                                     etConfirmPassword.setText("");
-                                    Toast.makeText(PasswordForgetActivity.this, changePasswordListResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PasswordForgetActivity.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
+                                    finish();
+
                                 } else {
-                                    Toast.makeText(PasswordForgetActivity.this, "Password change failed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PasswordForgetActivity.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
+                                        Intent i=new Intent(PasswordForgetActivity.this, Activity_SignIn.class);
+                                    startActivity(i);
                                 }
                             }
                         });
                     }
                 });
+        }
     }
-}
+
+
+    //Rohit
+

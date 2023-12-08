@@ -45,6 +45,7 @@ public class ActivityChangePassword extends AppCompatActivity {
         etConfirmPassword=findViewById(R.id.etConfirmPassword);
         btnDone=findViewById(R.id.btnDone);
         restcall= RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
+        tools.ScreenshotBlock(getWindow());
 
         userId = sharedPreference.getStringvalue("user_id");
 

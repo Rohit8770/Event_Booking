@@ -13,16 +13,18 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.aestheticaevent.R;
+import com.example.aestheticaevent.Utils.Tools;
 
 public class Activity_ContactUs extends AppCompatActivity {
     private static final int YOUR_PERMISSION_REQUEST_CODE = 123;
     TextView call, email, sendYourMessage;
     ImageView ivContactBack, IvContactUsShare, IvContactUsWhatsApp, IvContactUsInstagram;
-
+    Tools tools;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,8 @@ public class Activity_ContactUs extends AppCompatActivity {
         IvContactUsShare = findViewById(R.id.IvContactUsShare);
         IvContactUsWhatsApp = findViewById(R.id.IvContactUsWhatsApp);
         IvContactUsInstagram = findViewById(R.id.IvContactUsInstagram);
-
+        tools=new Tools(this);
+        tools.ScreenshotBlock(getWindow());
         call = findViewById(R.id.call);
         email = findViewById(R.id.email);
         sendYourMessage = findViewById(R.id.sendYourMessage);

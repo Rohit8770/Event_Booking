@@ -5,6 +5,7 @@ import com.example.aestheticaevent.HomeScreen.HomeResponse.CompleteResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.DataModelNew;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.ForgetPasswordListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.LocationLisResponse;
+import com.example.aestheticaevent.HomeScreen.HomeResponse.MobileListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.SubCategoryListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.TicketListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.ButTicketListResponse;
@@ -35,7 +36,7 @@ public interface Restcall {
             @Part("password") RequestBody password,
             @Part MultipartBody.Part user_image,
             @Part("mobile") RequestBody mobile,
-            @Part("device_token") String device_token);
+            @Part("device_token") RequestBody device_token);
 
     @FormUrlEncoded
     @POST("controller/registercontroller.php")
@@ -135,6 +136,11 @@ public interface Restcall {
             @Field("newPass") String newPass,
             @Field("conPass") String conPass,
             @Field("mobile") String mobile);
+
+    @FormUrlEncoded
+    @POST("controller/passwordcontroller.php")
+    Single<MobileListResponse> GetAllData(
+            @Field("tag") String tag);
 
 }
 

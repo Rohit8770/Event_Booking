@@ -69,6 +69,7 @@ public class Activity_MyProfile extends AppCompatActivity {
         setContentView(R.layout.activity_my_profile);
 
         tools=new Tools(this);
+        tools.ScreenshotBlock(getWindow());
         sharedPreference=new SharedPreference(Activity_MyProfile.this);
         cvProfileEditButton = findViewById(R.id.cvProfileEditButton);
         etProfileEditEmail = findViewById(R.id.etProfileEditEmail);
@@ -179,15 +180,11 @@ public class Activity_MyProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Editprofile();
                 String email = etProfileEditEmail.getText().toString().trim();
-
-
-
                 if (!isValidEmail(email)) {
                     etProfileEditEmail.setError("Enter a valid email address");
                     return;
                 }
                 if (TextUtils.isEmpty(currentPhotoPath)) {
-                    // Photo is not selected
                     Toast.makeText(Activity_MyProfile.this, "Please select a photo", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -196,8 +193,8 @@ public class Activity_MyProfile extends AppCompatActivity {
                 intent.putExtra("fullName",etSignUpName.getText().toString().trim() );
                 intent.putExtra("email", email);
                 startActivity(intent);
-                finish();
-                Toast.makeText(Activity_MyProfile.this, "Edit Successfully", Toast.LENGTH_SHORT).show();
+
+          //      Toast.makeText(Activity_MyProfile.this, "Edit Successfully", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -321,16 +318,15 @@ public class Activity_MyProfile extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                tools.stopLoading();
+                                tools.showLoading();
                                 if (editListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)) {
                                     // Update shared preferences immediately
                                     sharedPreference.setStringvalue("userName", etSignUpName.getText().toString().trim());
                                     sharedPreference.setStringvalue("email", etProfileEditEmail.getText().toString().trim());
                                     sharedPreference.setStringvalue("photo", editListResponse.getUserImage());
                                     sharedPreference.setStringvalue("mobile", editListResponse.getMobile());
-
-
                                     Toast.makeText(Activity_MyProfile.this, editListResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
                                 }
                             }
                         });

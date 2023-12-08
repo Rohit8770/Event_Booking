@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.User.UserResponse.RegisterResponse;
+import com.example.aestheticaevent.Utils.SharedPreference;
 import com.example.aestheticaevent.Utils.Tools;
 import com.example.aestheticaevent.Utils.VariableBag;
 import com.example.aestheticaevent.network.RestClient;
@@ -55,11 +56,12 @@ public class Activity_SignUp extends AppCompatActivity {
     boolean isPasswordVisible = false;
     Tools tools;
     CircleImageView cameraivProfileCamera, cameraivProfileUser;
-    String currentPhotoPath = "";
+    String currentPhotoPath = "" , tokenId;
     private File currentPhotoFile;
     private static final int REQUEST_CAMERA_PERMISSION = 101;
     ActivityResultLauncher<Intent> cameraLauncher = null;
     String imageId;
+    SharedPreference sharedPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,8 @@ public class Activity_SignUp extends AppCompatActivity {
         cameraivProfileCamera = findViewById(R.id.cameraivProfileCamera);
         cameraivProfileUser = findViewById(R.id.cameraivProfileUser);
         etSignUpPhone = findViewById(R.id.etSignUpPhone);
-
+        sharedPreference  = new SharedPreference(Activity_SignUp.this);
+        tools.ScreenshotBlock(getWindow());
         etSignUpName = findViewById(R.id.etSignUpName);
         etSignUpEmail = findViewById(R.id.etSignUpEmail);
         etSignUpPassword = findViewById(R.id.etSignUpPassword);
@@ -81,7 +84,7 @@ public class Activity_SignUp extends AppCompatActivity {
         txEventLogin = findViewById(R.id.txEventLogin);
         cvSignUpButton = findViewById(R.id.cvSignUpButton);
         restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
-
+        tokenId=sharedPreference.getStringvalue(VariableBag.Key_Token);
         cameraivProfileUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,6 +263,7 @@ public class Activity_SignUp extends AppCompatActivity {
         RequestBody password = RequestBody.create(MediaType.parse("text/plain"), etSignUpPassword.getText().toString().trim());
         MultipartBody.Part fileToUpload = null;
         RequestBody mobile = RequestBody.create(MediaType.parse("text/plain"), etSignUpPhone.getText().toString().trim());
+        RequestBody TokenId = RequestBody.create(MediaType.parse("text/plain"),tokenId);
 
         if (fileToUpload == null && currentPhotoPath != "") {
             try {
@@ -276,19 +280,16 @@ public class Activity_SignUp extends AppCompatActivity {
         }
 
         MultipartBody.Part finalFileToUpload = fileToUpload;
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                String token = task.getResult();
 
 
-                restcall.RegisterUser(tag, userName, email, password, finalFileToUpload, mobile, token)
+
+                restcall.RegisterUser(tag, userName, email, password, finalFileToUpload, mobile, TokenId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.newThread())
                         .subscribe(new Subscriber<RegisterResponse>() {
                             @Override
                             public void onCompleted() {
                             }
-
                             @Override
                             public void onError(Throwable e) {
                                 runOnUiThread(new Runnable() {
@@ -321,6 +322,5 @@ public class Activity_SignUp extends AppCompatActivity {
                             }
                         });
             }
-        });
-    }
+
 }
