@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aestheticaevent.HomeScreen.ActivityEventinfo;
@@ -53,7 +55,8 @@ public class UpComingFragment extends Fragment {
     List<Subcategory> apiList;
 
     SubCateAdapter subCateAdapter;
-    ImageView ivProfileBack;
+    ImageView ivProfileBack, tvNoData;
+    TextView tvNoDataFound;
     EditText etSubCateSearch;
     LinearLayout LyFilterBtn;
     Tools tools;
@@ -68,7 +71,12 @@ public class UpComingFragment extends Fragment {
         apiList = new ArrayList<>();
         tools=new Tools(getContext());
         ivProfileBack = v.findViewById(R.id.ivProfileBack);
+        tvNoData = v.findViewById(R.id.tvNoData);
+        tvNoDataFound = v.findViewById(R.id.tvNoDataFound);
         etSubCateSearch = v.findViewById(R.id.etSubCateSearch);
+
+
+
         LyFilterBtn = v.findViewById(R.id.LyFilterBtn);
         swipeRefreshUpcomingLayout = v.findViewById(R.id.swipeRefreshUpcomingLayout);
 
@@ -94,44 +102,47 @@ public class UpComingFragment extends Fragment {
                 fragmentFilter.setCancelable(false);
                 fragmentFilter.setupInterface(new FragmentFilter.DataClick() {
                     @Override
-                    public void dataClick(int price,String date) {
-
+                    public void dataClick(int price, String date) {
                         List<Subcategory> newList = new ArrayList<>();
                         if (apiList != null) {
-                            if (price !=0 && date.equals("Select the Date")){
+                            if (price != 0 && date.equals("Select the Date")) {
                                 for (int i = 0; i < apiList.size(); i++) {
                                     if (floatToInt(Float.valueOf(apiList.get(i).getPrice())) < price) {
-
                                         newList.add(apiList.get(i));
                                     }
                                 }
                             } else if (price == 0 && !date.equals("Select the Date")) {
-                                for (int i=0;i<apiList.size();i++){
-                                    if (apiList.get(i).getDate().equals(date)){
+                                for (int i = 0; i < apiList.size(); i++) {
+                                    if (apiList.get(i).getDate().equals(date)) {
                                         newList.add(apiList.get(i));
                                     }
                                 }
                             } else if (price != 0 && !date.equals("Select the Date")) {
                                 List<Subcategory> filterList = new ArrayList<>();
-
-
-                                for (int i=0;i<apiList.size();i++){
-                                    if (apiList.get(i).getDate().equals(date)){
+                                for (int i = 0; i < apiList.size(); i++) {
+                                    if (apiList.get(i).getDate().equals(date)) {
                                         filterList.add(apiList.get(i));
                                     }
                                 }
-
                                 for (int i = 0; i < filterList.size(); i++) {
                                     if (floatToInt(Float.valueOf(filterList.get(i).getPrice())) < price) {
-
                                         newList.add(filterList.get(i));
                                     }
                                 }
                             }
                         }
                         subCateAdapter.updateData(newList);
-                    }
 
+                        // Show or hide the "No Data Found" message based on filtered results
+                        boolean isFilteredResultsEmpty = subCateAdapter.isEmpty();
+                        if (isFilteredResultsEmpty) {
+                            tvNoDataFound.setVisibility(View.VISIBLE);
+                            tvNoData.setVisibility(View.VISIBLE);
+                        } else {
+                            tvNoDataFound.setVisibility(View.GONE);
+                            tvNoData.setVisibility(View.GONE);
+                        }
+                    }
                 });
             }
         });
@@ -141,11 +152,22 @@ public class UpComingFragment extends Fragment {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                 if (subCateAdapter != null) {
                     subCateAdapter.Search(charSequence, rvEventList);
+
+                    // Show or hide the "No Data Found" message based on search results
+
+                    boolean isSearchResultsEmpty = subCateAdapter.isEmpty();
+                    if (isSearchResultsEmpty) {
+                        tvNoDataFound.setVisibility(View.VISIBLE);
+                        tvNoData.setVisibility(View.VISIBLE);
+                    } else {
+                        tvNoDataFound.setVisibility(View.GONE);
+                        tvNoData.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -214,6 +236,17 @@ public class UpComingFragment extends Fragment {
                                             requireActivity().startActivity(i);
                                         }
                                     });
+                                         if (subCateAdapter.isEmpty()) {
+                                            tvNoDataFound.setVisibility(View.VISIBLE);
+                                            tvNoData.setVisibility(View.VISIBLE);
+                                        } else {
+                                            tvNoDataFound.setVisibility(View.GONE);
+                                            tvNoData.setVisibility(View.GONE);
+                                        }
+                                    } else {
+                                        // Handle the case where there is no data
+                                        tvNoDataFound.setVisibility(View.VISIBLE);
+                                        tvNoData.setVisibility(View.VISIBLE);
                                 }
                             }
                         });

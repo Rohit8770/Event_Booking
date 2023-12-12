@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android"/>
+
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -18,7 +21,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera" /> 1
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature
         android:name="android.hardware.telephony"
@@ -43,6 +46,13 @@
         android:theme="@style/Theme.AestheticaEvent"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <activity
+            android:name=".ActivityFragments.QRActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" >
+
+        </activity>
         <activity
             android:name=".ActivityFragments.ActivityDetails"
             android:exported="false"
@@ -78,7 +88,9 @@
         <activity
             android:name=".HomeScreen.ActivitySubEvent"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+
+        </activity>
         <activity
             android:name=".HomeScreen.ActivityNotification"
             android:exported="false"

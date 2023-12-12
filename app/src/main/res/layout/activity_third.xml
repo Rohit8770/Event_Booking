@@ -1,35 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ActivityFragments.ThirdActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/relOne"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="5">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_390sdp">
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/third_page" />
-        </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="3.5">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_390sdp"
+                android:layout_alignParentBottom="true"
                 android:layout_gravity="bottom">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/base_one" />
+
+                <LinearLayout
+                    android:id="@+id/ll1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20ssp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="You Get The Instant Ticket"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_20ssp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" of Event.."
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_17ssp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20ssp"
+                        android:hint="All Tickets Will be Show In The"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Ticket Section."
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true"
+                    android:padding="@dimen/_10ssp">
+
+                    <TextView
+                        android:id="@+id/tvSkip3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_20ssp"
+                        android:text="Skip"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_17ssp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_40ssp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_85ssp"
+                        android:src="@drawable/dot_three" />
+
+                    <TextView
+                        android:id="@+id/tvNext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_20ssp"
+                        android:gravity="end"
+                        android:text="Next"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_17ssp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+           <!-- <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="3.5">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -106,10 +199,10 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_17ssp" />
                 </LinearLayout>
-            </RelativeLayout>
+            </LinearLayout>-->
 
-        </LinearLayout>
 
-    </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</LinearLayout>

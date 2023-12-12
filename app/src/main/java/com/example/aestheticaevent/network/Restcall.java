@@ -13,6 +13,7 @@ import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.ChangePass
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.DeleteListResponse;
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.EditListResponse;
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.PassListResponse;
+import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.QrListResponse;
 import com.example.aestheticaevent.User.UserResponse.LoginResponse;
 import com.example.aestheticaevent.User.UserResponse.RegisterResponse;
 
@@ -142,6 +143,16 @@ public interface Restcall {
     Single<MobileListResponse> GetAllData(
             @Field("tag") String tag);
 
+
+    @FormUrlEncoded
+    @POST("controller/qrcodecontroller.php")
+    Single<QrListResponse> AddticketdetailCall(
+            @Field("tag") String tag,
+            @Field("category_id") String category_id,
+            @Field("event_id") String event_id,
+            @Field("user_id") String user_id,
+            @Field("qty_member") String qty_member,
+            @Field("sub_category_id") String sub_category_id);
 }
 
 

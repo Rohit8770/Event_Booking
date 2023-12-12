@@ -41,15 +41,27 @@ public class FirsttActivity extends AppCompatActivity {
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                tools.vibrate();
+                tools.playBeepSound();
+
                 Intent i= new Intent(FirsttActivity.this, Activity_SignIn.class);
                 startActivity(i);
+
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         tvNext1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                tools.vibrate();
+                tools.playBeepSound();
+
                 Intent i= new Intent(FirsttActivity.this, SecondActivity.class);
                 startActivity(i);
+
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }

@@ -42,7 +42,8 @@ public class ActivityTicket extends AppCompatActivity {
 
     RecyclerView rcvTicket;
     Restcall restcall;
-    ImageView ivTicketBack;
+    ImageView ivTicketBack,tvNoData;
+    TextView tvNoDataFound;
     TicketAdapter ticketAdapter;
     EditText etTicketSearch;
     SharedPreference sharedPreference;
@@ -61,6 +62,8 @@ public class ActivityTicket extends AppCompatActivity {
         etTicketSearch=findViewById(R.id.etTicketSearch);
         swipeRefreshTicketLayout=findViewById(R.id.swipeRefreshTicketLayout);
         ivTicketBack=findViewById(R.id.ivTicketBack);
+        tvNoDataFound = findViewById(R.id.tvNoDataFound);
+        tvNoData = findViewById(R.id.tvNoData);
        // txNodata=findViewById(R.id.txNodata);
 
 
@@ -71,6 +74,8 @@ public class ActivityTicket extends AppCompatActivity {
                 /*Intent i=new Intent(ActivityTicket.this, Activity_HomeScreen.class);
                 startActivity(i);*/
                 finish();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
             }
         });
         swipeRefreshTicketLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -91,12 +96,20 @@ public class ActivityTicket extends AppCompatActivity {
                 if (ticketAdapter!=null){
                     ticketAdapter.Search(charSequence, rcvTicket);
                 }
+
+                boolean isSearchResultsEmpty = ticketAdapter.isEmpty();
+                if (isSearchResultsEmpty) {
+                    tvNoDataFound.setVisibility(View.VISIBLE);
+                    tvNoData.setVisibility(View.VISIBLE);
+                } else {
+                    tvNoDataFound.setVisibility(View.GONE);
+                    tvNoData.setVisibility(View.GONE);
+                }
             }
             @Override
             public void afterTextChanged(Editable editable) {
             }
         });
-
 
         Intent i = getIntent();
         if (i != null) {
@@ -148,6 +161,13 @@ public class ActivityTicket extends AppCompatActivity {
                                     rcvTicket.setLayoutManager(layoutManager);
                                     ticketAdapter = new TicketAdapter(ActivityTicket.this, passListResponse.getTicketdetailsList());
                                     rcvTicket.setAdapter(ticketAdapter);
+                                    if (ticketAdapter.isEmpty()) {
+                                        tvNoDataFound.setVisibility(View.VISIBLE);
+                                        tvNoData.setVisibility(View.VISIBLE);
+                                    } else {
+                                        tvNoDataFound.setVisibility(View.GONE);
+                                        tvNoData.setVisibility(View.GONE);
+                                    }
                                 }
                             }
                         });

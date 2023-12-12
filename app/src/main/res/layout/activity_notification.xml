@@ -9,37 +9,59 @@
 
 
 
-        <LinearLayout
-            android:id="@+id/layoutHeaderSCEvents"
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/layoutHeaderSCEvents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_7ssp"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/ivNotificationBack"
+            android:layout_width="@dimen/_30ssp"
+            android:layout_height="@dimen/_30ssp"
+            android:src="@drawable/arrow_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_7ssp"
-            android:orientation="horizontal"
-            tools:ignore="MissingConstraints">
+            android:layout_marginLeft="@dimen/_10ssp"
+            android:text="Notification"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_20ssp" />
+    </LinearLayout>
 
-            <ImageView
-                android:id="@+id/ivNotificationBack"
-                android:layout_width="@dimen/_30ssp"
-                android:layout_height="@dimen/_30ssp"
-                android:src="@drawable/arrow_back" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_7ssp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10ssp"
-                android:text="Notification"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_20ssp" />
-        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvNotification"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/_7ssp">
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvNotification"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+            <ImageView
+                android:id="@+id/tvNoData"
+                android:layout_width="@dimen/_100ssp"
+                android:layout_height="@dimen/_100ssp"
+                android:src="@drawable/no_data_found" />
+
+            <TextView
+                android:id="@+id/tvNoDataFound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:text="No Data Found"
+                android:textSize="@dimen/_18ssp" />
         </LinearLayout>
+
+    </RelativeLayout>
 </LinearLayout>

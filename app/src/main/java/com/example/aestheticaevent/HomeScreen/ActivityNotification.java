@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aestheticaevent.HomeScreen.Adapters.NotificationAdapter;
@@ -25,7 +26,8 @@ import rx.schedulers.Schedulers;
 
 public class ActivityNotification extends AppCompatActivity {
 
-    ImageView ivNotificationBack;
+    ImageView ivNotificationBack,tvNoData;
+    TextView tvNoDataFound;
     RecyclerView rcvNotification;
     Restcall restcall;
     String user_id;
@@ -52,6 +54,9 @@ public class ActivityNotification extends AppCompatActivity {
         sharedPreference=new SharedPreference(ActivityNotification.this);
         restcall= RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
         tools.ScreenshotBlock(getWindow());
+        tvNoData = findViewById(R.id.tvNoData);
+        tvNoDataFound = findViewById(R.id.tvNoDataFound);
+
         ivNotificationBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,10 +109,30 @@ public class ActivityNotification extends AppCompatActivity {
                                     rcvNotification.setLayoutManager(layoutManager);
                                     notificationAdapter = new NotificationAdapter(ActivityNotification.this, passListResponse.getTicketdetailsList());
                                     rcvNotification.setAdapter(notificationAdapter);
+                                    updateNoDataVisibility();
+                                } else {
+                                    showNoDataViews();
                                 }
                             }
                         });
                     }
                 });
+    }
+
+    private void showNoDataViews() {
+        tvNoDataFound.setVisibility(View.VISIBLE);
+        tvNoData.setVisibility(View.VISIBLE);
+        rcvNotification.setVisibility(View.GONE);
+    }
+
+
+    private void updateNoDataVisibility() {
+        if (notificationAdapter != null && notificationAdapter.getItemCount() > 0) {
+            tvNoDataFound.setVisibility(View.GONE);
+            tvNoData.setVisibility(View.GONE);
+            rcvNotification.setVisibility(View.VISIBLE);
+        } else {
+            showNoDataViews();
+        }
     }
 }

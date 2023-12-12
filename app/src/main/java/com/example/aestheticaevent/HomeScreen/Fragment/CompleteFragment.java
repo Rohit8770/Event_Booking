@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aestheticaevent.HomeScreen.ActivityEventinfo;
@@ -48,6 +49,8 @@ public class CompleteFragment extends Fragment {
     RecyclerView rvEventList;
     Restcall restcall;
     String categoryId;
+    ImageView tvNoData;
+    TextView tvNoDataFound;
     CompleteAdapter completeAdapter;
     Tools tools;
     ImageView ivProfileBack;
@@ -62,6 +65,8 @@ public class CompleteFragment extends Fragment {
 
 
         tools=new Tools(getContext());
+        tvNoData = v.findViewById(R.id.tvNoData);
+        tvNoDataFound = v.findViewById(R.id.tvNoDataFound);
         etSubCategorySearch = v.findViewById(R.id.etSubCategorySearch);
             swipeRefreshUpcomingLayout = v.findViewById(R.id.swipeRefreshUpcomingLayout);
 
@@ -86,7 +91,18 @@ public class CompleteFragment extends Fragment {
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     if (completeAdapter != null) {
                         completeAdapter.Search(charSequence, rvEventList);
-                    }
+
+                            // Show or hide the "No Data Found" message based on search results
+
+                            boolean isSearchResultsEmpty = completeAdapter.isEmpty();
+                            if (isSearchResultsEmpty) {
+                                tvNoDataFound.setVisibility(View.VISIBLE);
+                                tvNoData.setVisibility(View.VISIBLE);
+                            } else {
+                                tvNoDataFound.setVisibility(View.GONE);
+                                tvNoData.setVisibility(View.GONE);
+                            }
+                        }
                 }
 
                 @Override
@@ -143,10 +159,31 @@ public class CompleteFragment extends Fragment {
                                         rvEventList.setLayoutManager(layoutManager);
                                         completeAdapter = new CompleteAdapter(getContext(), completeResponse.getCloseeventList());
                                         rvEventList.setAdapter(completeAdapter);
+                                        updateNoDataVisibility();
+                                    } else {
+                                        showNoDataViews();
                                     }
                                 }
                             });
                         }
                     });
         }
+
+    private void updateNoDataVisibility() {
+        if (completeAdapter != null && !completeAdapter.isEmpty()) {
+            hideNoDataViews();
+        } else {
+            showNoDataViews();
+        }
+    }
+
+    private void showNoDataViews() {
+        tvNoDataFound.setVisibility(View.VISIBLE);
+        tvNoData.setVisibility(View.VISIBLE);
+    }
+
+    private void hideNoDataViews() {
+        tvNoDataFound.setVisibility(View.GONE);
+        tvNoData.setVisibility(View.GONE);
+    }
 }

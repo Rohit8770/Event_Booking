@@ -82,7 +82,7 @@
                 android:layout_margin="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10ssp"
                 android:stepSize="100"
-                android:valueFrom="0"
+                android:valueFrom="100"
                 android:valueTo="5000"
                 android:background="@drawable/background_shape" />
 
@@ -95,11 +95,12 @@
                 android:orientation="horizontal"
                 android:padding="@dimen/_5ssp">
 
+
                 <TextView
                     android:id="@+id/txprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0 "
+                    android:text="100"
                     android:textSize="@dimen/_20ssp" />
 
               <!--  <TextView

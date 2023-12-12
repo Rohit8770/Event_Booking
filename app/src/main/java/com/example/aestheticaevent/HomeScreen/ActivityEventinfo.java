@@ -34,6 +34,7 @@ import com.example.aestheticaevent.BuyTicketSplash;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.DataModelNew;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.ButTicketListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.LocationLisResponse;
+import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.QrListResponse;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.Utils.SharedPreference;
 import com.example.aestheticaevent.Utils.Tools;
@@ -152,8 +153,10 @@ public class ActivityEventinfo extends AppCompatActivity {
                 builder.setPositiveButton("Buy", (dialog, which) -> {
                     handleBuyEvent();
 
-
-                    AddTicketDetailsCall();
+                    tools.vibrate();
+                    tools.playBeepSound();
+                  //  AddTicketDetailsCall();
+                    AddticketdetailCall();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         createNotificationChannel(ActivityEventinfo.this);
                     }
@@ -191,6 +194,7 @@ public class ActivityEventinfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -272,7 +276,43 @@ public class ActivityEventinfo extends AppCompatActivity {
                 });
     }
 
-    private void AddTicketDetailsCall() {
+    private void AddticketdetailCall() {
+        tools.showLoading();
+        restcall.AddticketdetailCall("Addticketdetails", categoryId,eventId,userId, String.valueOf(countTicket),subCatId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<QrListResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tools.stopLoading();
+                                Log.e("API Error", "Error: " + e.getLocalizedMessage());
+                                Toast.makeText(ActivityEventinfo.this, "No Internet", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    @Override
+                    public void onNext(QrListResponse qrListResponse) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tools.stopLoading();
+                                if (qrListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)) {
+
+                                }
+                                Toast.makeText(ActivityEventinfo.this, "" + qrListResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+    }
+
+   /* private void AddTicketDetailsCall() {
         tools.showLoading();
         restcall.AddTicketDetails("Addticketdetails", eventId, userId, subCatId, String.valueOf(countTicket), categoryId)
                 .subscribeOn(Schedulers.io())
@@ -308,7 +348,7 @@ public class ActivityEventinfo extends AppCompatActivity {
                         });
                     }
                 });
-    }
+    }*/
 
     private void GetsubcategoryCall() {
         tools.showLoading();

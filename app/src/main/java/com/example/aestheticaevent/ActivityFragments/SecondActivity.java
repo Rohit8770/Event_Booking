@@ -27,15 +27,27 @@ public class SecondActivity extends AppCompatActivity {
         tvSkip2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                tools.vibrate();
+                tools.playBeepSound();
+
                 Intent i= new Intent(SecondActivity.this, Activity_SignIn.class);
                 startActivity(i);
+
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         tvNext2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                tools.vibrate();
+                tools.playBeepSound();
+
                 Intent i= new Intent(SecondActivity.this, ThirdActivity.class);
                 startActivity(i);
+
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }

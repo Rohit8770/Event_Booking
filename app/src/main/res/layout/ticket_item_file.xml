@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/_10ssp"
-            android:layout_marginTop="@dimen/_40ssp"
+            android:layout_marginTop="@dimen/_50ssp"
             android:layout_gravity="end">
             <TextView
                 android:layout_width="wrap_content"
@@ -53,6 +53,7 @@
             android:layout_height="108dp"
             android:layout_gravity="end"
             android:layout_weight="1.5"
+            android:layout_marginTop="@dimen/_7ssp"
             android:orientation="horizontal">
 
             <ImageView
@@ -64,11 +65,12 @@
                 app:civ_border_width="@dimen/_2ssp" />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="end"
-                android:src="@drawable/qr_code"
-                app:tint="@color/white" />
+                android:id="@+id/qrCodeId"
+                android:layout_width="@dimen/_40ssp"
+                android:layout_height="@dimen/_40ssp"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:layout_marginRight="@dimen/_10ssp"
+                android:layout_gravity="end"/>
         </LinearLayout>
 
         <LinearLayout
@@ -117,12 +119,12 @@
                     android:text="03.33 PM"
                     android:textSize="@dimen/_10ssp"
                     android:textColor="#FFE2BF" />
-                <ImageView
+                <!--<ImageView
                     android:id="@+id/btnDownload"
                     android:layout_width="@dimen/_25ssp"
                     android:layout_height="@dimen/_20ssp"
                     android:layout_marginTop="@dimen/_5ssp"
-                    android:src="@drawable/arrow_icon"/>
+                    android:src="@drawable/arrow_icon"/>-->
 
             </LinearLayout>
 
@@ -230,7 +232,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginRight="@dimen/_15ssp"
+            android:layout_marginRight="@dimen/_5ssp"
             android:gravity="end"
             android:layout_marginBottom="@dimen/_36ssp"
             android:orientation="horizontal">
@@ -239,7 +241,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Person:-"
-                android:layout_gravity="center"
                 android:textColor="#FFE2BF" />
             <TextView
                 android:id="@+id/txtBookingPerson"

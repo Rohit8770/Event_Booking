@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.Closeevent;
+import com.example.aestheticaevent.HomeScreen.HomeResponse.Subcategory;
 import com.example.aestheticaevent.R;
 
 import java.util.ArrayList;
@@ -27,8 +28,11 @@ public class CompleteAdapter extends RecyclerView.Adapter<CompleteAdapter.Comple
         this.context = context;
         this.closeevents = closeevents;
         this.searchList = new ArrayList<>(closeevents);
-
     }
+    public boolean isEmpty() {
+        return getItemCount() == 0;
+    }
+
     @NonNull
     @Override
     public CompleteAdapter.CompleteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -62,6 +66,7 @@ public class CompleteAdapter extends RecyclerView.Adapter<CompleteAdapter.Comple
         return searchList.size();
     }
 
+
     public class CompleteViewHolder extends RecyclerView.ViewHolder {
 
         TextView textView, txLocation, txDate, txTime,txPrice;
@@ -78,33 +83,29 @@ public class CompleteAdapter extends RecyclerView.Adapter<CompleteAdapter.Comple
         }
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
     public void Search(CharSequence charSequence, RecyclerView categoryListRecyclerView) {
-        try{
-            String charString=charSequence.toString().toLowerCase().trim();
-            if(charString.isEmpty()){
-                searchList=closeevents;
+        try {
+            String charString = charSequence.toString().toLowerCase().trim();
+            if (charString.isEmpty()) {
+                searchList = new ArrayList<>(closeevents);
                 categoryListRecyclerView.setVisibility(View.VISIBLE);
-            }else{
-                int flag=0;
-                List<Closeevent> filterList=new ArrayList<>();
-                for(Closeevent Row:closeevents){
-                    if(Row.getSubCategoryName().toString().toLowerCase().contains(charString.toLowerCase())){
+            } else {
+                List<Closeevent> filterList = new ArrayList<>();
+                for (Closeevent Row : closeevents) {
+                    if (Row.getSubCategoryName().toLowerCase().contains(charString.toLowerCase())) {
                         filterList.add(Row);
-                        flag=1;
                     }
                 }
-                if (flag == 1) {
-                    searchList=filterList;
-                    categoryListRecyclerView.setVisibility(View.VISIBLE);
-                }
-                else{
+                searchList = new ArrayList<>(filterList);
+
+                if (searchList.isEmpty()) {
                     categoryListRecyclerView.setVisibility(View.GONE);
+                } else {
+                    categoryListRecyclerView.setVisibility(View.VISIBLE);
                 }
             }
             notifyDataSetChanged();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

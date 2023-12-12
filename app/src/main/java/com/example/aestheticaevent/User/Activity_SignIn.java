@@ -114,6 +114,9 @@ public class Activity_SignIn extends AppCompatActivity {
         cvSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tools.vibrate();
+                tools.playBeepSound();
+
                 String email = etSignInEmail.getText().toString().trim();
                 String password = etSignInPassword.getText().toString().trim();
 
@@ -128,6 +131,7 @@ public class Activity_SignIn extends AppCompatActivity {
                     etSignInPassword.setError("Password must be Strong");
                     return;
                 }
+
                 LoginUser();
             }
         });
@@ -150,6 +154,7 @@ public class Activity_SignIn extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Activity_SignIn.this, Activity_SignUp.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -197,13 +202,11 @@ public class Activity_SignIn extends AppCompatActivity {
                 }
             });
         }
-
-
     }
-
     private void openHomePage() {
         startActivity(new Intent(Activity_SignIn.this, Activity_HomeScreen.class));
         finish();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     // Email validation method

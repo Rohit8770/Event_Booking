@@ -126,10 +126,11 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+
         <RelativeLayout
             android:id="@+id/layoutTwo"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_250sdp"
+            android:layout_height="@dimen/_260sdp"
             android:layout_below="@id/mainHeader"
             android:layout_marginTop="@dimen/_50ssp">
 

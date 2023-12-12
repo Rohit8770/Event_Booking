@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_gravity="center"
+    tools:context=".ActivityFragments.QRActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="QR_CODE"
+        android:textStyle="bold"
+        android:layout_marginLeft="@dimen/_120sdp"
+        android:layout_marginTop="@dimen/_200sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_16ssp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center">
+    <ImageView
+        android:id="@+id/qrcode_img"
+        android:layout_width="@dimen/_170sdp"
+        android:layout_height="@dimen/_180sdp"
+        android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Genarate QR"
+            android:layout_marginLeft="@dimen/_38ssp"
+            android:textSize="@dimen/_16ssp"
+            android:layout_marginTop="@dimen/_50ssp"/>
+    <EditText
+        android:id="@+id/qrcode_txt"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="@dimen/_40ssp"
+        android:textSize="@dimen/_16ssp"
+        android:layout_marginTop="@dimen/_2ssp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/background_shape"/>
+    <Button
+        android:id="@+id/qrcode_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_shape"
+        android:text="QR Code"
+        android:layout_marginTop="@dimen/_25ssp"
+        android:textSize="@dimen/_15ssp"
+        android:layout_gravity="center"/>
+    </LinearLayout>
+
+</RelativeLayout>
