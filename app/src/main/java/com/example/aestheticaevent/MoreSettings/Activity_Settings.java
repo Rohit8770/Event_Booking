@@ -73,7 +73,7 @@ public class Activity_Settings extends AppCompatActivity {
         main_layout = findViewById(R.id.main_layout);
         lyDeleteAccount = findViewById(R.id.lyDeleteAccount);
         ivHelpAndFAQsBack = findViewById(R.id.ivHelpAndFAQsBack);
-        SoundId = findViewById(R.id.SoundId);
+      //  SoundId = findViewById(R.id.SoundId);
         llChangePassword = findViewById(R.id.llChangePassword);
 
         userId = sharedPreference.getStringvalue("user_id");
@@ -83,6 +83,7 @@ public class Activity_Settings extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i=new Intent(Activity_Settings.this, ActivityChangePassword.class);
                 startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         ivHelpAndFAQsBack.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +91,8 @@ public class Activity_Settings extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i=new Intent(Activity_Settings.this, Activity_HomeScreen.class);
                 startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
             }
         });
         sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);

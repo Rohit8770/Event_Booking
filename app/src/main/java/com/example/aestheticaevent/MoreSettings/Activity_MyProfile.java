@@ -144,6 +144,7 @@ public class Activity_MyProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -178,7 +179,7 @@ public class Activity_MyProfile extends AppCompatActivity {
         cvProfileEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Editprofile();
+
                 String email = etProfileEditEmail.getText().toString().trim();
                 if (!isValidEmail(email)) {
                     etProfileEditEmail.setError("Enter a valid email address");
@@ -188,12 +189,13 @@ public class Activity_MyProfile extends AppCompatActivity {
                     Toast.makeText(Activity_MyProfile.this, "Please select a photo", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent intent = new Intent(Activity_MyProfile.this, Activity_HomeScreen.class);
+
+               /* Intent intent = new Intent(Activity_MyProfile.this, Activity_HomeScreen.class);
                 intent.putExtra("photoPath", currentPhotoPath);
                 intent.putExtra("fullName",etSignUpName.getText().toString().trim() );
                 intent.putExtra("email", email);
-                startActivity(intent);
-
+                startActivity(intent);*/
+                Editprofile();
           //      Toast.makeText(Activity_MyProfile.this, "Edit Successfully", Toast.LENGTH_SHORT).show();
 
             }
@@ -318,14 +320,17 @@ public class Activity_MyProfile extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                tools.showLoading();
+                                tools.stopLoading();
                                 if (editListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)) {
+                                    Intent i=new Intent(Activity_MyProfile.this,Activity_HomeScreen.class);
                                     // Update shared preferences immediately
                                     sharedPreference.setStringvalue("userName", etSignUpName.getText().toString().trim());
                                     sharedPreference.setStringvalue("email", etProfileEditEmail.getText().toString().trim());
                                     sharedPreference.setStringvalue("photo", editListResponse.getUserImage());
                                     sharedPreference.setStringvalue("mobile", editListResponse.getMobile());
                                     Toast.makeText(Activity_MyProfile.this, editListResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                    startActivity(i);
+                                    finish();
 
                                 }
                             }

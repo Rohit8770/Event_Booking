@@ -54,6 +54,7 @@ public class ActivityChangePassword extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         btnDone.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +68,7 @@ public class ActivityChangePassword extends AppCompatActivity {
     private void ChangePassword() {
         tools.showLoading();
         restcall.ChangePassword("ChangePassword", userId,
-                        etOldPassword.getText().toString().trim(),  // Use old password here
+                        etOldPassword.getText().toString().trim(),
                         etNewPassword.getText().toString().trim(),
                         etConfirmPassword.getText().toString().trim())
 

@@ -20,6 +20,7 @@ import com.example.aestheticaevent.HomeScreen.ActivitySubCategoryEvent;
 import com.example.aestheticaevent.HomeScreen.ActivitySubEvent;
 import com.example.aestheticaevent.HomeScreen.Fragment.UpComingFragment;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.CategoryListResponse;
+import com.example.aestheticaevent.HomeScreen.HomeResponse.Closeevent;
 import com.example.aestheticaevent.R;
 
 import java.util.ArrayList;
@@ -32,6 +33,9 @@ public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.Ev
 
     Adapter_EventList.CategoryInterface categoryInterface;
 
+    public boolean isEmpty() {
+        return getItemCount() == 0;
+    }
     public interface CategoryInterface {
         void onCategoryClicked(String categoryId, String categoryName);
     }
@@ -127,32 +131,29 @@ public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.Ev
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
     public void Search(CharSequence charSequence, RecyclerView categoryListRecyclerView) {
-        try{
-            String charString=charSequence.toString().toLowerCase().trim();
-            if(charString.isEmpty()){
-                searchList=categoryList;
+        try {
+            String charString = charSequence.toString().toLowerCase().trim();
+            if (charString.isEmpty()) {
+                searchList = new ArrayList<>(categoryList);
                 categoryListRecyclerView.setVisibility(View.VISIBLE);
-            }else{
-                int flag=0;
-                List<CategoryListResponse.Category> filterList=new ArrayList<>();
-                for(CategoryListResponse.Category Row:categoryList){
-                    if(Row.getCategoryName().toString().toLowerCase().contains(charString.toLowerCase())){
+            } else {
+                List<CategoryListResponse.Category> filterList = new ArrayList<>();
+                for (CategoryListResponse.Category Row : categoryList) {
+                    if (Row.getCategoryName().toLowerCase().contains(charString.toLowerCase())) {
                         filterList.add(Row);
-                        flag=1;
                     }
                 }
-                if (flag == 1) {
-                    searchList=filterList;
-                    categoryListRecyclerView.setVisibility(View.VISIBLE);
-                }
-                else{
+                searchList = new ArrayList<>(filterList);
+
+                if (searchList.isEmpty()) {
                     categoryListRecyclerView.setVisibility(View.GONE);
+                } else {
+                    categoryListRecyclerView.setVisibility(View.VISIBLE);
                 }
             }
             notifyDataSetChanged();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

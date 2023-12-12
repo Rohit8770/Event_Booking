@@ -95,6 +95,7 @@ public class Tools {
                 vibrator.vibrate(30);
             }
         }
+
     }
 
     public void playBeepSound() {

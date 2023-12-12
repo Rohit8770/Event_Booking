@@ -99,7 +99,7 @@ public class FragmentFilter extends DialogFragment {
         priceRangeFilter.addOnChangeListener(new RangeSlider.OnChangeListener() {
          @Override
          public void onValueChange(@NonNull RangeSlider slider, float value, boolean fromUser) {
-         txprice.setText("0 - " + floatToInt(value));
+         txprice.setText("100 - " + floatToInt(value));
          price = floatToInt(value);
 
          }

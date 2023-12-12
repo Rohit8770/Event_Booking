@@ -149,6 +149,7 @@ public class Activity_SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -169,6 +170,10 @@ public class Activity_SignUp extends AppCompatActivity {
         cvSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                tools.vibrate();
+                tools.playBeepSound();
+
                 //   tools.showLoading();
                 String name = etSignUpName.getText().toString().trim();
                 String email = etSignUpEmail.getText().toString().trim();
@@ -187,6 +192,7 @@ public class Activity_SignUp extends AppCompatActivity {
                 } else if (mobile.isEmpty()) {
                     etSignUpPhone.setError("Please enter mobile number");
                 } else {
+
                     CallRegisterUser();
                 }
             }
@@ -315,6 +321,7 @@ public class Activity_SignUp extends AppCompatActivity {
                                         //    etSignUpCorrectPassword.setText("");
                                             etSignUpPhone.setText("");
                                             finish();
+                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                         }
                                         Toast.makeText(Activity_SignUp.this, "" + registerResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                     }

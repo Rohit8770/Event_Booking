@@ -48,6 +48,10 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
         this.searchList = filteredList;
         notifyDataSetChanged();
     }
+    public boolean isEmpty() {
+        return getItemCount() == 0;
+    }
+
 
     @NonNull
     @Override
@@ -113,28 +117,26 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
         }
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
+    // Inside your SubCateAdapter class
     public void Search(CharSequence charSequence, RecyclerView categoryListRecyclerView) {
         try {
             String charString = charSequence.toString().toLowerCase().trim();
             if (charString.isEmpty()) {
-                searchList = subcategoryList;
+                searchList = new ArrayList<>(subcategoryList);
                 categoryListRecyclerView.setVisibility(View.VISIBLE);
             } else {
-                int flag = 0;
                 List<Subcategory> filterList = new ArrayList<>();
                 for (Subcategory Row : subcategoryList) {
-                    if (Row.getSubCategoryName().toString().toLowerCase().contains(charString.toLowerCase())) {
+                    if (Row.getSubCategoryName().toLowerCase().contains(charString.toLowerCase())) {
                         filterList.add(Row);
-                        flag = 1;
                     }
                 }
-                if (flag == 1) {
-                    searchList = filterList;
-                    categoryListRecyclerView.setVisibility(View.VISIBLE);
-                } else {
+                searchList = new ArrayList<>(filterList);
+
+                if (searchList.isEmpty()) {
                     categoryListRecyclerView.setVisibility(View.GONE);
+                } else {
+                    categoryListRecyclerView.setVisibility(View.VISIBLE);
                 }
             }
             notifyDataSetChanged();
@@ -142,5 +144,6 @@ public class SubCateAdapter extends RecyclerView.Adapter<SubCateAdapter.SubViewH
             e.printStackTrace();
         }
     }
+
 
 }

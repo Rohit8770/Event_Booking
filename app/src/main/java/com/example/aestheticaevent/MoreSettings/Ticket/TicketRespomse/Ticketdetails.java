@@ -51,9 +51,12 @@ public class Ticketdetails {
     @SerializedName("qty_member")
     @Expose
     private String qty_member;
+    @SerializedName("qrcode")
+    @Expose
+    private String qrcode;
 
 
-    public Ticketdetails(String ticketId, String userId, String eventId, String subCategoryId, String username, String subCategoryName, String timing, String date, String location, String price, String ticketTime, String organizer, String total_price, String qty_member) {
+    public Ticketdetails(String ticketId, String userId, String eventId, String subCategoryId, String username, String subCategoryName, String timing, String date, String location, String price, String ticketTime, String organizer, String total_price, String qty_member, String qrcode) {
         this.ticketId = ticketId;
         this.userId = userId;
         this.eventId = eventId;
@@ -68,8 +71,8 @@ public class Ticketdetails {
         this.organizer = organizer;
         this.total_price = total_price;
         this.qty_member = qty_member;
+        this.qrcode = qrcode;
     }
-
 
     public String getTicketId() {
         return ticketId;
@@ -89,6 +92,14 @@ public class Ticketdetails {
 
     public String getEventId() {
         return eventId;
+    }
+
+    public String getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode;
     }
 
     public void setEventId(String eventId) {

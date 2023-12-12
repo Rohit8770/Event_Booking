@@ -42,27 +42,29 @@ public class ActivityTicket extends AppCompatActivity {
 
     RecyclerView rcvTicket;
     Restcall restcall;
-    ImageView ivTicketBack;
+    ImageView ivTicketBack, tvNoData;
+    TextView tvNoDataFound;
     TicketAdapter ticketAdapter;
     EditText etTicketSearch;
     SharedPreference sharedPreference;
     Tools tools;
     TextView txNodata;
     SwipeRefreshLayout swipeRefreshTicketLayout;
-    String subCatId,user_id;
+    String subCatId, user_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticket);
 
-        tools=new Tools(this);
+        tools = new Tools(this);
         tools.ScreenshotBlock(getWindow());
-        sharedPreference=new SharedPreference(ActivityTicket.this);
-        etTicketSearch=findViewById(R.id.etTicketSearch);
-        swipeRefreshTicketLayout=findViewById(R.id.swipeRefreshTicketLayout);
-        ivTicketBack=findViewById(R.id.ivTicketBack);
-       // txNodata=findViewById(R.id.txNodata);
-
+        sharedPreference = new SharedPreference(ActivityTicket.this);
+        etTicketSearch = findViewById(R.id.etTicketSearch);
+        swipeRefreshTicketLayout = findViewById(R.id.swipeRefreshTicketLayout);
+        ivTicketBack = findViewById(R.id.ivTicketBack);
+        tvNoDataFound = findViewById(R.id.tvNoDataFound);
+        tvNoData = findViewById(R.id.tvNoData);
 
 
         ivTicketBack.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +73,9 @@ public class ActivityTicket extends AppCompatActivity {
                 /*Intent i=new Intent(ActivityTicket.this, Activity_HomeScreen.class);
                 startActivity(i);*/
                 finish();
+
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
             }
         });
         swipeRefreshTicketLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -86,73 +91,87 @@ public class ActivityTicket extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (ticketAdapter!=null){
+                if (ticketAdapter != null) {
                     ticketAdapter.Search(charSequence, rcvTicket);
                 }
+
+                boolean isSearchResultsEmpty = ticketAdapter.isEmpty();
+                if (isSearchResultsEmpty) {
+                    tvNoDataFound.setVisibility(View.VISIBLE);
+                    tvNoData.setVisibility(View.VISIBLE);
+                } else {
+                    tvNoDataFound.setVisibility(View.GONE);
+                    tvNoData.setVisibility(View.GONE);
+                }
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
             }
         });
-
 
         Intent i = getIntent();
         if (i != null) {
             user_id = sharedPreference.getStringvalue(VariableBag.USER_ID);
         }
 
-        rcvTicket=findViewById(R.id.rcvTicket);
-        restcall= RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
+        rcvTicket = findViewById(R.id.rcvTicket);
+        restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
 
     }
+
     protected void onResume() {
         super.onResume();
         GetEventTicketCall();
     }
 
-    public  void GetEventTicketCall(){
+    public void GetEventTicketCall() {
         tools.showLoading();
-     //   txNodata.setVisibility(View.GONE);
-        restcall.GetTicketDetails("getticketdetails",user_id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.newThread())
-                .subscribe(new Subscriber<PassListResponse>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                tools.stopLoading();
-                                // txNodata.setVisibility(View.VISIBLE);
-                                Toast.makeText(ActivityTicket.this, "No internet", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                    @Override
-                    public void onNext(PassListResponse passListResponse) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                tools.stopLoading();
-                            //    txNodata.setVisibility(View.VISIBLE);
-                                if (passListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
-                                        && passListResponse.getTicketdetailsList() != null
-                                        && passListResponse.getTicketdetailsList().size() > 0) {
+        restcall.GetTicketDetails("getticketdetails", user_id).subscribeOn(Schedulers.io()).observeOn(Schedulers.newThread()).subscribe(new Subscriber<PassListResponse>() {
+            @Override
+            public void onCompleted() {
+            }
 
-                                    LinearLayoutManager layoutManager = new LinearLayoutManager(ActivityTicket.this,RecyclerView.VERTICAL,false);
-                                    rcvTicket.setLayoutManager(layoutManager);
-                                    ticketAdapter = new TicketAdapter(ActivityTicket.this, passListResponse.getTicketdetailsList());
-                                    rcvTicket.setAdapter(ticketAdapter);
-                                }
-                            }
-                        });
+            @Override
+            public void onError(Throwable e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tools.stopLoading();
+
+                        Toast.makeText(ActivityTicket.this, "No internet", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+
+            @Override
+            public void onNext(PassListResponse passListResponse) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tools.stopLoading();
+                        //    txNodata.setVisibility(View.VISIBLE);
+                        if (passListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE) && passListResponse.getTicketdetailsList() != null && passListResponse.getTicketdetailsList().size() > 0) {
+
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(ActivityTicket.this, RecyclerView.VERTICAL, false);
+                            rcvTicket.setLayoutManager(layoutManager);
+                            ticketAdapter = new TicketAdapter(ActivityTicket.this, passListResponse.getTicketdetailsList());
+                            rcvTicket.setAdapter(ticketAdapter);
+                            if (ticketAdapter.isEmpty()) {
+                                tvNoDataFound.setVisibility(View.VISIBLE);
+                                tvNoData.setVisibility(View.VISIBLE);
+                            } else {
+                                tvNoDataFound.setVisibility(View.GONE);
+                                tvNoData.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                });
+            }
+        });
     }
 
 }

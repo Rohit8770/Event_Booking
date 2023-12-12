@@ -13,6 +13,7 @@ import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.ChangePass
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.DeleteListResponse;
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.EditListResponse;
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.PassListResponse;
+import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.QrListResponse;
 import com.example.aestheticaevent.User.UserResponse.LoginResponse;
 import com.example.aestheticaevent.User.UserResponse.RegisterResponse;
 
@@ -82,12 +83,13 @@ public interface Restcall {
     Single<ButTicketListResponse> AddTicketDetails(
             @Field("tag") String tag,
             @Field("event_id") String event_id,
-            @Field("user_id") String user_id,
+            @Field("username") String username,
             @Field("sub_category_id") String sub_category_id,
             @Field("qty_member") String qty_member,
-            @Field("category_id") String category_id);
+            @Field("category_id") String category_id,
+            @Field("user_id") String user_id);
 
-    @FormUrlEncoded
+    @FormUrlEncoded 
     @POST("controller/passcontrollerapi.php")
     Single<PassListResponse> GetTicketDetails(
             @Field("tag") String tag,
@@ -106,8 +108,6 @@ public interface Restcall {
             @Field("tag") String tag,
             @Field("user_id") String user_id);
 
-
-
     @Multipart
     @POST("controller/passwordcontroller.php")
     Single<EditListResponse> Editprofile(
@@ -117,7 +117,6 @@ public interface Restcall {
             @Part("email") RequestBody email,
             @Part MultipartBody.Part user_image,
             @Part("mobile") RequestBody mobile);
-
 
     @FormUrlEncoded
     @POST("controller/passwordcontroller.php")
@@ -142,6 +141,27 @@ public interface Restcall {
     Single<MobileListResponse> GetAllData(
             @Field("tag") String tag);
 
+
+/*    @FormUrlEncoded
+    @POST("controller/qrcodecontroller.php")
+    Single<QrListResponse> AddticketdetailCall(
+            @Field("tag") String tag,
+            @Field("category_id") String category_id,
+            @Field("event_id") String event_id,
+            @Field("user_id") String user_id,
+            @Field("qty_member") String qty_member,
+            @Field("sub_category_id") String sub_category_id);*/
+
+    @FormUrlEncoded
+    @POST("controller/qrApicontroller.php")
+    Single<QrListResponse> Qrcodegenerate(
+            @Field("tag") String tag,
+            @Field("event_id") String event_id,
+            @Field("username") String username,
+            @Field("date") String date,
+            @Field("timing") String timing,
+            @Field("qty_member") String qty_member,
+            @Field("user_id") String user_id);
 }
 
 

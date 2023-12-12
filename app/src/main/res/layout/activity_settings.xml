@@ -44,7 +44,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/_15ssp" />
 
-    <androidx.cardview.widget.CardView
+   <!-- <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50ssp"
         android:layout_margin="@dimen/_5ssp"
@@ -75,7 +75,7 @@
                 android:thumbTint="@color/colorAccent" />
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>-->
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -110,7 +110,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
+    <!--<androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50ssp"
         android:layout_margin="@dimen/_5ssp"
@@ -141,7 +141,7 @@
                 android:thumbTint="@color/colorAccent" />
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>-->
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

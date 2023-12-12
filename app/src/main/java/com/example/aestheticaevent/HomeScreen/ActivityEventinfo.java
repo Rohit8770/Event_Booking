@@ -34,6 +34,7 @@ import com.example.aestheticaevent.BuyTicketSplash;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.DataModelNew;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.ButTicketListResponse;
 import com.example.aestheticaevent.HomeScreen.HomeResponse.LocationLisResponse;
+import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.QrListResponse;
 import com.example.aestheticaevent.R;
 import com.example.aestheticaevent.Utils.SharedPreference;
 import com.example.aestheticaevent.Utils.Tools;
@@ -63,7 +64,7 @@ public class ActivityEventinfo extends AppCompatActivity {
     TextView tvFollow;
     Restcall restcall;
     ImageView ivProfileBack;
-    String subCatId, categoryId, userId, eventId;
+    String subCatId, categoryId, userId, eventId,ticketId;
     LinearLayout btnBuy;
     SharedPreference sharedPreference;
     int countTicket = 1;
@@ -146,36 +147,28 @@ public class ActivityEventinfo extends AppCompatActivity {
 
         btnBuy.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(ActivityEventinfo.this);
                 builder.setTitle("Confirmation");
                 builder.setMessage("Are you sure you want to buy this event?");
                 builder.setPositiveButton("Buy", (dialog, which) -> {
                     handleBuyEvent();
 
-
+                    tools.vibrate();
+                    tools.playBeepSound();
                     AddTicketDetailsCall();
+                   // AddticketdetailCall();
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         createNotificationChannel(ActivityEventinfo.this);
                     }
                     showNotification();
-                   /* Intent resultIntent = new Intent(ActivityEventinfo.this, ActivityNotification.class);
-                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(ActivityEventinfo.this);
-                    stackBuilder.addNextIntentWithParentStack(resultIntent);
-                    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-                    Notification notification = new NotificationCompat.Builder(ActivityEventinfo.this, "alarm_channel")
-                            .setContentTitle("Congratulations")
-                            .setContentText("Your Event is Booked SuccessFully")
-                            .setSmallIcon(R.drawable.notification_alarm)
-                            .setContentIntent(resultPendingIntent)
-                            .build();
-                    NotificationManager notificationManager = (NotificationManager) ActivityEventinfo.this.getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.notify(0, notification);*/
                 });
                 builder.setNegativeButton("Cancel", (dialog, which) -> {
                     dialog.dismiss();
                 });
                 AlertDialog alertDialog = builder.create();
-
                 alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialog) {
@@ -191,6 +184,7 @@ public class ActivityEventinfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -212,6 +206,8 @@ public class ActivityEventinfo extends AppCompatActivity {
             txtVenue = findViewById(R.id.txtVenue);
             restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
             Geteventinfo(subCatId);
+
+
         }
     }
 
@@ -244,9 +240,7 @@ public class ActivityEventinfo extends AppCompatActivity {
                             public void run() {
                                 tools.stopLoading();
                                 if (dataModelNew.getStatus().equals(VariableBag.SUCCESS_CODE)) {
-
                                     txName.setText(dataModelNew.getEventList().get(0).getSubCategoryName());
-
 
                                     Glide
                                             .with(ActivityEventinfo.this)
@@ -263,7 +257,6 @@ public class ActivityEventinfo extends AppCompatActivity {
                                     txtVenue1.setText(dataModelNew.getEventList().get(0).getVenue());
                                     eventId = dataModelNew.getEventList().get(0).getEventId();
                                     tvBuy.setText("Buy Ticket " + Integer.parseInt(price) * 1 + getString(R.string.Rs));
-
                                 }
                                 Toast.makeText(ActivityEventinfo.this, "" + dataModelNew.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -272,14 +265,16 @@ public class ActivityEventinfo extends AppCompatActivity {
                 });
     }
 
-    private void AddTicketDetailsCall() {
+        private void AddTicketDetailsCall() {
         tools.showLoading();
-        restcall.AddTicketDetails("Addticketdetails", eventId, userId, subCatId, String.valueOf(countTicket), categoryId)
+        restcall.AddTicketDetails("Addticketdetails", eventId, sharedPreference.
+                        getStringvalue("userName"), subCatId, String.valueOf(countTicket), categoryId,userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<ButTicketListResponse>() {
                     @Override
                     public void onCompleted() {
+
                     }
 
                     @Override
@@ -302,6 +297,8 @@ public class ActivityEventinfo extends AppCompatActivity {
                                 tools.stopLoading();
                                 if (butTicketListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)) {
 
+                                    sharedPreference.setStringvalue("ticketId",butTicketListResponse.getId());
+                                    QrcodegenerateCall();
                                 }
                                 Toast.makeText(ActivityEventinfo.this, "" + butTicketListResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -309,6 +306,46 @@ public class ActivityEventinfo extends AppCompatActivity {
                     }
                 });
     }
+
+    private void QrcodegenerateCall() {
+        tools.showLoading();
+        restcall.Qrcodegenerate("qrcodegenerate",eventId,sharedPreference.
+                        getStringvalue("userName"), txCalander.getText().toString().trim(),
+                        txStartTime.getText().toString().trim(),
+                        String.valueOf(countTicket),userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<QrListResponse>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tools.stopLoading();
+                                Log.e("API Error", "Error: " + e.getLocalizedMessage());
+                                Toast.makeText(ActivityEventinfo.this, "No Internet", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    @Override
+                    public void onNext(QrListResponse qrListResponse) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tools.stopLoading();
+                                if (qrListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)) {
+
+                                }
+                                Toast.makeText(ActivityEventinfo.this, "" + qrListResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+    }
+
 
     private void GetsubcategoryCall() {
         tools.showLoading();

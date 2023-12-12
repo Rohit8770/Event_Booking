@@ -126,10 +126,11 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+
         <RelativeLayout
             android:id="@+id/layoutTwo"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_250sdp"
+            android:layout_height="@dimen/_260sdp"
             android:layout_below="@id/mainHeader"
             android:layout_marginTop="@dimen/_50ssp">
 
@@ -284,13 +285,21 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/_15ssp" />
 
+
+
                     <TextView
                         android:id="@+id/tvHomeMenuUserEmail"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/_120sdp"
                         android:layout_height="wrap_content"
                         android:text="Email"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_10ssp" />
+                        android:textSize="@dimen/_10ssp"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:singleLine="true"
+                        />
                 </LinearLayout>
             </LinearLayout>
 

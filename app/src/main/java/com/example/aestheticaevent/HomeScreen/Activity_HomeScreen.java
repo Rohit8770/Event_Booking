@@ -112,13 +112,14 @@ public class Activity_HomeScreen extends AppCompatActivity {
         restcall = RestClient.createService(Restcall.class, VariableBag.BASE_URL, VariableBag.API_KEY);
 
 
-      //  txNodata.setVisibility(View.VISIBLE);
-      //  getFCMToken();
+        tvHomeMenuUserEmail.setSelected(true);
         imgNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Activity_HomeScreen.this, ActivityNotification.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
             }
         });
 
@@ -176,6 +177,15 @@ public class Activity_HomeScreen extends AppCompatActivity {
                 if (adapterEventList != null) {
                     adapterEventList.Search(charSequence, rcvEvent);
                 }
+
+                boolean isSearchResultsEmpty = adapterEventList.isEmpty();
+                if (isSearchResultsEmpty) {
+                    tvNoDataFound.setVisibility(View.VISIBLE);
+                    tvNoData.setVisibility(View.VISIBLE);
+                } else {
+                    tvNoDataFound.setVisibility(View.GONE);
+                    tvNoData.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -196,6 +206,8 @@ public class Activity_HomeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Activity_HomeScreen.this, Activity_MyProfile.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
             }
         });
 
@@ -204,6 +216,8 @@ public class Activity_HomeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Activity_HomeScreen.this, Activity_ContactUs.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
             }
         });
 
@@ -212,6 +226,8 @@ public class Activity_HomeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Activity_HomeScreen.this, Activity_HelpAndFAQs.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
             }
         });
 
@@ -235,6 +251,8 @@ public class Activity_HomeScreen extends AppCompatActivity {
                 Intent intent = new Intent(Activity_HomeScreen.this, Activity_Settings.class);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
             }
         });
 
@@ -243,12 +261,17 @@ public class Activity_HomeScreen extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Activity_HomeScreen.this, ActivityTicket.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
 
             }
         });
         layoutLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tools.vibrate();
+                tools.playBeepSound();
+
                 // Create the AlertDialog.Builder
                 AlertDialog.Builder builder = new AlertDialog.Builder(Activity_HomeScreen.this);
                 builder.setTitle("Log Out")
@@ -349,6 +372,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
                                             i.putExtra("categoryId", categoryId);
                                             i.putExtra("categoryName", categoryName);
                                             startActivity(i);
+                                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                         }
                                     });
                                 }else {
@@ -396,6 +420,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
     }
 
     // @SuppressLint("MissingSuperCall")
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         //  super.onBackPressed();
@@ -436,3 +461,5 @@ public class Activity_HomeScreen extends AppCompatActivity {
         startActivity(Intent.createChooser(i, "Seek my vision"));
     }
 }
+
+//Rohit

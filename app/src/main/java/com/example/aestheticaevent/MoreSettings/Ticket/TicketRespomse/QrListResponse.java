@@ -1,4 +1,4 @@
- package com.example.aestheticaevent.HomeScreen.HomeResponse;
+package com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse;
 
 import java.io.Serializable;
 import android.os.Parcelable;
@@ -7,26 +7,48 @@ import com.google.gson.annotations.SerializedName;
 
 import javax.annotation.processing.Generated;
 
- @Generated("jsonschema2pojo")
-public class ButTicketListResponse implements Serializable, Parcelable
+@Generated("jsonschema2pojo")
+public class QrListResponse implements Serializable, Parcelable
 {
 
     @SerializedName("id")
     @Expose
-    private String id;
+    private Integer id;
     @SerializedName("message")
     @Expose
     private String message;
     @SerializedName("status")
     @Expose
     private String status;
+    public final static Creator<QrListResponse> CREATOR = new Creator<QrListResponse>() {
 
+
+        public QrListResponse createFromParcel(android.os.Parcel in) {
+            return new QrListResponse(in);
+        }
+
+        public QrListResponse[] newArray(int size) {
+            return (new QrListResponse[size]);
+        }
+
+    }
+            ;
+    private final static long serialVersionUID = 375232897875700018L;
+
+    @SuppressWarnings({
+            "unchecked"
+    })
+    protected QrListResponse(android.os.Parcel in) {
+        this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.message = ((String) in.readValue((String.class.getClassLoader())));
+        this.status = ((String) in.readValue((String.class.getClassLoader())));
+    }
 
     /**
      * No args constructor for use in serialization
      *
      */
-    public ButTicketListResponse() {
+    public QrListResponse() {
     }
 
     /**
@@ -35,18 +57,18 @@ public class ButTicketListResponse implements Serializable, Parcelable
      * @param message
      * @param status
      */
-    public ButTicketListResponse(String id, String message, String status) {
+    public QrListResponse(Integer id, String message, String status) {
         super();
         this.id = id;
         this.message = message;
         this.status = status;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -80,10 +102,10 @@ public class ButTicketListResponse implements Serializable, Parcelable
         if (other == this) {
             return true;
         }
-        if ((other instanceof ButTicketListResponse) == false) {
+        if ((other instanceof QrListResponse) == false) {
             return false;
         }
-        ButTicketListResponse rhs = ((ButTicketListResponse) other);
+        QrListResponse rhs = ((QrListResponse) other);
         return ((((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id)))&&((this.message == rhs.message)||((this.message!= null)&&this.message.equals(rhs.message))))&&((this.status == rhs.status)||((this.status!= null)&&this.status.equals(rhs.status))));
     }
 

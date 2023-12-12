@@ -1,7 +1,9 @@
 package com.example.aestheticaevent.MoreSettings.Ticket.TicketAdapterss;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.aestheticaevent.HomeScreen.HomeResponse.CategoryListResponse;
 import com.example.aestheticaevent.MoreSettings.Ticket.ActivityTicket;
 import com.example.aestheticaevent.MoreSettings.Ticket.TicketRespomse.Ticketdetails;
 import com.example.aestheticaevent.R;
@@ -29,6 +33,9 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         this.context = context;
         this.ticketdetailsList = ticketdetailsList;
         this.searchList =  new ArrayList<>(ticketdetailsList);
+    }
+    public boolean isEmpty() {
+        return getItemCount() == 0;
     }
 
 
@@ -51,6 +58,23 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         holder.txTicketNumber.setText(userdetails.getTicketId());
         holder.txtBookingPerson.setText(userdetails.getQty_member());
 
+        try {
+            Glide.with(context)
+                    .load(searchList.get(position).getQrcode())
+                    .placeholder(R.drawable.person_image)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .into(holder.qrCodeId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        holder.qrCodeId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showImageInDialog(searchList.get(position).getQrcode());
+            }
+        });
+
 
     }
 
@@ -62,7 +86,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
     public class TicketViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtUserName,txtEventSubCateName,txtEventDate,txtEventTime,txtEventAddress,txtPassPrice,txtBookingTime,txTicketNumber,txtBookingPerson;
-        ImageView btnDownload;
+        ImageView qrCodeId;
         public TicketViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -75,39 +99,60 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
             txtEventSubCateName=itemView.findViewById(R.id.txtEventSubCateName);
             txTicketNumber=itemView.findViewById(R.id.txTicketNumber);
             txtBookingPerson=itemView.findViewById(R.id.txtBookingPerson);
-            btnDownload=itemView.findViewById(R.id.btnDownload);
+            qrCodeId=itemView.findViewById(R.id.qrCodeId);
+
 
         }
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
     public void Search(CharSequence charSequence, RecyclerView categoryListRecyclerView) {
-        try{
-            String charString=charSequence.toString().toLowerCase().trim();
-            if(charString.isEmpty()){
-                searchList=ticketdetailsList;
+        try {
+            String charString = charSequence.toString().toLowerCase().trim();
+            if (charString.isEmpty()) {
+                searchList = new ArrayList<>(ticketdetailsList);
                 categoryListRecyclerView.setVisibility(View.VISIBLE);
-            }else{
-                int flag=0;
-                List<Ticketdetails> filterList=new ArrayList<>();
-                for(Ticketdetails Row:ticketdetailsList){
-                    if(Row.getSubCategoryName().toString().toLowerCase().contains(charString.toLowerCase())){
+            } else {
+                List<Ticketdetails> filterList = new ArrayList<>();
+                for (Ticketdetails Row : ticketdetailsList) {
+                    if (Row.getSubCategoryName().toLowerCase().contains(charString.toLowerCase())) {
                         filterList.add(Row);
-                        flag=1;
                     }
                 }
-                if (flag == 1) {
-                    searchList=filterList;
-                    categoryListRecyclerView.setVisibility(View.VISIBLE);
-                }
-                else{
+                searchList = new ArrayList<>(filterList);
+
+                if (searchList.isEmpty()) {
                     categoryListRecyclerView.setVisibility(View.GONE);
+                } else {
+                    categoryListRecyclerView.setVisibility(View.VISIBLE);
                 }
             }
             notifyDataSetChanged();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
+    private void showImageInDialog(String imageUrl) {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.qr_dialog_full_screen);
+
+        ImageView imageView = dialog.findViewById(R.id.imgFullScreen);
+        try {
+            Glide.with(dialog.getContext()).load(imageUrl).placeholder(R.drawable.background).error(R.drawable.ic_launcher_foreground).into(imageView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Close the dialog
+        imageView.setOnClickListener(v -> dialog.dismiss());
+
+        // Show the dialog
+        try {
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
