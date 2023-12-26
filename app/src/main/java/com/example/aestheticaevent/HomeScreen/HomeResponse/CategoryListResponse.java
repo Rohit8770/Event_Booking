@@ -1,91 +1,83 @@
- package com.example.aestheticaevent.HomeScreen.HomeResponse;
+package com.example.aestheticaevent.HomeScreen.HomeResponse;
 
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.util.List;
 
- public class CategoryListResponse {
-     @SerializedName("categoryList")
-     @Expose
-     private List<Category> categoryList;
-     @SerializedName("message")
-     @Expose
-     private String message;
-     @SerializedName("status")
-     @Expose
-     private String status;
+import javax.annotation.processing.Generated;
 
-     public CategoryListResponse(List<Category> categoryList, String message, String status) {
-         this.categoryList = categoryList;
-         this.message = message;
-         this.status = status;
-     }
+@Generated("jsonschema2pojo")
+public class CategoryListResponse {
 
-     public List<Category> getCategoryList() {
-         return categoryList;
-     }
-
-     public void setCategoryList(List<Category> categoryList) {
-         this.categoryList = categoryList;
-     }
-
-     public String getMessage() {
-         return message;
-     }
-
-     public void setMessage(String message) {
-         this.message = message;
-     }
-
-     public String getStatus() {
-         return status;
-     }
-
-     public void setStatus(String status) {
-         this.status = status;
-     }
-
-public class Category {
-
-    @SerializedName("category_id")
+    @SerializedName("GetcategoryList")
     @Expose
-    private String categoryId;
-    @SerializedName("category_name")
+    public List<Getcategory> getcategoryList;
+    @SerializedName("message")
     @Expose
-    private String categoryName;
-    @SerializedName("category_image")
+    public String message;
+    @SerializedName("status")
     @Expose
-    private String categoryImage;
+    public String status;
 
-    public Category(String categoryId, String categoryName, String categoryImage) {
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
-        this.categoryImage = categoryImage;
+    public CategoryListResponse(List<Getcategory> getcategoryList, String message, String status) {
+        this.getcategoryList = getcategoryList;
+        this.message = message;
+        this.status = status;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public List<Getcategory> getGetcategoryList() {
+        return getcategoryList;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setGetcategoryList(List<Getcategory> getcategoryList) {
+        this.getcategoryList = getcategoryList;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getMessage() {
+        return message;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getCategoryImage() {
-        return categoryImage;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCategoryImage(String categoryImage) {
-        this.categoryImage = categoryImage;
+    public void setStatus(String status) {
+        this.status = status;
     }
-}
 
+
+    public class Getcategory {
+
+        @SerializedName("category_name")
+        @Expose
+        public String categoryName;
+        @SerializedName("category_image")
+        @Expose
+        public String categoryImage;
+
+        public Getcategory(String categoryName, String categoryImage) {
+            this.categoryName = categoryName;
+            this.categoryImage = categoryImage;
+        }
+
+        public String getCategoryName() {
+            return categoryName;
+        }
+
+        public void setCategoryName(String categoryName) {
+            this.categoryName = categoryName;
+        }
+
+        public String getCategoryImage() {
+            return categoryImage;
+        }
+
+        public void setCategoryImage(String categoryImage) {
+            this.categoryImage = categoryImage;
+        }
+    }
 }

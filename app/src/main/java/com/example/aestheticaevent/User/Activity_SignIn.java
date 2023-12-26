@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,6 +91,7 @@ public class Activity_SignIn extends AppCompatActivity {
         etSignInPassword = findViewById(R.id.etSignInPassword);
         tvSignInForgotPassword = findViewById(R.id.tvSignInForgotPassword);
         etSignInEmail = findViewById(R.id.etSignInEmail);
+        btnBack = findViewById(R.id.btnBack);
         ivSignInCloseEye = findViewById(R.id.ivSignInCloseEye);
         tvSignInSignUp = findViewById(R.id.tvSignInSignUp);
         cvSignInButton = findViewById(R.id.cvSignInButton);
@@ -103,6 +105,14 @@ public class Activity_SignIn extends AppCompatActivity {
             getContext();
         }
 
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i= new Intent(Activity_SignIn.this, Activity_HomeScreen.class);
+                startActivity(i);
+            }
+        });
 
         tvSignInForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override

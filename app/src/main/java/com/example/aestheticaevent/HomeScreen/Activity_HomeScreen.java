@@ -2,6 +2,7 @@ package com.example.aestheticaevent.HomeScreen;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
@@ -14,6 +15,7 @@ import android.annotation.SuppressLint;
 
 import androidx.biometric.BiometricPrompt;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +23,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -29,6 +32,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,11 +74,15 @@ public class Activity_HomeScreen extends AppCompatActivity {
     CircleImageView civHomeMenuUserImage;
     View layout, layoutProfile, layoutContactUs, layoutHelpAndFAQs, layoutInviteAndShare, layoutLogOut, layoutSetting, layoutTicket;
     SharedPreference sharedPreference;
+    LinearLayout voiceSearch;
+    private static final int VOICE_SEARCH_REQUEST_CODE = 123;
+
     private SharedPreferences sharedPreferences;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
     private RelativeLayout LayoutRelative;
     Restcall restcall;
+    String imgUrl;
     Tools tools;
 
     @SuppressLint("MissingInflatedId")
@@ -85,6 +93,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
 
 
         txtInvite = findViewById(R.id.txtInvite);
+        voiceSearch = findViewById(R.id.voiceSearch);
         tools = new Tools(this);
         tools.ScreenshotBlock(getWindow());
         sharedPreference = new SharedPreference(Activity_HomeScreen.this);
@@ -93,7 +102,6 @@ public class Activity_HomeScreen extends AppCompatActivity {
         etEventSearch = findViewById(R.id.etEventSearch);
         layout = findViewById(R.id.layout);
         tv = findViewById(R.id.tv);
-     //   txNodata = findViewById(R.id.txNodata);
         LayoutRelative = findViewById(R.id.LayoutRelative);
         tvHomeMenuUserName = findViewById(R.id.tvHomeMenuUserName);
         tvHomeMenuUserEmail = findViewById(R.id.tvHomeMenuUserEmail);
@@ -113,6 +121,20 @@ public class Activity_HomeScreen extends AppCompatActivity {
 
 
         tvHomeMenuUserEmail.setSelected(true);
+
+        civHomeMenuUserImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showImageInDialog(imgUrl);
+            }
+        });
+
+        voiceSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openVoiceSearch();
+            }
+        });
         imgNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -353,8 +375,8 @@ public class Activity_HomeScreen extends AppCompatActivity {
                             public void run() {
                                 tools.stopLoading();
                                 if (categoryListResponse.getStatus().equalsIgnoreCase(VariableBag.SUCCESS_CODE)
-                                        && categoryListResponse.getCategoryList() != null
-                                        && categoryListResponse.getCategoryList().size() > 0) {
+                                        && categoryListResponse.getGetcategoryList() != null
+                                        && categoryListResponse.getGetcategoryList().size() > 0) {
 
                                     rcvEvent.setVisibility(View.VISIBLE);
                                     tvNoData.setVisibility(View.GONE);
@@ -362,7 +384,7 @@ public class Activity_HomeScreen extends AppCompatActivity {
 
                                     LinearLayoutManager layoutManager = new LinearLayoutManager(Activity_HomeScreen.this, RecyclerView.HORIZONTAL, false);
                                     rcvEvent.setLayoutManager(layoutManager);
-                                    adapterEventList = new Adapter_EventList(Activity_HomeScreen.this, categoryListResponse.getCategoryList());
+                                    adapterEventList = new Adapter_EventList(Activity_HomeScreen.this, categoryListResponse.getGetcategoryList());
                                     rcvEvent.setAdapter(adapterEventList);
 
                                     adapterEventList.setCategoryInterface(new Adapter_EventList.CategoryInterface() {
@@ -418,12 +440,9 @@ public class Activity_HomeScreen extends AppCompatActivity {
             Toast.makeText(this, "Device doesn't support biometric authentication", Toast.LENGTH_SHORT).show();
         }
     }
-
-    // @SuppressLint("MissingSuperCall")
     @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-        //  super.onBackPressed();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Exit")
                 .setMessage("Are you sure you want to exit the app?")
@@ -460,6 +479,58 @@ public class Activity_HomeScreen extends AppCompatActivity {
         i.putExtra(Intent.EXTRA_TEXT, subject);
         startActivity(Intent.createChooser(i, "Seek my vision"));
     }
+
+    public void openVoiceSearch() {
+        Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        startActivityForResult(i, VOICE_SEARCH_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == VOICE_SEARCH_REQUEST_CODE && resultCode == RESULT_OK) {
+            ArrayList<String> arrayList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+         if (!arrayList.isEmpty()){
+             String voice =arrayList.get(0);
+             searchListCategory(voice);
+         }else {
+             Toast.makeText(this, "No voice detected", Toast.LENGTH_SHORT).show();
+         }
+        }else {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public  void searchListCategory(String CategoryName){
+
+        adapterEventList.Search(CategoryName,rcvEvent);
+        if (adapterEventList.isEmpty()){
+            tvNoData.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showImageInDialog(String imageUrl) {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.img_front_page_);
+
+        CircleImageView imageView = dialog.findViewById(R.id.imgFullScreen);
+        try {
+            Glide.with(dialog.getContext()).load(imageUrl).placeholder(R.drawable.background).error(R.drawable.ic_launcher_foreground).into(imageView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Close the dialog
+        imageView.setOnClickListener(v -> dialog.dismiss());
+
+        // Show the dialog
+        try {
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
 //Rohit

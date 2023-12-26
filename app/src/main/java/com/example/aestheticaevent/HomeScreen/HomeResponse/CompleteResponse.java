@@ -19,7 +19,7 @@ public class CompleteResponse implements Serializable, Parcelable
     private List<Closeevent> closeeventList;
     @SerializedName("message")
     @Expose
-    private String message;
+      private String message;
     @SerializedName("status")
     @Expose
     private String status;

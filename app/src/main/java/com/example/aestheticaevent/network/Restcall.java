@@ -47,10 +47,16 @@ public interface Restcall {
             @Field("password") String password);
 
 
-    @FormUrlEncoded
+   /* @FormUrlEncoded
     @POST("controller/categorycontroller.php")
     Single<CategoryListResponse> getcategory(
+            @Field("tag") String tag);*/
+
+    @FormUrlEncoded
+    @POST("Controller/EventBooking.php")
+    Single<CategoryListResponse> getcategory(
             @Field("tag") String tag);
+
 
     @FormUrlEncoded
     @POST("controller/upcomingevent.php")

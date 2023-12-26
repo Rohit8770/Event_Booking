@@ -28,8 +28,8 @@ import java.util.List;
 
 public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.EventViewHolder> {
     Context context;
-    List<CategoryListResponse.Category> categoryList;
-    List<CategoryListResponse.Category> searchList;
+    List<CategoryListResponse.Getcategory> categoryList;
+    List<CategoryListResponse.Getcategory> searchList;
 
     Adapter_EventList.CategoryInterface categoryInterface;
 
@@ -45,7 +45,7 @@ public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.Ev
         this.categoryInterface = categoryInterface;
     }
 
-    public Adapter_EventList(Context context, List<CategoryListResponse.Category> categoryList) {
+    public Adapter_EventList(Context context, List<CategoryListResponse.Getcategory> categoryList) {
         this.context = context;
         this.categoryList = categoryList;
         this.searchList = new ArrayList<>(categoryList);
@@ -60,7 +60,7 @@ public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.Ev
 
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
-        CategoryListResponse.Category category = searchList.get(position);
+        CategoryListResponse.Getcategory category = searchList.get(position);
 
         try {
             Glide.with(context)
@@ -85,7 +85,7 @@ public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.Ev
 
         holder.itemView.setOnClickListener(v -> {
             if (categoryInterface != null) {
-                categoryInterface.onCategoryClicked(category.getCategoryId(), category.getCategoryName());
+                categoryInterface.onCategoryClicked(category.getCategoryImage(), category.getCategoryName());
             }
         });
 
@@ -138,8 +138,8 @@ public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.Ev
                 searchList = new ArrayList<>(categoryList);
                 categoryListRecyclerView.setVisibility(View.VISIBLE);
             } else {
-                List<CategoryListResponse.Category> filterList = new ArrayList<>();
-                for (CategoryListResponse.Category Row : categoryList) {
+                List<CategoryListResponse.Getcategory> filterList = new ArrayList<>();
+                for (CategoryListResponse.Getcategory Row : categoryList) {
                     if (Row.getCategoryName().toLowerCase().contains(charString.toLowerCase())) {
                         filterList.add(Row);
                     }
@@ -157,5 +157,33 @@ public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.Ev
             e.printStackTrace();
         }
     }
+
+  /*  public void Search(CharSequence charSequence, RecyclerView rcv) {
+        try {
+            String charString = charSequence.toString().toLowerCase().trim();
+            if (charString.isEmpty()) {
+                searchList = categoryList;
+                rcv.setVisibility(View.VISIBLE);
+            } else {
+                int flag = 0;
+                List<CategoryListResponse.Getcategory> filterlist = new ArrayList<>();
+                for (CategoryListResponse.Getcategory Row : categoryList) {
+                    if (Row.getCategoryName().toLowerCase().contains(charString.toLowerCase())) {
+                        filterlist.add(Row);
+                        flag = 1;
+                    }
+                }
+                if (flag == 1) {
+                    searchList = filterlist;
+                    rcv.setVisibility(View.VISIBLE);
+                } else {
+                    rcv.setVisibility(View.GONE);
+                }
+            }
+            notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
 
 }

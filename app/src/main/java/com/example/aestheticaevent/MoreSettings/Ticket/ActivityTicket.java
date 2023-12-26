@@ -160,6 +160,7 @@ public class ActivityTicket extends AppCompatActivity {
                             rcvTicket.setLayoutManager(layoutManager);
                             ticketAdapter = new TicketAdapter(ActivityTicket.this, passListResponse.getTicketdetailsList());
                             rcvTicket.setAdapter(ticketAdapter);
+
                             if (ticketAdapter.isEmpty()) {
                                 tvNoDataFound.setVisibility(View.VISIBLE);
                                 tvNoData.setVisibility(View.VISIBLE);

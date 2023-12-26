@@ -108,7 +108,6 @@ public class Activity_ContactUs extends AppCompatActivity {
             public void onClick(View v) {
 
                 openWhatsApp("9081463454");
-
             }
         });
 
