@@ -192,6 +192,7 @@ public class ActivityEventinfo extends AppCompatActivity {
         Intent i = getIntent();
         if (i != null) {
             subCatId = i.getStringExtra("subCatId");
+
             categoryId = i.getStringExtra("categoryId");
             userId = sharedPreference.getStringvalue(VariableBag.USER_ID);
             tools.ScreenshotBlock(getWindow());

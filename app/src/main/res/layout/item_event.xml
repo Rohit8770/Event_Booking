@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         app:cardCornerRadius="@dimen/_5ssp"
@@ -49,14 +48,14 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/orange"
                     android:textStyle="bold"
-                    android:textSize="@dimen/_15ssp"
+                    android:textSize="@dimen/_13ssp"
                     android:text="10"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/orange"
-                    android:text="JUNE"/>
+                    android:text="Janu"/>
 
 
             </LinearLayout>

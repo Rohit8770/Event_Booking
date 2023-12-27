@@ -129,8 +129,6 @@ public class Adapter_EventList extends RecyclerView.Adapter<Adapter_EventList.Ev
             ivItemUnLike = itemView.findViewById(R.id.ivItemUnLike);
         }
     }
-
-
     public void Search(CharSequence charSequence, RecyclerView categoryListRecyclerView) {
         try {
             String charString = charSequence.toString().toLowerCase().trim();
